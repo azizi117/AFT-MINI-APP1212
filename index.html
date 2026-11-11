@@ -5,15 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<title>SOURCE OF LIFE | SOLIFE</title>
+<title>HIYAT | SOURCE OF LIFE</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 *{box-sizing:border-box}
 body{
  margin:0;background:#07111f;color:white;
- font-family:Arial,sans-serif;
- min-height:100vh;
+ font-family:Arial,sans-serif;min-height:100vh;
  background-image:
  radial-gradient(circle at 15% 10%,#124d5c 0,transparent 35%),
  radial-gradient(circle at 90% 80%,#27205b 0,transparent 35%);
@@ -23,7 +22,6 @@ body{
  background:rgba(255,255,255,.075);
  border:1px solid rgba(255,255,255,.14);
  backdrop-filter:blur(18px);
- -webkit-backdrop-filter:blur(18px);
  border-radius:22px;
  box-shadow:0 10px 35px #0004;
 }
@@ -35,16 +33,12 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
  background:linear-gradient(135deg,#00e5b0,#2479ff);
  font-size:22px;font-weight:bold;
 }
-select{
- background:#142638;color:white;border:1px solid #ffffff30;
- padding:9px;border-radius:12px;
-}
+select{background:#142638;color:white;border:1px solid #ffffff30;padding:9px;border-radius:12px}
 .hero{text-align:center;padding:25px 15px;margin-bottom:16px}
 .coin{
  width:105px;height:105px;border-radius:50%;
- margin:0 auto 15px;
- display:grid;place-items:center;
- font-size:32px;font-weight:900;
+ margin:0 auto 15px;display:grid;place-items:center;
+ font-size:29px;font-weight:900;
  background:linear-gradient(145deg,#00edb2,#087bcb);
  box-shadow:0 0 45px #00dca766;
  border:4px solid #ffffff55;
@@ -70,20 +64,16 @@ button{
 }
 button:disabled{opacity:.45;cursor:not-allowed}
 .main-btn{width:100%;margin-top:10px}
-.secondary{
- background:rgba(255,255,255,.09);
- border:1px solid #ffffff30;box-shadow:none;
-}
+.secondary{background:rgba(255,255,255,.09);border:1px solid #ffffff30;box-shadow:none}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .ref-link{
  background:#071522;border:1px solid #ffffff25;
- padding:12px;border-radius:12px;
- font-size:12px;overflow-wrap:anywhere;color:#8eeedb;
+ padding:12px;border-radius:12px;font-size:12px;
+ overflow-wrap:anywhere;color:#8eeedb;
  direction:ltr;text-align:left;margin:12px 0;
 }
 .nav{
- position:fixed;bottom:0;left:0;right:0;
- max-width:480px;margin:auto;
+ position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:auto;
  display:flex;justify-content:space-around;
  padding:13px 5px calc(13px + env(safe-area-inset-bottom));
  background:#0a1928ed;backdrop-filter:blur(15px);
@@ -92,6 +82,11 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .nav button{background:none;box-shadow:none;padding:7px;font-size:12px;color:#b5c6d5}
 .notice{font-size:11px;color:#9eafc0;line-height:1.8}
 .green{color:#50eac0}
+.timer{font-size:27px;font-weight:bold;color:#50eac0;text-align:center;margin:15px 0;direction:ltr}
+.chart{width:100%;height:160px;display:block;margin-top:12px}
+.chart-labels{display:flex;justify-content:space-between;color:#91a8ba;font-size:11px}
+.up{color:#50eac0}
+.down{color:#ff6b78}
 </style>
 </head>
 
@@ -100,10 +95,10 @@ button:disabled{opacity:.45;cursor:not-allowed}
 
 <header>
  <div class="row">
-  <div class="logo">S</div>
+  <div class="logo">H</div>
   <div>
-   <div class="brand">SOURCE OF LIFE</div>
-   <small style="color:#8ca5b8">SOLIFE NETWORK</small>
+   <div class="brand">HIYAT</div>
+   <small style="color:#8ca5b8">SOURCE OF LIFE</small>
   </div>
  </div>
  <select id="language" onchange="changeLanguage(this.value)">
@@ -114,62 +109,114 @@ button:disabled{opacity:.45;cursor:not-allowed}
 </header>
 
 <div class="hero glass">
- <div class="coin">SOL</div>
- <h1>SOURCE OF LIFE</h1>
- <div class="subtitle" id="tagline">شبکه استخراج SOLIFE</div>
+ <div class="coin">H</div>
+ <h1>HIYAT</h1>
+ <div class="subtitle" id="tagline">منبع زندگی | شبکه دیجیتالی</div>
  <div class="balance" id="balance">0.0000</div>
- <div class="unit">SOLIFE</div>
+ <div class="unit">HIYAT TOKEN</div>
 </div>
 
 <div class="grid">
  <div class="stat glass">
   <small id="priceLabel">قیمت توکن</small>
-  <strong class="price" id="price">—</strong>
-  <small id="priceStatus">قیمت هنوز متصل نیست</small>
+  <strong class="price" id="price">$0.005000</strong>
+  <small id="priceStatus">قیمت آزمایشی</small>
  </div>
+
  <div class="stat glass">
-  <small id="rateLabel">سرعت استخراج</small>
-  <strong>5.4</strong>
-  <small>SOLIFE / Hour</small>
+  <small id="rateLabel">پاداش استخراج</small>
+  <strong>200</strong>
+  <small>HIYAT / 24H</small>
  </div>
+
  <div class="stat glass">
   <small id="refLabel">دعوت‌های من</small>
   <strong id="refCount">0</strong>
   <small id="refSub">دعوت ثبت‌شده</small>
  </div>
+
  <div class="stat glass">
   <small id="rewardLabel">پاداش دعوت</small>
   <strong id="rewards">0</strong>
-  <small>SOLIFE</small>
+  <small>HIYAT</small>
  </div>
 </div>
 
+<!-- PRICE CHART -->
 <div class="section glass">
  <div class="row">
-  <h3 id="miningTitle">⛏ استخراج SOLIFE</h3>
+  <h3 id="chartTitle">📈 نمودار قیمت HIYAT</h3>
+  <span class="green" id="chartChange">+0.00%</span>
+ </div>
+
+ <div class="row">
+  <small id="currentPriceLabel">قیمت فعلی</small>
+  <strong class="price" id="chartPrice">$0.005000</strong>
+ </div>
+
+ <svg class="chart" id="priceChart" viewBox="0 0 340 150" preserveAspectRatio="none">
+  <defs>
+   <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#00e5b0" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="#00e5b0" stop-opacity="0"/>
+   </linearGradient>
+  </defs>
+  <path id="chartArea" fill="url(#chartFill)" d=""/>
+  <polyline id="chartLine" fill="none" stroke="#00e5b0"
+   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points=""/>
+ </svg>
+
+ <div class="chart-labels">
+  <span id="chartOld">قدیمی‌تر</span>
+  <span id="chartNew">اکنون</span>
+ </div>
+ <p class="notice" id="chartNote">
+ نمودار نمایشی است و قیمت واقعی بازار نیست.
+ </p>
+</div>
+
+<!-- MINING -->
+<div class="section glass">
+ <div class="row">
+  <h3 id="miningTitle">⛏ استخراج HIYAT</h3>
   <span class="green" id="miningStatus">● متوقف</span>
  </div>
+
+ <div class="timer" id="timer">24:00:00</div>
+
  <div class="row">
   <small id="progressLabel">پیشرفت استخراج</small>
   <small id="progressText">0%</small>
  </div>
- <div class="progress"><div class="bar" id="bar"></div></div>
- <div class="row">
-  <small id="earnedLabel">مقدار استخراج‌شده</small>
-  <strong id="earned">0.0000</strong>
+
+ <div class="progress">
+  <div class="bar" id="bar"></div>
  </div>
+
+ <div class="row">
+  <small id="earnedLabel">پاداش این دوره</small>
+  <strong id="earned">0 / 200</strong>
+ </div>
+
  <button class="main-btn" id="mineButton" onclick="toggleMining()">
   ▶ شروع استخراج
  </button>
+
+ <button class="main-btn secondary" id="claimButton"
+ onclick="claimReward()" disabled>
+  دریافت ۲۰۰ توکن
+ </button>
+
  <p class="notice" id="mineNote">
- این نسخه استخراج نمایشی در مرورگر است و به شبکه بلاکچین متصل نیست.
+ هر ۲۴ ساعت ۲۰۰ توکن HIYAT. پس از پایان زمان، پاداش را دریافت کنید.
  </p>
 </div>
 
+<!-- REFERRAL -->
 <div class="section glass">
  <h3 id="refTitle">🎁 دعوت دوستان</h3>
  <p class="notice" id="refDescription">
- دوستان خود را دعوت کنید. پاداش واقعی پس از اتصال سرور و تأیید دعوت‌ها فعال می‌شود.
+ دوستان خود را دعوت کنید.
  </p>
  <div class="ref-link" id="refLink">Loading...</div>
  <button class="main-btn" onclick="copyReferral()" id="copyButton">
@@ -180,10 +227,11 @@ button:disabled{opacity:.45;cursor:not-allowed}
  </button>
 </div>
 
+<!-- WALLET -->
 <div class="section glass">
  <h3 id="walletTitle">👛 کیف پول</h3>
  <div class="row">
-  <span id="walletBalance">موجودی SOLIFE</span>
+  <span id="walletBalance">موجودی HIYAT</span>
   <strong class="green" id="walletAmount">0.0000</strong>
  </div>
  <p class="notice" id="walletNote">
@@ -192,7 +240,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 </div>
 
 <div class="section glass">
- <h3 id="communityTitle">🌐 جامعه SOLIFE</h3>
+ <h3 id="communityTitle">🌐 جامعه HIYAT</h3>
  <p class="notice" id="communityText">به جامعه ما بپیوندید.</p>
  <button class="main-btn secondary"
  onclick="window.open('https://t.me/plathominer_app','_blank')">
@@ -204,7 +252,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 
 <nav class="nav">
  <button onclick="scrollTo(0,0)">🏠 <span id="navHome">خانه</span></button>
- <button onclick="document.querySelector('.section').scrollIntoView()">⛏ <span id="navMine">استخراج</span></button>
+ <button onclick="document.getElementById('miningTitle').scrollIntoView()">⛏ <span id="navMine">استخراج</span></button>
  <button onclick="document.getElementById('refTitle').scrollIntoView()">🎁 <span id="navRef">دعوت</span></button>
  <button onclick="document.getElementById('walletTitle').scrollIntoView()">👛 <span id="navWallet">کیف پول</span></button>
 </nav>
@@ -214,9 +262,11 @@ const tg = window.Telegram?.WebApp;
 tg?.ready();
 tg?.expand();
 
-const RATE = 5.4;
-const REF_REWARD = 1;
-const STORAGE_KEY = "solife_account_v1";
+const CYCLE = 24 * 60 * 60 * 1000;
+const REWARD = 200;
+const INITIAL_PRICE = 0.005;
+const STORAGE_KEY = "hiyat_account_v1";
+const PRICE_KEY = "hiyat_price_history_v1";
 
 const user = tg?.initDataUnsafe?.user;
 const userId = user?.id ? String(user.id) : "guest";
@@ -226,167 +276,352 @@ try {
  account = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 } catch(e) { account = {}; }
 
-if (!account.id) account.id = userId;
+if (!account.id) {
+ account = {
+  id:userId,balance:0,rewards:0,refs:[],
+  miningStartedAt:0,miningEndAt:0
+ };
+}
+
 if (account.id !== userId && userId !== "guest") {
- account = {id:userId, balance:0, running:false, last:0, refs:[], rewards:0};
+ account = {
+  id:userId,balance:0,rewards:0,refs:[],
+  miningStartedAt:0,miningEndAt:0
+ };
 }
 
 account.balance = Number(account.balance || 0);
 account.rewards = Number(account.rewards || 0);
 account.refs = Array.isArray(account.refs) ? account.refs : [];
-account.running = false;
+account.miningStartedAt = Number(account.miningStartedAt || 0);
+account.miningEndAt = Number(account.miningEndAt || 0);
 
-let running = false;
-let startedAt = 0;
-let sessionEarned = 0;
+let currentPrice = INITIAL_PRICE;
+let priceHistory = [];
+
+try {
+ priceHistory = JSON.parse(localStorage.getItem(PRICE_KEY)) || [];
+} catch(e) { priceHistory = []; }
+
+if (!Array.isArray(priceHistory) || priceHistory.length < 2) {
+ priceHistory = Array(24).fill(INITIAL_PRICE);
+}
 
 function save(){
- localStorage.setItem(STORAGE_KEY, JSON.stringify(account));
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(account));
+}
+
+function savePrice(){
+ localStorage.setItem(PRICE_KEY,JSON.stringify(priceHistory));
+}
+
+function isMining(){
+ return account.miningEndAt > Date.now();
+}
+
+function isCompleted(){
+ return account.miningEndAt > 0 &&
+ Date.now() >= account.miningEndAt;
+}
+
+function formatTime(ms){
+ let seconds = Math.max(0,Math.floor(ms/1000));
+ const h = Math.floor(seconds/3600);
+ const m = Math.floor((seconds%3600)/60);
+ const s = seconds%60;
+ return [h,m,s].map(v=>String(v).padStart(2,"0")).join(":");
 }
 
 function render(){
- document.getElementById("balance").textContent = account.balance.toFixed(4);
- document.getElementById("walletAmount").textContent = account.balance.toFixed(4);
- document.getElementById("earned").textContent = sessionEarned.toFixed(4);
- document.getElementById("refCount").textContent = account.refs.length;
- document.getElementById("rewards").textContent = account.rewards.toFixed(4);
- document.getElementById("miningStatus").textContent =
- running ? "● فعال" : "● متوقف";
- document.getElementById("mineButton").textContent =
- running ? "Ⅱ توقف استخراج" : "▶ شروع استخراج";
- document.getElementById("bar").style.width =
- Math.min(100,sessionEarned / RATE * 100) + "%";
+ const active = isMining();
+ const completed = isCompleted();
+
+ document.getElementById("balance").textContent =
+ account.balance.toFixed(4);
+
+ document.getElementById("walletAmount").textContent =
+ account.balance.toFixed(4);
+
+ document.getElementById("refCount").textContent =
+ account.refs.length;
+
+ document.getElementById("rewards").textContent =
+ account.rewards.toFixed(4);
+
+ const progress = active
+  ? Math.min(100,(Date.now()-account.miningStartedAt)/CYCLE*100)
+  : completed ? 100 : 0;
+
+ document.getElementById("bar").style.width = progress + "%";
  document.getElementById("progressText").textContent =
- Math.min(100,sessionEarned / RATE * 100).toFixed(1) + "%";
+ progress.toFixed(1)+"%";
+
+ document.getElementById("earned").textContent =
+ (REWARD*progress/100).toFixed(2)+" / "+REWARD;
+
+ document.getElementById("timer").textContent =
+ active ? formatTime(account.miningEndAt-Date.now())
+ : completed ? "00:00:00" : "24:00:00";
+
+ document.getElementById("miningStatus").textContent =
+ active ? "● فعال" : completed ? "● آماده دریافت" : "● متوقف";
+
+ document.getElementById("mineButton").disabled =
+ active || completed;
+
+ document.getElementById("claimButton").disabled =
+ !completed;
+
+ const lang = document.getElementById("language").value;
+ const t = translations[lang];
+
+ document.getElementById("mineButton").textContent =
+ active ? t.active : completed ? t.finished : t.start;
+
+ document.getElementById("claimButton").textContent = t.claim;
 }
 
 function toggleMining(){
- if(running){
-  updateMining();
-  running = false;
- } else {
-  running = true;
-  startedAt = Date.now();
- }
- render();
-}
+ if(isMining() || isCompleted()) return;
 
-function updateMining(){
- if(!running) return;
- const elapsed = (Date.now()-startedAt)/3600000;
- const earned = elapsed * RATE;
- account.balance += earned - sessionEarned;
- sessionEarned = earned;
+ const now = Date.now();
+ account.miningStartedAt = now;
+ account.miningEndAt = now+CYCLE;
+
  save();
  render();
 }
 
-setInterval(updateMining,1000);
+function claimReward(){
+ if(!isCompleted()) return;
 
+ account.balance += REWARD;
+ account.miningStartedAt = 0;
+ account.miningEndAt = 0;
+
+ save();
+ render();
+
+ alert("200 HIYAT successfully added to your demo balance!");
+}
+
+// PRICE SIMULATION
+function updatePrice(){
+ const previous = currentPrice;
+
+ // Simulated price movement, not a real market feed.
+ const change = (Math.random()-0.48)*0.00004;
+
+ currentPrice = Math.max(
+  0.001,
+  Math.min(0.02,currentPrice+change)
+ );
+
+ priceHistory.push(currentPrice);
+ if(priceHistory.length>40) priceHistory.shift();
+
+ savePrice();
+ drawChart();
+
+ const percent = ((currentPrice-INITIAL_PRICE)/INITIAL_PRICE)*100;
+
+ document.getElementById("price").textContent =
+ "$"+currentPrice.toFixed(6);
+
+ document.getElementById("chartPrice").textContent =
+ "$"+currentPrice.toFixed(6);
+
+ const changeElement = document.getElementById("chartChange");
+
+ changeElement.textContent =
+ (percent>=0?"+":"")+percent.toFixed(2)+"%";
+
+ changeElement.className = percent>=0 ? "up" : "down";
+}
+
+function drawChart(){
+ const values = priceHistory;
+ const min = Math.min(...values);
+ const max = Math.max(...values);
+ const range = max-min || 0.000001;
+
+ const points = values.map((v,i)=>{
+  const x = i/(values.length-1)*340;
+  const y = 130-((v-min)/range)*110;
+  return x.toFixed(2)+","+y.toFixed(2);
+ });
+
+ const line = points.join(" ");
+
+ document.getElementById("chartLine")
+ .setAttribute("points",line);
+
+ document.getElementById("chartArea")
+ .setAttribute("d",
+  "M "+points[0]+" L "+points.slice(1).join(" L ")+" L 340,150 L 0,150 Z"
+ );
+}
+
+// REFERRAL
 const botUsername = "plathominer_app";
-const referralLink = "https://t.me/" + botUsername + "?start=ref_" + account.id;
-document.getElementById("refLink").textContent = referralLink;
+const referralLink =
+ "https://t.me/"+botUsername+"?start=ref_"+account.id;
+
+document.getElementById("refLink").textContent=referralLink;
 
 function copyReferral(){
  if(navigator.clipboard){
   navigator.clipboard.writeText(referralLink)
-   .then(()=>alert("Referral link copied!"))
-   .catch(()=>alert(referralLink));
- } else {
+  .then(()=>alert("Link copied!"))
+  .catch(()=>alert(referralLink));
+ }else{
   alert(referralLink);
  }
 }
 
 function shareReferral(){
- const text = encodeURIComponent("Join SOURCE OF LIFE (SOLIFE): ");
- const url = encodeURIComponent(referralLink);
- window.open("https://t.me/share/url?url="+url+"&text="+text,"_blank");
+ const text=encodeURIComponent("Join HIYAT - SOURCE OF LIFE!");
+ const url=encodeURIComponent(referralLink);
+ window.open(
+  "https://t.me/share/url?url="+url+"&text="+text,
+  "_blank"
+ );
 }
 
-// This only records a referral request locally.
-// A secure backend must validate Telegram users and award rewards.
-const params = new URLSearchParams(location.search);
-const incoming = params.get("start") || tg?.initDataUnsafe?.start_param || "";
+const params=new URLSearchParams(location.search);
+const incoming=params.get("start") ||
+ tg?.initDataUnsafe?.start_param || "";
 
 if(incoming.startsWith("ref_")){
- const inviter = incoming.substring(4);
- if(inviter && inviter !== account.id){
-  account.pendingInviter = inviter;
+ const inviter=incoming.substring(4);
+ if(inviter && inviter!==account.id){
+  account.pendingInviter=inviter;
   save();
  }
 }
 
-const translations = {
+// LANGUAGES
+const translations={
  fa:{
-  tagline:"شبکه استخراج SOLIFE",priceLabel:"قیمت توکن",
-  priceStatus:"قیمت هنوز متصل نیست",rateLabel:"سرعت استخراج",
-  refLabel:"دعوت‌های من",refSub:"دعوت ثبت‌شده",
-  rewardLabel:"پاداش دعوت",miningTitle:"⛏ استخراج SOLIFE",
-  progressLabel:"پیشرفت استخراج",earnedLabel:"مقدار استخراج‌شده",
-  start:"▶ شروع استخراج",stop:"Ⅱ توقف استخراج",
+  tagline:"منبع زندگی | شبکه دیجیتالی",
+  priceLabel:"قیمت توکن",
+  priceStatus:"قیمت آزمایشی",
+  rateLabel:"پاداش استخراج",
+  refLabel:"دعوت‌های من",
+  refSub:"دعوت ثبت‌شده",
+  rewardLabel:"پاداش دعوت",
+  chartTitle:"📈 نمودار قیمت HIYAT",
+  currentPriceLabel:"قیمت فعلی",
+  chartOld:"قدیمی‌تر",
+  chartNew:"اکنون",
+  chartNote:"نمودار نمایشی است و قیمت واقعی بازار نیست.",
+  miningTitle:"⛏ استخراج HIYAT",
+  progressLabel:"پیشرفت استخراج",
+  earnedLabel:"پاداش این دوره",
+  start:"▶ شروع استخراج",
+  active:"⛏ استخراج فعال",
+  finished:"✓ آماده دریافت",
+  claim:"دریافت ۲۰۰ توکن",
   refTitle:"🎁 دعوت دوستان",
-  refDescription:"دوستان خود را دعوت کنید. پاداش واقعی پس از اتصال سرور و تأیید دعوت‌ها فعال می‌شود.",
-  copy:"کپی لینک دعوت",share:"ارسال لینک برای دوستان",
-  walletTitle:"👛 کیف پول",walletBalance:"موجودی SOLIFE",
-  walletNote:"برداشت و انتقال پس از اتصال قرارداد هوشمند و سرور امن فعال خواهد شد.",
-  communityTitle:"🌐 جامعه SOLIFE",communityText:"به جامعه ما بپیوندید.",
-  navHome:"خانه",navMine:"استخراج",navRef:"دعوت",navWallet:"کیف پول",
-  note:"این نسخه استخراج نمایشی در مرورگر است و به شبکه بلاکچین متصل نیست."
+  refDescription:"دوستان خود را دعوت کنید. پاداش واقعی نیازمند سرور امن است.",
+  copy:"کپی لینک دعوت",
+  share:"ارسال لینک برای دوستان",
+  walletTitle:"👛 کیف پول",
+  walletBalance:"موجودی HIYAT",
+  walletNote:"برداشت و انتقال پس از اتصال قرارداد هوشمند و سرور فعال خواهد شد.",
+  communityTitle:"🌐 جامعه HIYAT",
+  communityText:"به جامعه ما بپیوندید.",
+  navHome:"خانه",navMine:"استخراج",
+  navRef:"دعوت",navWallet:"کیف پول",
+  note:"هر ۲۴ ساعت ۲۰۰ توکن. پس از پایان زمان، پاداش را دریافت کنید."
  },
  en:{
-  tagline:"SOLIFE Mining Network",priceLabel:"Token Price",
-  priceStatus:"Price not connected",rateLabel:"Mining Speed",
-  refLabel:"My Referrals",refSub:"Recorded referrals",
-  rewardLabel:"Referral Rewards",miningTitle:"⛏ SOLIFE Mining",
-  progressLabel:"Mining Progress",earnedLabel:"Amount Mined",
-  start:"▶ Start Mining",stop:"Ⅱ Stop Mining",
+  tagline:"SOURCE OF LIFE | Digital Network",
+  priceLabel:"Token Price",
+  priceStatus:"Demo Price",
+  rateLabel:"Mining Reward",
+  refLabel:"My Referrals",
+  refSub:"Recorded referrals",
+  rewardLabel:"Referral Rewards",
+  chartTitle:"📈 HIYAT Price Chart",
+  currentPriceLabel:"Current Price",
+  chartOld:"Earlier",
+  chartNew:"Now",
+  chartNote:"Demo chart. Not a real market price.",
+  miningTitle:"⛏ HIYAT Mining",
+  progressLabel:"Mining Progress",
+  earnedLabel:"Current Cycle Reward",
+  start:"▶ Start Mining",
+  active:"⛏ Mining Active",
+  finished:"✓ Ready to Claim",
+  claim:"Claim 200 Tokens",
   refTitle:"🎁 Invite Friends",
-  refDescription:"Invite friends. Real rewards require a secure backend and verified referrals.",
-  copy:"Copy Referral Link",share:"Share with Friends",
-  walletTitle:"👛 Wallet",walletBalance:"SOLIFE Balance",
-  walletNote:"Withdrawals and transfers require a secure server and smart contract.",
-  communityTitle:"🌐 SOLIFE Community",communityText:"Join our community.",
-  navHome:"Home",navMine:"Mining",navRef:"Invite",navWallet:"Wallet",
-  note:"Browser-based mining simulation. Not connected to a blockchain."
+  refDescription:"Invite friends. Real rewards require a secure backend.",
+  copy:"Copy Referral Link",
+  share:"Share with Friends",
+  walletTitle:"👛 Wallet",
+  walletBalance:"HIYAT Balance",
+  walletNote:"Withdrawals require a smart contract and secure server.",
+  communityTitle:"🌐 HIYAT Community",
+  communityText:"Join our community.",
+  navHome:"Home",navMine:"Mining",
+  navRef:"Invite",navWallet:"Wallet",
+  note:"Earn 200 tokens every 24 hours. Claim after the timer ends."
  },
  ar:{
-  tagline:"شبكة تعدين SOLIFE",priceLabel:"سعر العملة",
-  priceStatus:"السعر غير متصل",rateLabel:"سرعة التعدين",
-  refLabel:"دعواتي",refSub:"الدعوات المسجلة",
-  rewardLabel:"مكافآت الدعوة",miningTitle:"⛏ تعدين SOLIFE",
-  progressLabel:"تقدم التعدين",earnedLabel:"الكمية المستخرجة",
-  start:"▶ بدء التعدين",stop:"Ⅱ إيقاف التعدين",
+  tagline:"مصدر الحياة | الشبكة الرقمية",
+  priceLabel:"سعر العملة",
+  priceStatus:"سعر تجريبي",
+  rateLabel:"مكافأة التعدين",
+  refLabel:"دعواتي",
+  refSub:"الدعوات المسجلة",
+  rewardLabel:"مكافآت الدعوة",
+  chartTitle:"📈 مخطط سعر HIYAT",
+  currentPriceLabel:"السعر الحالي",
+  chartOld:"السابق",
+  chartNew:"الآن",
+  chartNote:"مخطط تجريبي وليس سعراً حقيقياً.",
+  miningTitle:"⛏ تعدين HIYAT",
+  progressLabel:"تقدم التعدين",
+  earnedLabel:"مكافأة الدورة",
+  start:"▶ بدء التعدين",
+  active:"⛏ التعدين نشط",
+  finished:"✓ جاهز للاستلام",
+  claim:"استلام 200 عملة",
   refTitle:"🎁 دعوة الأصدقاء",
-  refDescription:"ادعُ أصدقاءك. المكافآت الحقيقية تتطلب خادماً آمناً وتأكيد الدعوات.",
-  copy:"نسخ رابط الدعوة",share:"مشاركة الرابط",
-  walletTitle:"👛 المحفظة",walletBalance:"رصيد SOLIFE",
-  walletNote:"السحب والتحويل يتطلبان خادماً آمناً وعقداً ذكياً.",
-  communityTitle:"🌐 مجتمع SOLIFE",communityText:"انضم إلى مجتمعنا.",
-  navHome:"الرئيسية",navMine:"التعدين",navRef:"دعوة",navWallet:"المحفظة",
-  note:"هذا تعدين تجريبي داخل المتصفح وغير متصل بالبلوكشين."
+  refDescription:"ادعُ أصدقاءك. المكافآت الحقيقية تتطلب خادماً آمناً.",
+  copy:"نسخ رابط الدعوة",
+  share:"مشاركة الرابط",
+  walletTitle:"👛 المحفظة",
+  walletBalance:"رصيد HIYAT",
+  walletNote:"السحب يتطلب عقداً ذكياً وخادماً آمناً.",
+  communityTitle:"🌐 مجتمع HIYAT",
+  communityText:"انضم إلى مجتمعنا.",
+  navHome:"الرئيسية",navMine:"التعدين",
+  navRef:"دعوة",navWallet:"المحفظة",
+  note:"اكسب 200 عملة كل 24 ساعة."
  }
 };
 
 function changeLanguage(lang){
- const t = translations[lang] || translations.fa;
- document.documentElement.lang = lang;
- document.documentElement.dir = lang==="en" ? "ltr" : "rtl";
+ const t=translations[lang]||translations.fa;
 
- const ids = {
-  tagline:"tagline",priceLabel:"priceLabel",
-  priceStatus:"priceStatus",rateLabel:"rateLabel",
-  refLabel:"refLabel",refSub:"refSub",rewardLabel:"rewardLabel",
-  miningTitle:"miningTitle",progressLabel:"progressLabel",
-  earnedLabel:"earnedLabel",refTitle:"refTitle",
-  refDescription:"refDescription",walletTitle:"walletTitle",
-  walletBalance:"walletBalance",walletNote:"walletNote",
-  communityTitle:"communityTitle",communityText:"communityText",
-  navHome:"navHome",navMine:"navMine",navRef:"navRef",
-  navWallet:"navWallet"
- };
+ document.documentElement.lang=lang;
+ document.documentElement.dir=lang==="en"?"ltr":"rtl";
 
- for(const id in ids)
-  document.getElementById(id).textContent=t[ids[id]];
+ const ids=[
+  "tagline","priceLabel","priceStatus","rateLabel",
+  "refLabel","refSub","rewardLabel","chartTitle",
+  "currentPriceLabel","chartOld","chartNew","chartNote",
+  "miningTitle","progressLabel","earnedLabel",
+  "refTitle","refDescription","walletTitle",
+  "walletBalance","walletNote","communityTitle",
+  "communityText","navHome","navMine","navRef","navWallet"
+ ];
+
+ ids.forEach(id=>{
+  document.getElementById(id).textContent=t[id];
+ });
 
  document.getElementById("copyButton").textContent=t.copy;
  document.getElementById("shareButton").textContent=t.share;
@@ -395,16 +630,27 @@ function changeLanguage(lang){
  render();
 }
 
-const originalRender = render;
-render = function(){
- originalRender();
- const lang = document.getElementById("language").value;
- document.getElementById("mineButton").textContent =
- running ? translations[lang].stop : translations[lang].start;
-};
+// INITIALIZE
+if(!account.miningStartedAt && account.miningEndAt){
+ account.miningEndAt=0;
+ save();
+}
 
-render();
+if(priceHistory.length){
+ currentPrice=priceHistory[priceHistory.length-1];
+}
+
 changeLanguage("fa");
+updatePrice();
+render();
+drawChart();
+
+setInterval(()=>{
+ render();
+},1000);
+
+// Demo price movement every 20 seconds
+setInterval(updatePrice,20000);
 </script>
 </body>
 </html>
