@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080c17">
+<title>AFT GOLD</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080c17;color:white;
+ font-family:Arial,sans-serif;
+ background-image:radial-gradient(ellipse at top,#40301755,transparent 60%);
+}
+header{text-align:center;padding:25px}
+.logo{font-size:30px;font-weight:900;color:#f3cb70}
+.sub{font-size:10px;color:#929db0;letter-spacing:3px;margin-top:7px}
+main{padding:12px 17px 100px;max-width:480px;margin:auto}
+.glass{
+ background:linear-gradient(135deg,#ffffff19,#ffffff05);
+ border:1px solid #ffffff28;border-radius:20px;
+ backdrop-filter:blur(18px);
+ box-shadow:0 10px 30px #0005,inset 0 1px #ffffff18;
+ padding:20px;margin-bottom:15px;
+}
+.user{display:flex;align-items:center;gap:12px}
+.avatar{width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#f5d58b,#80561a);display:grid;place-items:center;color:#111;font-size:22px}
+.muted{color:#9ba8bb;font-size:12px}
+.gold{color:#f5d58b}
+.balance{text-align:center;font-size:38px;font-weight:bold;color:#f5d58b;padding:18px}
+.btn{
+ width:100%;padding:15px;margin-top:10px;
+ border-radius:14px;border:1px solid #e9c77866;
+ background:linear-gradient(135deg,#ffffff20,#ffffff05);
+ color:#f5d58b;font-size:15px;font-weight:bold;
+}
+.btn.primary{background:linear-gradient(110deg,#f5d58b,#a36c22);color:#15100a}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{text-align:center;padding:22px 8px}
+.tile b{display:block;color:#f5d58b;margin-top:10px}
+.tile span{font-size:26px}
+.page{display:none}
+.page.active{display:block}
+nav{
+ position:fixed;bottom:0;left:0;right:0;
+ display:flex;justify-content:space-around;
+ padding:12px 3px calc(12px + env(safe-area-inset-bottom));
+ background:#101827ed;backdrop-filter:blur(20px);
+ border-top:1px solid #ffffff22
+}
+nav button{border:0;background:none;color:#9ba8bb;font-size:11px}
+nav button.active{color:#f5d58b}
+nav span{display:block;font-size:20px;margin-bottom:4px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">✦ AFT GOLD ✦</div>
+<div class="sub">DIGITAL REWARDS ECOSYSTEM</div>
+</header>
+<main>
+
+<div id="home" class="page active">
+<div class="glass">
+<div class="user">
+<div class="avatar">👤</div>
+<div>
+<b id="username">AFT Member</b>
+<div class="muted" id="userid">Telegram User</div>
+</div>
+</div>
+<hr style="border-color:#ffffff18;margin:20px 0">
+<div class="muted" style="text-align:center">TOTAL BALANCE</div>
+<div class="balance"><span id="balance">0</span></div>
+<div class="muted" style="text-align:center">AFT GOLD COINS</div>
+<button class="btn primary" onclick="tap()">⚡ TAP TO EARN</button>
+<p class="muted" id="message">Start earning AFT points</p>
+</div>
+<div class="grid">
+<div class="glass tile" onclick="openPage('mining')"><span>⛏️</span><b>MINING</b><small class="muted">استخراج</small></div>
+<div class="glass tile" onclick="openPage('tasks')"><span>🎁</span><b>REWARDS</b><small class="muted">پاداش</small></div>
+<div class="glass tile" onclick="openPage('friends')"><span>👥</span><b>FRIENDS</b><small class="muted">دعوت دوستان</small></div>
+<div class="glass tile" onclick="openPage('wallet')"><span>💎</span><b>WALLET</b><small class="muted">کیف پول</small></div>
+</div>
+</div>
+
+<div id="mining" class="page">
+<div class="glass">
+<h3 class="gold">⛏️ AFT MINING</h3>
+<div class="balance" id="timer">00:00:00</div>
+<p class="muted" id="mineStatus">استخراج غیرفعال است</p>
+<button class="btn primary" onclick="startMining()">START MINING</button>
+</div>
+</div>
+
+<div id="tasks" class="page">
+<div class="glass">
+<h3 class="gold">🎁 DAILY REWARDS</h3>
+<p class="muted">پاداش روزانه خود را دریافت کنید.</p>
+<button class="btn primary" onclick="daily()">CLAIM DAILY BONUS</button>
+<p class="muted" id="dailyMsg"></p>
+</div>
+<div class="glass">
+<h3 class="gold">🎯 TASK CENTER</h3>
+<p class="muted">مأموریت‌های بیشتر به‌زودی اضافه می‌شوند.</p>
+</div>
+</div>
+
+<div id="friends" class="page">
+<div class="glass">
+<h3 class="gold">👥 INVITE FRIENDS</h3>
+<p class="muted">لینک اختصاصی دعوت شما</p>
+<p id="refLink" style="font-size:11px;word-break:break-all;color:#f5d58b"></p>
+<button class="btn primary" onclick="invite()">SHARE INVITE</button>
+</div>
+</div>
+
+<div id="wallet" class="page">
+<div class="glass">
+<h3 class="gold">💎 MY WALLET</h3>
+<div class="balance" id="walletBalance">0</div>
+<p class="muted">AFT COINS</p>
+<button class="btn" onclick="alert('برداشت پس از اتصال سرور فعال می‌شود')">WITHDRAW</button>
+</div>
+</div>
+
+<div id="profile" class="page">
+<div class="glass">
+<h3 class="gold">👤 PROFILE</h3>
+<p id="profileName"></p>
+<p class="muted" id="profileID"></p>
+<p class="gold">AFT GOLD MEMBER</p>
+</div>
+</div>
+</main>
+
+<nav>
+<button class="active" onclick="openPage('home',this)"><span>⌂</span>HOME</button>
+<button onclick="openPage('mining',this)"><span>⛏</span>MINING</button>
+<button onclick="openPage('tasks',this)"><span>🎁</span>TASKS</button>
+<button onclick="openPage('friends',this)"><span>♧</span>FRIENDS</button>
+<button onclick="openPage('profile',this)"><span>◉</span>PROFILE</button>
+</nav>
+
+<script>
+// BOT SETTINGS
+const BOT_USERNAME="YOUR_NEW_BOT_USERNAME";
+
+// TELEGRAM
+const tg=window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+const user=tg.initDataUnsafe?.user;
+const userId=user?.id || "guest";
+const firstName=user?.first_name || "AFT Member";
+
+document.getElementById("username").textContent=firstName;
+document.getElementById("userid").textContent="ID: "+userId;
+document.getElementById("profileName").textContent=firstName;
+document.getElementById("profileID").textContent="ID: "+userId;
+
+// DEMO DATA
+let balance=0;
+let mining=false;
+let seconds=0;
+let dailyClaimed=false;
+
+function update(){
+ document.getElementById("balance").textContent=balance.toLocaleString();
+ document.getElementById("walletBalance").textContent=balance.toLocaleString();
+}
+function tap(){
+ balance++;
+ update();
+ document.getElementById("message").textContent="1 AFT received!";
+ tg.HapticFeedback?.impactOccurred("medium");
+}
+function openPage(name,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(name).classList.add("active");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ else{
+ const index=["home","mining","tasks","friends","profile"].indexOf(name);
+ document.querySelectorAll("nav button")[index]?.classList.add("active");
+ }
+}
+function startMining(){
+ mining=true;
+ document.getElementById("mineStatus").textContent="Mining demo active";
+}
+setInterval(()=>{
+ if(!mining)return;
+ seconds++;
+ const h=String(Math.floor(seconds/3600)).padStart(2,"0");
+ const m=String(Math.floor(seconds%3600/60)).padStart(2,"0");
+ const s=String(seconds%60).padStart(2,"0");
+ document.getElementById("timer").textContent=h+":"+m+":"+s;
+},1000);
+function daily(){
+ if(dailyClaimed){
+ document.getElementById("dailyMsg").textContent="Already claimed today.";
+ return;
+ }
+ dailyClaimed=true;
+ balance+=10;
+ update();
+ document.getElementById("dailyMsg").textContent="10 demo points received!";
+}
+const inviteLink="https://t.me/"+BOT_USERNAME+"?start="+userId;
+document.getElementById("refLink").textContent=inviteLink;
+function invite(){
+ if(BOT_USERNAME==="YOUR_NEW_BOT_USERNAME"){
+ alert("اول نام کاربری ربات را در کد وارد کنید.");
+ return;
+ }
+ tg.openTelegramLink("https://t.me/share/url?url="+encodeURIComponent(inviteLink));
+}
+update();
+</script>
+</body>
+</html>
