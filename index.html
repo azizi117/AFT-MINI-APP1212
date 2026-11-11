@@ -1,225 +1,410 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080c17">
-<title>AFT GOLD</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<title>SOURCE OF LIFE | SOLIFE</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;background:#080c17;color:white;
+ margin:0;background:#07111f;color:white;
  font-family:Arial,sans-serif;
- background-image:radial-gradient(ellipse at top,#40301755,transparent 60%);
+ min-height:100vh;
+ background-image:
+ radial-gradient(circle at 15% 10%,#124d5c 0,transparent 35%),
+ radial-gradient(circle at 90% 80%,#27205b 0,transparent 35%);
 }
-header{text-align:center;padding:25px}
-.logo{font-size:30px;font-weight:900;color:#f3cb70}
-.sub{font-size:10px;color:#929db0;letter-spacing:3px;margin-top:7px}
-main{padding:12px 17px 100px;max-width:480px;margin:auto}
+.app{max-width:480px;margin:auto;padding:20px 16px 100px}
 .glass{
- background:linear-gradient(135deg,#ffffff19,#ffffff05);
- border:1px solid #ffffff28;border-radius:20px;
+ background:rgba(255,255,255,.075);
+ border:1px solid rgba(255,255,255,.14);
  backdrop-filter:blur(18px);
- box-shadow:0 10px 30px #0005,inset 0 1px #ffffff18;
- padding:20px;margin-bottom:15px;
+ -webkit-backdrop-filter:blur(18px);
+ border-radius:22px;
+ box-shadow:0 10px 35px #0004;
 }
-.user{display:flex;align-items:center;gap:12px}
-.avatar{width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#f5d58b,#80561a);display:grid;place-items:center;color:#111;font-size:22px}
-.muted{color:#9ba8bb;font-size:12px}
-.gold{color:#f5d58b}
-.balance{text-align:center;font-size:38px;font-weight:bold;color:#f5d58b;padding:18px}
-.btn{
- width:100%;padding:15px;margin-top:10px;
- border-radius:14px;border:1px solid #e9c77866;
- background:linear-gradient(135deg,#ffffff20,#ffffff05);
- color:#f5d58b;font-size:15px;font-weight:bold;
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.brand{font-size:18px;font-weight:bold;letter-spacing:1px}
+.logo{
+ width:43px;height:43px;border-radius:15px;
+ display:grid;place-items:center;
+ background:linear-gradient(135deg,#00e5b0,#2479ff);
+ font-size:22px;font-weight:bold;
 }
-.btn.primary{background:linear-gradient(110deg,#f5d58b,#a36c22);color:#15100a}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{text-align:center;padding:22px 8px}
-.tile b{display:block;color:#f5d58b;margin-top:10px}
-.tile span{font-size:26px}
-.page{display:none}
-.page.active{display:block}
-nav{
+select{
+ background:#142638;color:white;border:1px solid #ffffff30;
+ padding:9px;border-radius:12px;
+}
+.hero{text-align:center;padding:25px 15px;margin-bottom:16px}
+.coin{
+ width:105px;height:105px;border-radius:50%;
+ margin:0 auto 15px;
+ display:grid;place-items:center;
+ font-size:32px;font-weight:900;
+ background:linear-gradient(145deg,#00edb2,#087bcb);
+ box-shadow:0 0 45px #00dca766;
+ border:4px solid #ffffff55;
+}
+.hero h1{font-size:23px;margin:8px 0}
+.subtitle{color:#aabaca;font-size:13px}
+.balance{font-size:35px;font-weight:bold;margin:18px 0 5px;color:#52f5c5}
+.unit{color:#a9bac9;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
+.stat{padding:17px 12px}
+.stat small{color:#9fb2c4}
+.stat strong{display:block;font-size:20px;margin-top:10px}
+.price{color:#50eac0}
+.section{padding:19px;margin:15px 0}
+.section h3{margin:0 0 15px;font-size:16px}
+.progress{height:9px;background:#ffffff18;border-radius:20px;overflow:hidden;margin:13px 0}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,#00dca9,#348bff);transition:.4s}
+button{
+ border:0;cursor:pointer;color:white;font-size:15px;
+ font-weight:bold;border-radius:15px;padding:15px;
+ background:linear-gradient(110deg,#08b99b,#2777ef);
+ box-shadow:0 5px 20px #087dba55;
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.main-btn{width:100%;margin-top:10px}
+.secondary{
+ background:rgba(255,255,255,.09);
+ border:1px solid #ffffff30;box-shadow:none;
+}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ref-link{
+ background:#071522;border:1px solid #ffffff25;
+ padding:12px;border-radius:12px;
+ font-size:12px;overflow-wrap:anywhere;color:#8eeedb;
+ direction:ltr;text-align:left;margin:12px 0;
+}
+.nav{
  position:fixed;bottom:0;left:0;right:0;
+ max-width:480px;margin:auto;
  display:flex;justify-content:space-around;
- padding:12px 3px calc(12px + env(safe-area-inset-bottom));
- background:#101827ed;backdrop-filter:blur(20px);
- border-top:1px solid #ffffff22
+ padding:13px 5px calc(13px + env(safe-area-inset-bottom));
+ background:#0a1928ed;backdrop-filter:blur(15px);
+ border-top:1px solid #ffffff18;
 }
-nav button{border:0;background:none;color:#9ba8bb;font-size:11px}
-nav button.active{color:#f5d58b}
-nav span{display:block;font-size:20px;margin-bottom:4px}
+.nav button{background:none;box-shadow:none;padding:7px;font-size:12px;color:#b5c6d5}
+.notice{font-size:11px;color:#9eafc0;line-height:1.8}
+.green{color:#50eac0}
 </style>
 </head>
+
 <body>
+<div class="app">
+
 <header>
-<div class="logo">✦ AFT GOLD ✦</div>
-<div class="sub">DIGITAL REWARDS ECOSYSTEM</div>
+ <div class="row">
+  <div class="logo">S</div>
+  <div>
+   <div class="brand">SOURCE OF LIFE</div>
+   <small style="color:#8ca5b8">SOLIFE NETWORK</small>
+  </div>
+ </div>
+ <select id="language" onchange="changeLanguage(this.value)">
+  <option value="fa">فارسی</option>
+  <option value="en">English</option>
+  <option value="ar">العربية</option>
+ </select>
 </header>
-<main>
 
-<div id="home" class="page active">
-<div class="glass">
-<div class="user">
-<div class="avatar">👤</div>
-<div>
-<b id="username">AFT Member</b>
-<div class="muted" id="userid">Telegram User</div>
+<div class="hero glass">
+ <div class="coin">SOL</div>
+ <h1>SOURCE OF LIFE</h1>
+ <div class="subtitle" id="tagline">شبکه استخراج SOLIFE</div>
+ <div class="balance" id="balance">0.0000</div>
+ <div class="unit">SOLIFE</div>
 </div>
-</div>
-<hr style="border-color:#ffffff18;margin:20px 0">
-<div class="muted" style="text-align:center">TOTAL BALANCE</div>
-<div class="balance"><span id="balance">0</span></div>
-<div class="muted" style="text-align:center">AFT GOLD COINS</div>
-<button class="btn primary" onclick="tap()">⚡ TAP TO EARN</button>
-<p class="muted" id="message">Start earning AFT points</p>
-</div>
+
 <div class="grid">
-<div class="glass tile" onclick="openPage('mining')"><span>⛏️</span><b>MINING</b><small class="muted">استخراج</small></div>
-<div class="glass tile" onclick="openPage('tasks')"><span>🎁</span><b>REWARDS</b><small class="muted">پاداش</small></div>
-<div class="glass tile" onclick="openPage('friends')"><span>👥</span><b>FRIENDS</b><small class="muted">دعوت دوستان</small></div>
-<div class="glass tile" onclick="openPage('wallet')"><span>💎</span><b>WALLET</b><small class="muted">کیف پول</small></div>
-</div>
-</div>
-
-<div id="mining" class="page">
-<div class="glass">
-<h3 class="gold">⛏️ AFT MINING</h3>
-<div class="balance" id="timer">00:00:00</div>
-<p class="muted" id="mineStatus">استخراج غیرفعال است</p>
-<button class="btn primary" onclick="startMining()">START MINING</button>
-</div>
-</div>
-
-<div id="tasks" class="page">
-<div class="glass">
-<h3 class="gold">🎁 DAILY REWARDS</h3>
-<p class="muted">پاداش روزانه خود را دریافت کنید.</p>
-<button class="btn primary" onclick="daily()">CLAIM DAILY BONUS</button>
-<p class="muted" id="dailyMsg"></p>
-</div>
-<div class="glass">
-<h3 class="gold">🎯 TASK CENTER</h3>
-<p class="muted">مأموریت‌های بیشتر به‌زودی اضافه می‌شوند.</p>
-</div>
+ <div class="stat glass">
+  <small id="priceLabel">قیمت توکن</small>
+  <strong class="price" id="price">—</strong>
+  <small id="priceStatus">قیمت هنوز متصل نیست</small>
+ </div>
+ <div class="stat glass">
+  <small id="rateLabel">سرعت استخراج</small>
+  <strong>5.4</strong>
+  <small>SOLIFE / Hour</small>
+ </div>
+ <div class="stat glass">
+  <small id="refLabel">دعوت‌های من</small>
+  <strong id="refCount">0</strong>
+  <small id="refSub">دعوت ثبت‌شده</small>
+ </div>
+ <div class="stat glass">
+  <small id="rewardLabel">پاداش دعوت</small>
+  <strong id="rewards">0</strong>
+  <small>SOLIFE</small>
+ </div>
 </div>
 
-<div id="friends" class="page">
-<div class="glass">
-<h3 class="gold">👥 INVITE FRIENDS</h3>
-<p class="muted">لینک اختصاصی دعوت شما</p>
-<p id="refLink" style="font-size:11px;word-break:break-all;color:#f5d58b"></p>
-<button class="btn primary" onclick="invite()">SHARE INVITE</button>
-</div>
+<div class="section glass">
+ <div class="row">
+  <h3 id="miningTitle">⛏ استخراج SOLIFE</h3>
+  <span class="green" id="miningStatus">● متوقف</span>
+ </div>
+ <div class="row">
+  <small id="progressLabel">پیشرفت استخراج</small>
+  <small id="progressText">0%</small>
+ </div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
+ <div class="row">
+  <small id="earnedLabel">مقدار استخراج‌شده</small>
+  <strong id="earned">0.0000</strong>
+ </div>
+ <button class="main-btn" id="mineButton" onclick="toggleMining()">
+  ▶ شروع استخراج
+ </button>
+ <p class="notice" id="mineNote">
+ این نسخه استخراج نمایشی در مرورگر است و به شبکه بلاکچین متصل نیست.
+ </p>
 </div>
 
-<div id="wallet" class="page">
-<div class="glass">
-<h3 class="gold">💎 MY WALLET</h3>
-<div class="balance" id="walletBalance">0</div>
-<p class="muted">AFT COINS</p>
-<button class="btn" onclick="alert('برداشت پس از اتصال سرور فعال می‌شود')">WITHDRAW</button>
-</div>
+<div class="section glass">
+ <h3 id="refTitle">🎁 دعوت دوستان</h3>
+ <p class="notice" id="refDescription">
+ دوستان خود را دعوت کنید. پاداش واقعی پس از اتصال سرور و تأیید دعوت‌ها فعال می‌شود.
+ </p>
+ <div class="ref-link" id="refLink">Loading...</div>
+ <button class="main-btn" onclick="copyReferral()" id="copyButton">
+ کپی لینک دعوت
+ </button>
+ <button class="main-btn secondary" onclick="shareReferral()" id="shareButton">
+ ارسال لینک برای دوستان
+ </button>
 </div>
 
-<div id="profile" class="page">
-<div class="glass">
-<h3 class="gold">👤 PROFILE</h3>
-<p id="profileName"></p>
-<p class="muted" id="profileID"></p>
-<p class="gold">AFT GOLD MEMBER</p>
+<div class="section glass">
+ <h3 id="walletTitle">👛 کیف پول</h3>
+ <div class="row">
+  <span id="walletBalance">موجودی SOLIFE</span>
+  <strong class="green" id="walletAmount">0.0000</strong>
+ </div>
+ <p class="notice" id="walletNote">
+ برداشت و انتقال پس از اتصال قرارداد هوشمند و سرور امن فعال خواهد شد.
+ </p>
 </div>
-</div>
-</main>
 
-<nav>
-<button class="active" onclick="openPage('home',this)"><span>⌂</span>HOME</button>
-<button onclick="openPage('mining',this)"><span>⛏</span>MINING</button>
-<button onclick="openPage('tasks',this)"><span>🎁</span>TASKS</button>
-<button onclick="openPage('friends',this)"><span>♧</span>FRIENDS</button>
-<button onclick="openPage('profile',this)"><span>◉</span>PROFILE</button>
+<div class="section glass">
+ <h3 id="communityTitle">🌐 جامعه SOLIFE</h3>
+ <p class="notice" id="communityText">به جامعه ما بپیوندید.</p>
+ <button class="main-btn secondary"
+ onclick="window.open('https://t.me/plathominer_app','_blank')">
+ Telegram
+ </button>
+</div>
+
+</div>
+
+<nav class="nav">
+ <button onclick="scrollTo(0,0)">🏠 <span id="navHome">خانه</span></button>
+ <button onclick="document.querySelector('.section').scrollIntoView()">⛏ <span id="navMine">استخراج</span></button>
+ <button onclick="document.getElementById('refTitle').scrollIntoView()">🎁 <span id="navRef">دعوت</span></button>
+ <button onclick="document.getElementById('walletTitle').scrollIntoView()">👛 <span id="navWallet">کیف پول</span></button>
 </nav>
 
 <script>
-// BOT SETTINGS
-const BOT_USERNAME="YOUR_NEW_BOT_USERNAME";
+const tg = window.Telegram?.WebApp;
+tg?.ready();
+tg?.expand();
 
-// TELEGRAM
-const tg=window.Telegram.WebApp;
-tg.ready();
-tg.expand();
+const RATE = 5.4;
+const REF_REWARD = 1;
+const STORAGE_KEY = "solife_account_v1";
 
-const user=tg.initDataUnsafe?.user;
-const userId=user?.id || "guest";
-const firstName=user?.first_name || "AFT Member";
+const user = tg?.initDataUnsafe?.user;
+const userId = user?.id ? String(user.id) : "guest";
 
-document.getElementById("username").textContent=firstName;
-document.getElementById("userid").textContent="ID: "+userId;
-document.getElementById("profileName").textContent=firstName;
-document.getElementById("profileID").textContent="ID: "+userId;
+let account;
+try {
+ account = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+} catch(e) { account = {}; }
 
-// DEMO DATA
-let balance=0;
-let mining=false;
-let seconds=0;
-let dailyClaimed=false;
-
-function update(){
- document.getElementById("balance").textContent=balance.toLocaleString();
- document.getElementById("walletBalance").textContent=balance.toLocaleString();
+if (!account.id) account.id = userId;
+if (account.id !== userId && userId !== "guest") {
+ account = {id:userId, balance:0, running:false, last:0, refs:[], rewards:0};
 }
-function tap(){
- balance++;
- update();
- document.getElementById("message").textContent="1 AFT received!";
- tg.HapticFeedback?.impactOccurred("medium");
+
+account.balance = Number(account.balance || 0);
+account.rewards = Number(account.rewards || 0);
+account.refs = Array.isArray(account.refs) ? account.refs : [];
+account.running = false;
+
+let running = false;
+let startedAt = 0;
+let sessionEarned = 0;
+
+function save(){
+ localStorage.setItem(STORAGE_KEY, JSON.stringify(account));
 }
-function openPage(name,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(name).classList.add("active");
- document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
- if(btn)btn.classList.add("active");
- else{
- const index=["home","mining","tasks","friends","profile"].indexOf(name);
- document.querySelectorAll("nav button")[index]?.classList.add("active");
+
+function render(){
+ document.getElementById("balance").textContent = account.balance.toFixed(4);
+ document.getElementById("walletAmount").textContent = account.balance.toFixed(4);
+ document.getElementById("earned").textContent = sessionEarned.toFixed(4);
+ document.getElementById("refCount").textContent = account.refs.length;
+ document.getElementById("rewards").textContent = account.rewards.toFixed(4);
+ document.getElementById("miningStatus").textContent =
+ running ? "● فعال" : "● متوقف";
+ document.getElementById("mineButton").textContent =
+ running ? "Ⅱ توقف استخراج" : "▶ شروع استخراج";
+ document.getElementById("bar").style.width =
+ Math.min(100,sessionEarned / RATE * 100) + "%";
+ document.getElementById("progressText").textContent =
+ Math.min(100,sessionEarned / RATE * 100).toFixed(1) + "%";
+}
+
+function toggleMining(){
+ if(running){
+  updateMining();
+  running = false;
+ } else {
+  running = true;
+  startedAt = Date.now();
+ }
+ render();
+}
+
+function updateMining(){
+ if(!running) return;
+ const elapsed = (Date.now()-startedAt)/3600000;
+ const earned = elapsed * RATE;
+ account.balance += earned - sessionEarned;
+ sessionEarned = earned;
+ save();
+ render();
+}
+
+setInterval(updateMining,1000);
+
+const botUsername = "plathominer_app";
+const referralLink = "https://t.me/" + botUsername + "?start=ref_" + account.id;
+document.getElementById("refLink").textContent = referralLink;
+
+function copyReferral(){
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(referralLink)
+   .then(()=>alert("Referral link copied!"))
+   .catch(()=>alert(referralLink));
+ } else {
+  alert(referralLink);
  }
 }
-function startMining(){
- mining=true;
- document.getElementById("mineStatus").textContent="Mining demo active";
+
+function shareReferral(){
+ const text = encodeURIComponent("Join SOURCE OF LIFE (SOLIFE): ");
+ const url = encodeURIComponent(referralLink);
+ window.open("https://t.me/share/url?url="+url+"&text="+text,"_blank");
 }
-setInterval(()=>{
- if(!mining)return;
- seconds++;
- const h=String(Math.floor(seconds/3600)).padStart(2,"0");
- const m=String(Math.floor(seconds%3600/60)).padStart(2,"0");
- const s=String(seconds%60).padStart(2,"0");
- document.getElementById("timer").textContent=h+":"+m+":"+s;
-},1000);
-function daily(){
- if(dailyClaimed){
- document.getElementById("dailyMsg").textContent="Already claimed today.";
- return;
+
+// This only records a referral request locally.
+// A secure backend must validate Telegram users and award rewards.
+const params = new URLSearchParams(location.search);
+const incoming = params.get("start") || tg?.initDataUnsafe?.start_param || "";
+
+if(incoming.startsWith("ref_")){
+ const inviter = incoming.substring(4);
+ if(inviter && inviter !== account.id){
+  account.pendingInviter = inviter;
+  save();
  }
- dailyClaimed=true;
- balance+=10;
- update();
- document.getElementById("dailyMsg").textContent="10 demo points received!";
 }
-const inviteLink="https://t.me/"+BOT_USERNAME+"?start="+userId;
-document.getElementById("refLink").textContent=inviteLink;
-function invite(){
- if(BOT_USERNAME==="YOUR_NEW_BOT_USERNAME"){
- alert("اول نام کاربری ربات را در کد وارد کنید.");
- return;
+
+const translations = {
+ fa:{
+  tagline:"شبکه استخراج SOLIFE",priceLabel:"قیمت توکن",
+  priceStatus:"قیمت هنوز متصل نیست",rateLabel:"سرعت استخراج",
+  refLabel:"دعوت‌های من",refSub:"دعوت ثبت‌شده",
+  rewardLabel:"پاداش دعوت",miningTitle:"⛏ استخراج SOLIFE",
+  progressLabel:"پیشرفت استخراج",earnedLabel:"مقدار استخراج‌شده",
+  start:"▶ شروع استخراج",stop:"Ⅱ توقف استخراج",
+  refTitle:"🎁 دعوت دوستان",
+  refDescription:"دوستان خود را دعوت کنید. پاداش واقعی پس از اتصال سرور و تأیید دعوت‌ها فعال می‌شود.",
+  copy:"کپی لینک دعوت",share:"ارسال لینک برای دوستان",
+  walletTitle:"👛 کیف پول",walletBalance:"موجودی SOLIFE",
+  walletNote:"برداشت و انتقال پس از اتصال قرارداد هوشمند و سرور امن فعال خواهد شد.",
+  communityTitle:"🌐 جامعه SOLIFE",communityText:"به جامعه ما بپیوندید.",
+  navHome:"خانه",navMine:"استخراج",navRef:"دعوت",navWallet:"کیف پول",
+  note:"این نسخه استخراج نمایشی در مرورگر است و به شبکه بلاکچین متصل نیست."
+ },
+ en:{
+  tagline:"SOLIFE Mining Network",priceLabel:"Token Price",
+  priceStatus:"Price not connected",rateLabel:"Mining Speed",
+  refLabel:"My Referrals",refSub:"Recorded referrals",
+  rewardLabel:"Referral Rewards",miningTitle:"⛏ SOLIFE Mining",
+  progressLabel:"Mining Progress",earnedLabel:"Amount Mined",
+  start:"▶ Start Mining",stop:"Ⅱ Stop Mining",
+  refTitle:"🎁 Invite Friends",
+  refDescription:"Invite friends. Real rewards require a secure backend and verified referrals.",
+  copy:"Copy Referral Link",share:"Share with Friends",
+  walletTitle:"👛 Wallet",walletBalance:"SOLIFE Balance",
+  walletNote:"Withdrawals and transfers require a secure server and smart contract.",
+  communityTitle:"🌐 SOLIFE Community",communityText:"Join our community.",
+  navHome:"Home",navMine:"Mining",navRef:"Invite",navWallet:"Wallet",
+  note:"Browser-based mining simulation. Not connected to a blockchain."
+ },
+ ar:{
+  tagline:"شبكة تعدين SOLIFE",priceLabel:"سعر العملة",
+  priceStatus:"السعر غير متصل",rateLabel:"سرعة التعدين",
+  refLabel:"دعواتي",refSub:"الدعوات المسجلة",
+  rewardLabel:"مكافآت الدعوة",miningTitle:"⛏ تعدين SOLIFE",
+  progressLabel:"تقدم التعدين",earnedLabel:"الكمية المستخرجة",
+  start:"▶ بدء التعدين",stop:"Ⅱ إيقاف التعدين",
+  refTitle:"🎁 دعوة الأصدقاء",
+  refDescription:"ادعُ أصدقاءك. المكافآت الحقيقية تتطلب خادماً آمناً وتأكيد الدعوات.",
+  copy:"نسخ رابط الدعوة",share:"مشاركة الرابط",
+  walletTitle:"👛 المحفظة",walletBalance:"رصيد SOLIFE",
+  walletNote:"السحب والتحويل يتطلبان خادماً آمناً وعقداً ذكياً.",
+  communityTitle:"🌐 مجتمع SOLIFE",communityText:"انضم إلى مجتمعنا.",
+  navHome:"الرئيسية",navMine:"التعدين",navRef:"دعوة",navWallet:"المحفظة",
+  note:"هذا تعدين تجريبي داخل المتصفح وغير متصل بالبلوكشين."
  }
- tg.openTelegramLink("https://t.me/share/url?url="+encodeURIComponent(inviteLink));
+};
+
+function changeLanguage(lang){
+ const t = translations[lang] || translations.fa;
+ document.documentElement.lang = lang;
+ document.documentElement.dir = lang==="en" ? "ltr" : "rtl";
+
+ const ids = {
+  tagline:"tagline",priceLabel:"priceLabel",
+  priceStatus:"priceStatus",rateLabel:"rateLabel",
+  refLabel:"refLabel",refSub:"refSub",rewardLabel:"rewardLabel",
+  miningTitle:"miningTitle",progressLabel:"progressLabel",
+  earnedLabel:"earnedLabel",refTitle:"refTitle",
+  refDescription:"refDescription",walletTitle:"walletTitle",
+  walletBalance:"walletBalance",walletNote:"walletNote",
+  communityTitle:"communityTitle",communityText:"communityText",
+  navHome:"navHome",navMine:"navMine",navRef:"navRef",
+  navWallet:"navWallet"
+ };
+
+ for(const id in ids)
+  document.getElementById(id).textContent=t[ids[id]];
+
+ document.getElementById("copyButton").textContent=t.copy;
+ document.getElementById("shareButton").textContent=t.share;
+ document.getElementById("mineNote").textContent=t.note;
+
+ render();
 }
-update();
+
+const originalRender = render;
+render = function(){
+ originalRender();
+ const lang = document.getElementById("language").value;
+ document.getElementById("mineButton").textContent =
+ running ? translations[lang].stop : translations[lang].start;
+};
+
+render();
+changeLanguage("fa");
 </script>
 </body>
 </html>
