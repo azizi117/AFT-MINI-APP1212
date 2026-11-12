@@ -1,336 +1,115 @@
+.stat strong{display:block;color:#42e991;font-size:22px;margin-top:10px}
+.market-row,.rank-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #20392b}
+.green{color:#42e991}
+.red{color:#ff6666}
+.muted{color:#91ad9c;font-size:12px;line-height:2}
+.ref-link{direction:ltr;overflow-wrap:anywhere;background:#081810;padding:12px;border-radius:10px;margin-top:15px;font-size:11px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#0b1b13;border-top:1px solid #234b36;display:flex;justify-content:space-around;padding:10px 3px 22px}
+.tab{background:transparent;color:#91ad9c;width:auto;font-size:12px;padding:8px}
+.tab.active{color:#42e991}
+.page{display:none}
+.page.active{display:block}
+#message{display:none;background:#183b29;padding:12px;border-radius:10px;margin-bottom:15px;font-size:13px}
+</style>
+</head>
+<body>
 
-// ===============================
-// LIFE SOURCE - USER SYSTEM
-// ===============================
+<header>
+<div class="logo">🌱 LIFE SOURCE</div>
+<div class="green">● ONLINE</div>
+</header>
 
-let userData = {};
-let timer = null;
-let rate = 50;
-let lang = "fa";
+<div id="message"></div>
 
-const PERIOD = 24 * 60 * 60;
-const translations = {
- fa: {
-  start:"شروع استخراج 🚀",
-  active:"استخراج فعال است ✅",
-  ready:"آماده استخراج",
-  balance:"موجودی",
-  mining:"استخراج LIFE شروع شد 🚀",
-  languages:"زبان فارسی"
- },
- en: {
-  start:"Start Mining 🚀",
-  active:"Mining Active ✅",
-  ready:"Ready to mine",
-  balance:"Balance",
-  mining:"LIFE Mining Started 🚀",
-  languages:"English"
- },
- zh: {
-  start:"开始挖矿 🚀",
-  active:"挖矿进行中 ✅",
-  ready:"准备挖矿",
-  balance:"余额",
-  mining:"LIFE 挖矿已开始 🚀",
-  languages:"中文"
- },
- ar: {
-  start:"ابدأ التعدين 🚀",
-  active:"التعدين نشط ✅",
-  ready:"جاهز للتعدين",
-  balance:"الرصيد",
-  mining:"بدأ تعدين LIFE 🚀",
-  languages:"العربية"
- }
-};
+<section id="home" class="page active">
+<div class="card">
+<div class="label">موجودی امتیاز شما</div>
+<div class="balance" id="balance">0.00</div>
+<div class="label">LIFE POINTS</div>
+<button class="primary" id="mineButton" onclick="startMining()">شروع استخراج 🚀</button>
+<button class="secondary" id="claimButton" onclick="claimMining()" disabled>دریافت امتیاز</button>
+<p class="muted" style="text-align:center">نرخ استخراج: <span id="rate">10</span> امتیاز در ساعت</p>
+</div>
 
-function setLanguage(language) {
- lang = translations[language] ? language : "fa";
+<div class="stats">
+<div class="stat"><small>کل درآمد</small><strong id="totalEarned">0</strong></div>
+<div class="stat"><small>دعوت‌ها</small><strong id="referrals">0</strong></div>
+</div>
 
- document.documentElement.lang = lang;
- document.documentElement.dir =
-  lang === "fa" || lang === "ar" ? "rtl" : "ltr";
+<div class="card">
+<h3>📊 بازار ارزها</h3>
+<div id="market">در حال دریافت قیمت‌ها...</div>
+</div>
+</section>
 
- const selector = document.getElementById("language");
- if(selector) selector.value = lang;
+<section id="invite" class="page">
+<div class="card">
+<h3>👥 دعوت دوستان</h3>
+<p class="muted">دوستانت را دعوت کن و به ازای هر دعوت موفق امتیاز بگیر.</p>
+<div class="balance" id="refReward">100</div>
+<div class="label">LIFE POINTS برای هر دعوت موفق</div>
+<div id="inviteLink" class="ref-link">در حال ساخت لینک...</div>
+<button class="primary" onclick="copyInvite()">کپی لینک دعوت</button>
+<button class="secondary" onclick="shareInvite()">ارسال به دوستان</button>
+</div>
+</section>
 
- const button = document.getElementById("mineButton");
- if(button && !userData.mining_active) {
-  button.textContent = translations[lang].start;
- }
+<section id="ranking" class="page">
+<div class="card">
+<h3>🏆 جدول برترین‌ها</h3>
+<div id="leaderboard">در حال دریافت...</div>
+</div>
+</section>
+
+<section id="profile" class="page">
+<div class="card">
+<h3>👤 حساب کاربری</h3>
+<p class="muted">نام کاربر</p><strong id="profileName">-</strong>
+<p class="muted">شناسه تلگرام</p><strong id="profileId">-</strong>
+<p class="muted">موجودی</p><strong id="profileBalance">0</strong>
+<hr>
+<p class="muted">
+امتیازهای این برنامه فعلاً امتیاز داخلی هستند و توکن قابل انتقال بلاکچینی نیستند.
+</p>
+</div>
+</section>
+
+<nav class="tabs">
+<button class="tab active" onclick="showPage('home',this)">🏠 خانه</button>
+<button class="tab" onclick="showPage('invite',this)">👥 دعوت</button>
+<button class="tab" onclick="showPage('ranking',this)">🏆 رتبه‌ها</button>
+<button class="tab" onclick="showPage('profile',this)">👤 پروفایل</button>
+</nav>
+
+<script>
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+
+let userData=null;
+let timer=null;
+let lastClaim=0;
+let rate=10;
+
+function message(text){
+ const el=document.getElementById("message");
+ el.textContent=text;
+ el.style.display="block";
+ setTimeout(()=>el.style.display="none",3500);
 }
 
-// ===============================
-// LEVEL SYSTEM
-// ===============================
-
-function getLevel(balance) {
- return Math.floor(Number(balance) / 100) + 1;
+function showPage(id,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+ if(id==="ranking")loadRanking();
 }
 
-function getMiningRate(balance) {
- return 50 * getLevel(balance);
+async function api(url,method="GET"){
+ const headers={"Content-Type":"application/json"};
+ if(tg?.initData)headers["x-telegram-init-data"]=tg.initData;
+ const r=await fetch(url,{method,headers});
+ const d=await r.json();
+ if(!r.ok)throw new Error(d.error||"خطا در ارتباط");
+ return d;
 }
-
-// ===============================
-// UPDATE USER
-// ===============================
-
-function updateUser(u) {
- userData = u;
-
- const balance = Number(u.balance || 0);
- const total = Number(u.total_earned || 0);
-
- document.getElementById("balance").textContent =
-  balance.toFixed(2);
-
- document.getElementById("totalEarned").textContent =
-  total.toFixed(2);
-
- document.getElementById("referrals").textContent =
-  u.referrals || 0;
-
- document.getElementById("profileName").textContent =
-  u.first_name || u.username || "کاربر";
-
- document.getElementById("profileId").textContent = u.id;
-
- document.getElementById("profileBalance").textContent =
-  balance.toFixed(2);
-
- // Level
- const level = getLevel(balance);
- const miningSpeed = getMiningRate(balance);
-
- const levelElement = document.getElementById("level");
- const speedElement = document.getElementById("rate");
- const nextElement = document.getElementById("nextLevel");
-
- if(levelElement) levelElement.textContent = level;
-
- if(speedElement) {
-  speedElement.textContent = miningSpeed + " LIFE / 24h";
- }
-
- if(nextElement) {
-  nextElement.textContent = (level * 100 - balance).toFixed(2);
- }
-
- const active = u.mining_active;
-
- document.getElementById("mineButton").disabled = active;
-
- document.getElementById("mineButton").textContent =
-  active ? translations[lang].active :
-  translations[lang].start;
-
- document.getElementById("claimButton").disabled = !active;
-
- lastClaim = u.last_claim_at || 0;
-
- clearInterval(timer);
-
- if(active) {
-  timer = setInterval(() => {
-
-   const elapsed = Math.max(
-    0,
-    Date.now() / 1000 - lastClaim
-   );
-
-   const earned = Math.min(
-    elapsed / PERIOD * miningSpeed,
-    miningSpeed
-   );
-
-   document.getElementById("balance").textContent =
-    (balance + earned).toFixed(2);
-
-  }, 1000);
- }
-}
-
-// ===============================
-// LOAD USER
-// ===============================
-
-async function loadUser() {
- const d = await api("/api/bootstrap");
-
- updateUser(d.user);
-
- const bot = d.bot_username;
-
- document.getElementById("inviteLink").textContent =
-  bot
-   ? "https://t.me/" + bot + "?startapp=ref_" + d.user.id
-   : "نام کاربری ربات در سرور تنظیم نشده است.";
-}
-
-// ===============================
-// START MINING
-// ===============================
-
-async function startMining() {
- try {
-  await api("/api/mine/start", "POST");
-  await loadUser();
-  message(translations[lang].mining);
- } catch(e) {
-  message(e.message);
- }
-}
-
-// ===============================
-// CLAIM MINING
-// ===============================
-
-async function claimMining() {
- try {
-  const d = await api("/api/mine/claim", "POST");
-
-  if(d.user) updateUser(d.user);
-
-  message(
-   d.earned > 0
-    ? "دریافت " + d.earned + " LIFE موفق بود!"
-    : "هنوز امتیازی برای دریافت نداری."
-  );
-
- } catch(e) {
-  message(e.message);
- }
-}
-
-// ===============================
-// INVITE SYSTEM
-// ===============================
-
-async function copyInvite() {
- const link = document.getElementById("inviteLink").textContent;
-
- try {
-  await navigator.clipboard.writeText(link);
-  message("لینک کپی شد!");
- } catch(e) {
-  message("کپی لینک ممکن نیست.");
- }
-}
-
-function shareInvite() {
- const link = document.getElementById("inviteLink").textContent;
-
- const url =
-  "https://t.me/share/url?url=" +
-  encodeURIComponent(link) +
-  "&text=" +
-  encodeURIComponent("به LIFE SOURCE بپیوند!");
-
- if(tg?.openTelegramLink) {
-  tg.openTelegramLink(url);
- } else {
-  window.open(url);
- }
-}
-
-// ===============================
-// MARKET
-// ===============================
-
-async function loadMarket() {
- const box = document.getElementById("market");
-
- try {
-  const d = await api("/api/market");
-
-  const coins = [
-   ["Bitcoin","BTC",d.prices.bitcoin],
-   ["Ethereum","ETH",d.prices.ethereum],
-   ["Toncoin","TON",d.prices.toncoin],
-   ["Solana","SOL",d.prices.solana]
-  ];
-
-  box.innerHTML = "";
-
-  coins.forEach(([name,symbol,c]) => {
-   if(!c) return;
-
-   const row = document.createElement("div");
-   row.className = "market-row";
-
-   const left = document.createElement("span");
-   left.textContent = name + " (" + symbol + ")";
-
-   const right = document.createElement("span");
-
-   right.textContent =
-    "$" + Number(c.usd).toLocaleString("en-US", {
-     maximumFractionDigits:4
-    });
-
-   row.append(left,right);
-   box.appendChild(row);
-
-   const change = document.createElement("div");
-
-   change.className =
-    "muted " +
-    (Number(c.usd_24h_change) >= 0 ? "green" : "red");
-
-   change.textContent =
-    (Number(c.usd_24h_change) >= 0 ? "+" : "") +
-    Number(c.usd_24h_change || 0).toFixed(2) +
-    "% در ۲۴ ساعت";
-
-   right.appendChild(change);
-  });
-
- } catch(e) {
-  box.textContent = "قیمت‌ها فعلاً در دسترس نیستند.";
- }
-}
-
-// ===============================
-// LEADERBOARD
-// ===============================
-
-async function loadRanking() {
- const box = document.getElementById("leaderboard");
-
- try {
-  const d = await api("/api/leaderboard");
-
-  box.innerHTML = "";
-
-  d.users.forEach((u,i) => {
-
-   const row = document.createElement("div");
-   row.className = "rank-row";
-
-   const name = document.createElement("span");
-
-   name.textContent =
-    (i+1) + ". " +
-    (u.first_name || u.username || "کاربر");
-
-   const score = document.createElement("strong");
-   score.className = "green";
-
-   score.textContent =
-    Number(u.balance).toFixed(2) + " LIFE";
-
-   row.append(name,score);
-   box.appendChild(row);
-  });
-
- } catch(e) {
-  box.textContent = e.message;
- }
-}
-
-// ===============================
-// LANGUAGE INITIALIZATION
-// ===============================
-
-setLanguage("fa");
