@@ -3,313 +3,355 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#030906">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#030806">
 <title>EMERALD COIN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
- --green:#00ed91;
- --green2:#00a969;
- --dark:#030906;
- --panel:#0b1710;
- --muted:#84978b;
- --line:rgba(0,237,145,.15);
+ --bg:#030806;
+ --card:#0b1711;
+ --green:#00f5a0;
+ --green2:#00a96b;
+ --text:#f0fff7;
+ --muted:#789084;
+ --line:rgba(0,245,160,.14);
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
- margin:0;background:
- radial-gradient(ellipse at 50% 5%,#103b27 0%,transparent 37%),
- radial-gradient(ellipse at 0% 65%,#082016 0%,transparent 35%),
- #030906;
- color:#f2fff8;font-family:'Vazirmatn',sans-serif;
- min-height:100vh;padding-bottom:100px;
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Vazirmatn,sans-serif;min-height:100vh;
+ overflow-x:hidden;padding-bottom:105px;
+ background-image:
+ radial-gradient(ellipse at 50% 0%,#0c3c27 0%,transparent 38%),
+ radial-gradient(ellipse at 0% 55%,#062016 0%,transparent 34%);
 }
-button{font-family:inherit}
-.app{max-width:480px;margin:auto;padding:17px 16px}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+button{font-family:inherit;color:inherit;cursor:pointer}
+.app{max-width:480px;margin:auto;padding:17px 16px 30px}
+.top{
+ display:flex;justify-content:space-between;align-items:center;
+ margin-bottom:23px
+}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-icon{
- width:43px;height:43px;border-radius:14px;
- display:grid;place-items:center;
- background:linear-gradient(145deg,#0e7547,#052818);
- border:1px solid #28f5a0;
- box-shadow:0 0 25px #00e58a30;
- color:#7dffbf;font-size:24px
+.brand-logo{
+ width:44px;height:44px;border-radius:15px;
+ display:grid;place-items:center;font-size:25px;
+ color:#9affce;background:linear-gradient(145deg,#145b39,#061a10);
+ border:1px solid #3affaa65;
+ box-shadow:0 0 25px #00ed9120,inset 0 0 15px #00ed9115
 }
-.brand h2{font-size:15px;margin:0;font-weight:900;letter-spacing:1px}
-.brand small{font-size:9px;color:#789688;letter-spacing:2px}
-.online{
- padding:7px 11px;border:1px solid var(--line);
- border-radius:20px;font-size:10px;color:#7bffc0;
- background:#0b1d13
+.brand-name{font-size:15px;font-weight:900;letter-spacing:1px}
+.brand-sub{font-size:8px;letter-spacing:2px;color:#729281}
+.status{
+ display:flex;align-items:center;gap:6px;
+ border:1px solid var(--line);border-radius:30px;
+ padding:7px 10px;background:#0a1a11;
+ color:#83ffc1;font-size:9px
 }
-.online i{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-left:5px;box-shadow:0 0 9px var(--green)}
+.status i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}
 .greeting{font-size:11px;color:var(--muted)}
-.heading{font-size:23px;font-weight:900;margin:3px 0 19px}
-.hero{
- position:relative;overflow:hidden;border-radius:27px;
- background:linear-gradient(150deg,#123c27,#07170e 65%,#09130d);
- border:1px solid #22d88c38;
- padding:21px 19px 18px;
- box-shadow:0 18px 50px #0008,inset 0 1px #ffffff0c;
+.page-title{font-size:23px;font-weight:900;margin:3px 0 17px}
+.balance-card{
+ position:relative;overflow:hidden;border-radius:25px;
+ padding:19px;background:linear-gradient(145deg,#123c27,#09170f 65%,#07120c);
+ border:1px solid #00ed913b;
+ box-shadow:0 18px 45px #0007,inset 0 1px #ffffff0b
 }
-.hero:before{
- content:"";position:absolute;width:230px;height:230px;
- background:#00ed9130;filter:blur(70px);
- top:-120px;left:-50px;border-radius:50%
+.balance-card:before{
+ content:"";position:absolute;width:220px;height:220px;
+ background:#00ed9125;filter:blur(65px);
+ top:-145px;left:-50px;border-radius:50%
 }
-.hero-label{font-size:11px;color:#a2c5af}
-.balance{font-size:34px;font-weight:900;direction:ltr;text-align:right;margin-top:4px}
-.balance span{font-size:13px;color:var(--green);margin-right:5px}
-.balance-sub{font-size:9px;color:#779486;margin-top:3px}
-.gem-stage{
- height:220px;position:relative;display:grid;place-items:center;
- perspective:700px;
+.balance-label{font-size:11px;color:#a4c8b1}
+.balance{
+ font-size:34px;font-weight:900;direction:ltr;
+ text-align:right;margin-top:3px;position:relative
 }
-.gem-light{
- position:absolute;width:160px;height:160px;border-radius:50%;
- background:#00ef913b;filter:blur(38px)
+.balance small{font-size:13px;color:var(--green);margin-right:5px}
+.balance-note{font-size:9px;color:#789587}
+.crystal-zone{
+ height:270px;position:relative;display:grid;place-items:center;
+ touch-action:manipulation;user-select:none
 }
-.gem{
- width:140px;height:160px;position:relative;z-index:2;
- animation:levitate 4s ease-in-out infinite;
- filter:drop-shadow(0 0 17px #00ed9160);
+.crystal-glow{
+ position:absolute;width:175px;height:175px;border-radius:50%;
+ background:#00ed9142;filter:blur(45px);
+ animation:glow 3s infinite alternate
 }
-.gem svg{width:100%;height:100%;overflow:visible}
-@keyframes levitate{
- 0%,100%{transform:translateY(0) rotateY(-7deg)}
- 50%{transform:translateY(-12px) rotateY(7deg)}
+@keyframes glow{to{opacity:.45;transform:scale(1.2)}}
+.orbit{
+ position:absolute;width:215px;height:68px;
+ border:1px solid #36ffac50;border-radius:50%;
+ transform:rotate(-20deg);box-shadow:0 0 20px #00ed9110
 }
-.ring{
- position:absolute;width:205px;height:65px;
- border:1px solid #35f6a64c;border-radius:50%;
- transform:rotate(-18deg);
- box-shadow:0 0 20px #00ed9120;
+.orbit.second{width:185px;transform:rotate(23deg);opacity:.5}
+.orbit.third{width:245px;height:100px;transform:rotate(75deg);opacity:.2}
+.crystal{
+ width:150px;height:180px;z-index:2;position:relative;
+ filter:drop-shadow(0 0 16px #00f5a04f);
+ animation:float 4s ease-in-out infinite;
+ transition:transform .12s
 }
-.ring.two{transform:rotate(18deg);width:180px;opacity:.4}
-.hero-bottom{display:flex;align-items:center;justify-content:space-between}
-.hero-bottom small{font-size:9px;color:#91b6a0}
-.network-tag{
- color:#68ffb5;background:#00e58a12;
- border:1px solid var(--line);padding:6px 11px;
- border-radius:20px;font-size:9px
+.crystal svg{width:100%;height:100%;overflow:visible}
+.crystal.hit{transform:scale(.88) rotate(-5deg)!important}
+@keyframes float{
+ 0%,100%{translate:0 0;rotate:-2deg}
+ 50%{translate:0 -12px;rotate:2deg}
 }
-.section-title{
+.tap-hint{
+ position:absolute;bottom:5px;font-size:10px;
+ color:#8bbaa0;letter-spacing:1px
+}
+.balance-footer{display:flex;justify-content:space-between;align-items:center}
+.balance-footer span{font-size:9px;color:#91b6a0}
+.network{
+ border:1px solid var(--line);background:#00ed9110;
+ color:#8bffc4;padding:6px 10px;border-radius:20px
+}
+.section-head{
  display:flex;justify-content:space-between;align-items:center;
  margin:23px 2px 12px
 }
-.section-title strong{font-size:14px}
-.section-title span{font-size:9px;color:var(--muted)}
+.section-head b{font-size:14px}
+.section-head span{font-size:9px;color:var(--muted)}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat{
- position:relative;overflow:hidden;
- background:linear-gradient(145deg,#10241a,#09140d);
- border:1px solid var(--line);border-radius:18px;
- padding:14px;min-height:100px
+ position:relative;overflow:hidden;border:1px solid var(--line);
+ border-radius:18px;padding:14px;
+ background:linear-gradient(145deg,#102219,#09130d);
+ min-height:98px
 }
 .stat:after{
- content:"";position:absolute;width:60px;height:60px;
- background:#00ed9110;filter:blur(25px);left:-10px;top:-10px
+ content:"";position:absolute;width:65px;height:65px;
+ border-radius:50%;background:#00ed9113;filter:blur(28px);
+ left:-10px;top:-15px
 }
-.stat-icon{font-size:19px;margin-bottom:7px}
+.stat-icon{font-size:20px;margin-bottom:7px}
 .stat-label{font-size:10px;color:var(--muted)}
-.stat-value{font-size:18px;font-weight:900;margin-top:3px}
+.stat-value{font-size:17px;font-weight:900;margin-top:2px}
 .stat-value small{font-size:9px;color:var(--green)}
 .mining{
- border-radius:23px;padding:18px;
- background:linear-gradient(135deg,#103723,#07150d);
- border:1px solid #00e58a45;
- box-shadow:0 12px 30px #0004
+ border:1px solid #00ed9140;border-radius:22px;padding:17px;
+ background:linear-gradient(145deg,#103b25,#08160e);
+ box-shadow:0 10px 35px #0005
 }
-.mine-top{display:flex;justify-content:space-between;align-items:center}
-.mine-top strong{font-size:14px}
-.mine-top p{font-size:10px;color:var(--muted);margin:4px 0 0}
-.pickaxe{
+.mine-head{display:flex;justify-content:space-between;align-items:center}
+.mine-head b{font-size:14px}
+.mine-head p{font-size:10px;color:var(--muted);margin:3px 0 0}
+.mine-icon{
  width:43px;height:43px;border-radius:14px;
- background:#00e58a16;border:1px solid var(--line);
- display:grid;place-items:center;font-size:22px
+ display:grid;place-items:center;font-size:22px;
+ background:#00ed9115;border:1px solid var(--line)
 }
-.progress-head{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin:19px 0 8px}
-.progress{height:7px;border-radius:20px;background:#1b3225;overflow:hidden}
-.progress div{width:0%;height:100%;background:linear-gradient(90deg,#00a969,#65ffc1);border-radius:20px}
-.mine-button{
- margin-top:17px;width:100%;padding:15px;border:0;
- border-radius:15px;background:linear-gradient(100deg,#00a969,#20f5a0);
- color:#042015;font-size:13px;font-weight:900;
- box-shadow:0 7px 25px #00e58a25
+.progress-info{display:flex;justify-content:space-between;font-size:10px;color:#9bb4a4;margin:19px 0 8px}
+.progress{height:7px;background:#20382a;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#00a969,#6affc1);border-radius:20px}
+.main-btn{
+ width:100%;border:0;border-radius:14px;padding:14px;
+ color:#032014;font-size:13px;font-weight:900;
+ background:linear-gradient(100deg,#00ad70,#31f7a8);
+ box-shadow:0 7px 22px #00ed9122;
+ margin-top:16px
 }
-.mine-button:disabled{opacity:.5}
+.main-btn:disabled{opacity:.45}
 .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .quick{
- text-align:right;color:white;padding:15px;
- background:linear-gradient(145deg,#11241a,#09130d);
  border:1px solid var(--line);border-radius:18px;
- min-height:105px
+ background:linear-gradient(145deg,#102219,#09130d);
+ text-align:right;padding:15px;min-height:112px;
+ transition:.2s
 }
-.quick .icon{font-size:23px;margin-bottom:8px}
-.quick b{display:block;font-size:12px}
+.quick:active{transform:scale(.97)}
+.quick-icon{font-size:23px;margin-bottom:8px}
+.quick b{font-size:12px;display:block}
 .quick small{font-size:9px;color:var(--muted)}
-.page{display:none}
+.page{display:none;animation:appear .25s ease}
 .page.active{display:block}
-.box{
- background:linear-gradient(145deg,#10241a,#09140d);
- border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:12px
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.panel{
+ background:linear-gradient(145deg,#102219,#09130d);
+ border:1px solid var(--line);border-radius:20px;
+ padding:18px;margin-bottom:12px
 }
-.box h3{font-size:14px;margin:0 0 8px}
-.box p{font-size:11px;line-height:2;color:var(--muted);margin:0}
-.info-row{
- display:flex;justify-content:space-between;padding:13px 0;
- border-bottom:1px solid var(--line);font-size:11px
+.panel h3{font-size:14px;margin:0 0 8px}
+.panel p{font-size:11px;line-height:2;color:var(--muted);margin:0}
+.info{
+ display:flex;justify-content:space-between;
+ padding:13px 0;border-bottom:1px solid var(--line);
+ font-size:11px
 }
-.info-row:last-child{border:0}
-.info-row span{color:var(--muted)}
-.empty{text-align:center;padding:25px 10px;color:var(--muted);font-size:11px;line-height:2}
+.info:last-child{border:0}
+.info span{color:var(--muted)}
+.empty{text-align:center;padding:22px;color:var(--muted);font-size:11px;line-height:2}
 .nav{
- position:fixed;z-index:10;bottom:0;left:0;right:0;
+ position:fixed;bottom:0;left:0;right:0;z-index:10;
  max-width:480px;margin:auto;
  display:grid;grid-template-columns:repeat(5,1fr);
- padding:11px 5px calc(12px + env(safe-area-inset-bottom));
- background:#06100bea;backdrop-filter:blur(20px);
+ padding:10px 5px calc(11px + env(safe-area-inset-bottom));
+ background:#06100df0;backdrop-filter:blur(22px);
  border-top:1px solid var(--line)
 }
 .nav button{
- background:none;border:0;color:#71877a;
+ border:0;background:none;color:#70877a;
  display:flex;flex-direction:column;align-items:center;gap:4px;
  font-size:9px
 }
-.nav button em{font-size:21px;font-style:normal}
+.nav button em{font-style:normal;font-size:21px}
 .nav button.active{color:var(--green)}
 .toast{
- position:fixed;z-index:20;top:15px;left:50%;
- transform:translate(-50%,-90px);
- background:#123321;border:1px solid #00e58a55;
- padding:12px 17px;border-radius:13px;
- font-size:11px;transition:.3s;opacity:0
+ position:fixed;z-index:30;top:15px;left:50%;
+ transform:translate(-50%,-100px);
+ opacity:0;transition:.3s;
+ background:#123722;border:1px solid #00ed9160;
+ border-radius:14px;padding:12px 17px;font-size:11px;
+ max-width:90%;text-align:center
 }
 .toast.show{transform:translate(-50%,0);opacity:1}
+.particle{
+ position:fixed;z-index:15;pointer-events:none;
+ color:#69ffc0;font-weight:900;
+ text-shadow:0 0 12px #00ed91;
+ animation:particle .8s ease-out forwards
+}
+@keyframes particle{
+ 0%{opacity:1;transform:translate(0,0) scale(.7)}
+ 100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.3)}
+}
 </style>
 </head>
 <body>
 <div class="app">
-<header>
+<header class="top">
  <div class="brand">
-  <div class="brand-icon">◆</div>
-  <div><h2>EMERALD COIN</h2><small>THE GREEN ECOSYSTEM</small></div>
+  <div class="brand-logo">◆</div>
+  <div>
+   <div class="brand-name">EMERALD COIN</div>
+   <div class="brand-sub">DIGITAL ECOSYSTEM</div>
+  </div>
  </div>
- <div class="online"><i></i><span id="connection">ONLINE UI</span></div>
+ <div class="status"><i></i><span id="connection">READY</span></div>
 </header>
 
 <main>
 <section class="page active" id="home">
- <div class="greeting">به اکوسیستم زمرد خوش آمدی</div>
- <div class="heading">داشبورد اصلی</div>
+ <div class="greeting">به دنیای زمرد خوش آمدی</div>
+ <div class="page-title">داشبورد اصلی</div>
 
- <div class="hero">
-  <div class="hero-label">موجودی کل دارایی</div>
-  <div class="balance" id="balance">— <span>EMC</span></div>
-  <div class="balance-sub" id="accountStatus">در انتظار اتصال به سرور</div>
-  <div class="gem-stage">
-   <div class="gem-light"></div>
-   <div class="ring"></div><div class="ring two"></div>
-   <div class="gem">
-    <svg viewBox="0 0 140 160" fill="none">
+ <div class="balance-card">
+  <div class="balance-label">موجودی حساب شما</div>
+  <div class="balance" id="balance">— <small>EMC</small></div>
+  <div class="balance-note" id="accountNote">اطلاعات حساب پس از اتصال سرور</div>
+
+  <div class="crystal-zone" id="crystalZone">
+   <div class="crystal-glow"></div>
+   <div class="orbit"></div>
+   <div class="orbit second"></div>
+   <div class="orbit third"></div>
+   <div class="crystal" id="crystal">
+    <svg viewBox="0 0 150 180" fill="none">
      <defs>
-      <linearGradient id="a" x1="20" y1="10" x2="120" y2="150" gradientUnits="userSpaceOnUse">
-       <stop stop-color="#B0FFD7"/><stop offset=".3" stop-color="#16E78C"/><stop offset="1" stop-color="#006B3D"/>
+      <linearGradient id="gemA" x1="20" y1="10" x2="125" y2="160" gradientUnits="userSpaceOnUse">
+       <stop stop-color="#C5FFE0"/>
+       <stop offset=".25" stop-color="#31F5A0"/>
+       <stop offset=".7" stop-color="#008F52"/>
+       <stop offset="1" stop-color="#003C25"/>
       </linearGradient>
-      <linearGradient id="b" x1="30" y1="20" x2="110" y2="130" gradientUnits="userSpaceOnUse">
-       <stop stop-color="#48FFB0"/><stop offset="1" stop-color="#00864F"/>
+      <linearGradient id="gemB" x1="30" y1="15" x2="120" y2="155" gradientUnits="userSpaceOnUse">
+       <stop stop-color="#8DFFCA"/>
+       <stop offset="1" stop-color="#007C49"/>
       </linearGradient>
      </defs>
-     <path d="M70 4L130 47L106 125L70 156L34 125L10 47L70 4Z" fill="url(#a)" stroke="#B7FFDB" stroke-width="2"/>
-     <path d="M70 4L70 156L34 125L10 47L70 4Z" fill="#057B49"/>
-     <path d="M70 4L130 47L70 156V4Z" fill="url(#b)"/>
-     <path d="M10 47H130L106 125H34L10 47Z" stroke="#C7FFE2" stroke-opacity=".7" stroke-width="1.5"/>
-     <path d="M10 47L70 77L130 47M34 125L70 77L106 125M70 4V77" stroke="#E2FFF0" stroke-opacity=".7" stroke-width="1.5"/>
-     <path d="M70 4L10 47L70 77" fill="#D4FFEA" fill-opacity=".12"/>
-     <path d="M70 77L130 47L70 156" fill="#003F26" fill-opacity=".12"/>
+     <path d="M75 4L137 52L112 139L75 175L38 139L13 52L75 4Z" fill="url(#gemA)" stroke="#C2FFE1" stroke-width="2"/>
+     <path d="M75 4L13 52L38 139L75 175V4Z" fill="#087849"/>
+     <path d="M75 4L137 52L75 175V4Z" fill="url(#gemB)"/>
+     <path d="M13 52H137L112 139H38L13 52Z" stroke="#D8FFEA" stroke-opacity=".8" stroke-width="1.5"/>
+     <path d="M13 52L75 82L137 52M38 139L75 82L112 139M75 4V82" stroke="#E8FFF2" stroke-opacity=".75" stroke-width="1.5"/>
+     <path d="M75 4L13 52L75 82Z" fill="#FFFFFF" fill-opacity=".12"/>
+     <path d="M75 82L137 52L75 175Z" fill="#003D27" fill-opacity=".13"/>
+     <path d="M75 4L97 28L137 52" stroke="white" stroke-opacity=".35" stroke-width="2"/>
     </svg>
    </div>
+   <div class="tap-hint">✦ TOUCH THE EMERALD ✦</div>
   </div>
-  <div class="hero-bottom">
-   <small>PRECIOUS DIGITAL ASSET</small>
-   <div class="network-tag">EMC NETWORK</div>
+
+  <div class="balance-footer">
+   <span>PRECIOUS DIGITAL ASSET</span>
+   <span class="network">EMC NETWORK</span>
   </div>
  </div>
 
- <div class="section-title"><strong>آمار حساب</strong><span>ACCOUNT OVERVIEW</span></div>
+ <div class="section-head"><b>آمار حساب</b><span>ACCOUNT OVERVIEW</span></div>
  <div class="stats">
   <div class="stat"><div class="stat-icon">💎</div><div class="stat-label">کل درآمد</div><div class="stat-value" id="earned">— <small>EMC</small></div></div>
-  <div class="stat"><div class="stat-icon">👥</div><div class="stat-label">دعوت دوستان</div><div class="stat-value" id="referrals">—</div></div>
-  <div class="stat"><div class="stat-icon">⚡</div><div class="stat-label">سطح استخراج</div><div class="stat-value" id="level">—</div></div>
+  <div class="stat"><div class="stat-icon">👥</div><div class="stat-label">دوستان دعوت‌شده</div><div class="stat-value" id="referrals">—</div></div>
+  <div class="stat"><div class="stat-icon">⚡</div><div class="stat-label">سطح حساب</div><div class="stat-value" id="level">—</div></div>
   <div class="stat"><div class="stat-icon">⛏️</div><div class="stat-label">وضعیت استخراج</div><div class="stat-value" id="mineStatus">—</div></div>
  </div>
 
- <div class="section-title"><strong>استخراج روزانه</strong><span>200 EMC / 24H</span></div>
+ <div class="section-head"><b>استخراج زمرد</b><span>200 EMC / 24H</span></div>
  <div class="mining">
-  <div class="mine-top">
-   <div><strong>EMERALD MINING</strong><p>استخراج روزانه توکن زمرد</p></div>
-   <div class="pickaxe">⛏️</div>
+  <div class="mine-head">
+   <div><b>EMERALD MINING</b><p>استخراج روزانه توکن زمرد</p></div>
+   <div class="mine-icon">⛏️</div>
   </div>
-  <div class="progress-head"><span>پیشرفت دوره</span><span id="progressText">—</span></div>
-  <div class="progress"><div id="progressBar"></div></div>
-  <button class="mine-button" id="mineBtn" disabled onclick="mine()">اتصال سرور برای استخراج</button>
+  <div class="progress-info"><span>پیشرفت استخراج</span><span id="progressText">—</span></div>
+  <div class="progress"><div class="progress-fill" id="progressBar"></div></div>
+  <button class="main-btn" id="mineBtn" disabled onclick="mine()">اتصال سرور برای استخراج</button>
  </div>
 
- <div class="section-title"><strong>دسترسی سریع</strong><span>EXPLORE</span></div>
+ <div class="section-head"><b>اکوسیستم زمرد</b><span>EXPLORE</span></div>
  <div class="quick-grid">
-  <button class="quick" onclick="go('tasks')"><div class="icon">🎯</div><b>ماموریت‌ها</b><small>پاداش و فعالیت</small></button>
-  <button class="quick" onclick="go('friends')"><div class="icon">🤝</div><b>دعوت دوستان</b><small>ساخت جامعه زمرد</small></button>
-  <button class="quick" onclick="go('upgrade')"><div class="icon">🚀</div><b>ارتقای سطح</b><small>هزینه ۵۰۰ EMC</small></button>
-  <button class="quick" onclick="go('wallet')"><div class="icon">👛</div><b>کیف پول</b><small>مدیریت دارایی</small></button>
+  <button class="quick" onclick="go('tasks')"><div class="quick-icon">🎯</div><b>ماموریت‌ها</b><small>پاداش‌های ویژه</small></button>
+  <button class="quick" onclick="go('friends')"><div class="quick-icon">🤝</div><b>دعوت دوستان</b><small>سیستم ارجاع</small></button>
+  <button class="quick" onclick="go('upgrade')"><div class="quick-icon">🚀</div><b>ارتقای سطح</b><small>قدرت بیشتر</small></button>
+  <button class="quick" onclick="go('wallet')"><div class="quick-icon">👛</div><b>کیف پول</b><small>مدیریت دارایی</small></button>
  </div>
 </section>
 
 <section class="page" id="tasks">
- <div class="section-title"><strong>ماموریت‌ها</strong><span>REWARDS</span></div>
- <div class="box"><h3>ماموریت‌های زمرد</h3><p>ماموریت‌ها و پاداش‌ها پس از اتصال سرور بارگذاری می‌شوند.</p></div>
+ <div class="page-title">ماموریت‌ها</div>
+ <div class="panel"><h3>EMERALD QUESTS</h3><p>ماموریت‌های روزانه و پاداش‌ها پس از اتصال سرور نمایش داده می‌شوند.</p><div class="empty">✦<br>ماموریتی برای نمایش دریافت نشده است.</div></div>
 </section>
 
 <section class="page" id="friends">
- <div class="section-title"><strong>دعوت دوستان</strong><span>REFERRAL SYSTEM</span></div>
- <div class="box">
-  <h3>دوستانت را به زمرد دعوت کن</h3>
-  <p>لینک اختصاصی دعوت شما از سرور دریافت خواهد شد.</p>
-  <div class="info-row"><span>تعداد دعوت‌ها</span><b id="friendCount">—</b></div>
-  <button class="mine-button" onclick="invite()">اشتراک‌گذاری لینک دعوت</button>
+ <div class="page-title">دعوت دوستان</div>
+ <div class="panel">
+  <h3>EMERALD REFERRAL</h3>
+  <p>دوستان خود را دعوت کن و جامعه زمرد را گسترش بده.</p>
+  <div class="info"><span>دعوت‌های موفق</span><b id="friendCount">—</b></div>
+  <button class="main-btn" onclick="invite()">اشتراک‌گذاری لینک دعوت</button>
  </div>
 </section>
 
 <section class="page" id="upgrade">
- <div class="section-title"><strong>ارتقای سطح</strong><span>LEVEL UP</span></div>
- <div class="box">
-  <h3>ارتقای قدرت استخراج</h3>
-  <p>برای هر سطح ارتقا، ۵۰۰ EMC هزینه لازم است. موجودی و سطح فقط توسط سرور بررسی می‌شود.</p>
-  <div class="info-row"><span>سطح فعلی</span><b id="upgradeLevel">—</b></div>
-  <div class="info-row"><span>هزینه هر سطح</span><b>500 EMC</b></div>
-  <button class="mine-button" id="upgradeBtn" disabled onclick="upgrade()">ارتقا</button>
+ <div class="page-title">ارتقای سطح</div>
+ <div class="panel">
+  <h3>LEVEL UPGRADE</h3>
+  <p>برای هر سطح ارتقا، ۵۰۰ EMC هزینه لازم است. تراکنش فقط توسط سرور تأیید می‌شود.</p>
+  <div class="info"><span>سطح فعلی</span><b id="upgradeLevel">—</b></div>
+  <div class="info"><span>هزینه ارتقا</span><b>500 EMC</b></div>
+  <button class="main-btn" id="upgradeBtn" disabled onclick="upgrade()">اتصال سرور برای ارتقا</button>
  </div>
 </section>
 
 <section class="page" id="wallet">
- <div class="section-title"><strong>کیف پول</strong><span>TON WALLET</span></div>
- <div class="box">
-  <h3>کیف پول دیجیتال</h3>
-  <p>اتصال کیف پول TON پس از راه‌اندازی سرویس امن و قرارداد توکن فعال خواهد شد.</p>
-  <div class="info-row"><span>وضعیت اتصال</span><b>در انتظار راه‌اندازی</b></div>
+ <div class="page-title">کیف پول</div>
+ <div class="panel">
+  <h3>TON WALLET</h3>
+  <p>اتصال کیف پول و برداشت EMC پس از راه‌اندازی قرارداد هوشمند و سرویس امن فعال می‌شود.</p>
+  <div class="info"><span>وضعیت کیف پول</span><b>در انتظار اتصال</b></div>
  </div>
 </section>
 
 <section class="page" id="profile">
- <div class="section-title"><strong>پروفایل</strong><span>MY ACCOUNT</span></div>
- <div class="box">
-  <h3 id="profileName">کاربر EMERALD</h3>
-  <p>اطلاعات حساب تلگرام</p>
-  <div class="info-row"><span>شناسه کاربر</span><b id="telegramId">—</b></div>
-  <div class="info-row"><span>نام کاربری</span><b id="username">—</b></div>
-  <div class="info-row"><span>شبکه</span><b>TON</b></div>
+ <div class="page-title">پروفایل من</div>
+ <div class="panel">
+  <h3 id="profileName">EMERALD USER</h3>
+  <p>حساب کاربری اکوسیستم زمرد</p>
+  <div class="info"><span>شناسه تلگرام</span><b id="telegramId">—</b></div>
+  <div class="info"><span>نام کاربری</span><b id="username">—</b></div>
+  <div class="info"><span>شبکه</span><b>TON</b></div>
  </div>
 </section>
 </main>
@@ -330,93 +372,145 @@ const tg=window.Telegram?.WebApp;
 let user=null,working=false;
 
 if(tg){
- tg.ready();tg.expand();
- tg.setHeaderColor("#030906");
- tg.setBackgroundColor("#030906");
+ tg.ready();
+ tg.expand();
+ tg.setHeaderColor("#030806");
+ tg.setBackgroundColor("#030806");
 }
 
-function go(page,button){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+function go(page,btn){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  document.getElementById(page)?.classList.add("active");
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
- (button||document.querySelector(`.nav button[onclick*="'${page}'"]`))?.classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ (btn||document.querySelector(`.nav button[onclick*="'${page}'"]`))?.classList.add("active");
  window.scrollTo({top:0,behavior:"smooth"});
 }
-function notify(message){
- const t=document.getElementById("toast");
- t.textContent=message;t.classList.add("show");
- setTimeout(()=>t.classList.remove("show"),2600);
+
+function toast(msg){
+ const el=document.getElementById("toast");
+ el.textContent=msg;
+ el.classList.add("show");
+ setTimeout(()=>el.classList.remove("show"),2600);
 }
-async function request(path,method="GET"){
+
+/* Crystal touch animation */
+const zone=document.getElementById("crystalZone");
+const crystal=document.getElementById("crystal");
+
+zone.addEventListener("pointerdown",e=>{
+ crystal.classList.add("hit");
+ setTimeout(()=>crystal.classList.remove("hit"),130);
+
+ for(let i=0;i<7;i++){
+  const p=document.createElement("span");
+  p.className="particle";
+  p.textContent=["✦","◆","✧","•"][i%4];
+  p.style.left=e.clientX+"px";
+  p.style.top=e.clientY+"px";
+  p.style.setProperty("--x",(Math.random()*130-65)+"px");
+  p.style.setProperty("--y",(Math.random()*-120-20)+"px");
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),850);
+ }
+});
+
+/* Server communication */
+async function api(path,method="GET"){
  if(!tg?.initData)throw Error("برنامه را از داخل تلگرام باز کنید.");
- const r=await fetch(API+path,{
+ const response=await fetch(API+path,{
   method,
-  headers:{"Authorization":"tma "+tg.initData,"Content-Type":"application/json"}
+  headers:{
+   "Authorization":"tma "+tg.initData,
+   "Content-Type":"application/json"
+  }
  });
- const d=await r.json().catch(()=>({}));
- if(!r.ok)throw Error(d.message||"خطا در ارتباط با سرور");
- return d;
+ const data=await response.json().catch(()=>({}));
+ if(!response.ok)throw Error(data.message||"ارتباط با سرور ناموفق بود.");
+ return data;
 }
+
 function render(u){
  user=u;
  document.getElementById("balance").innerHTML=
- `${Number(u.balance).toLocaleString("en-US")} <span>EMC</span>`;
+ Number(u.balance).toLocaleString("en-US")+" <small>EMC</small>";
  document.getElementById("earned").innerHTML=
- `${Number(u.total_earned).toLocaleString("en-US")} <small>EMC</small>`;
+ Number(u.total_earned).toLocaleString("en-US")+" <small>EMC</small>";
  document.getElementById("referrals").textContent=u.referrals??0;
  document.getElementById("friendCount").textContent=u.referrals??0;
  document.getElementById("level").textContent=u.level??1;
  document.getElementById("upgradeLevel").textContent=u.level??1;
  document.getElementById("mineStatus").textContent=u.mining_active?"فعال":"آماده";
- document.getElementById("profileName").textContent=u.first_name||"کاربر EMERALD";
+ document.getElementById("profileName").textContent=u.first_name||"EMERALD USER";
  document.getElementById("telegramId").textContent=u.telegram_id||"—";
  document.getElementById("username").textContent=u.username?"@"+u.username:"ندارد";
- document.getElementById("accountStatus").textContent="اطلاعات حساب دریافت شد";
+ document.getElementById("accountNote").textContent="اطلاعات دریافت‌شده از سرور";
  document.getElementById("connection").textContent="CONNECTED";
  document.getElementById("mineBtn").disabled=false;
  document.getElementById("mineBtn").textContent="شروع استخراج";
  document.getElementById("upgradeBtn").disabled=false;
+ document.getElementById("upgradeBtn").textContent="ارتقا با ۵۰۰ EMC";
 }
-async function load(){
+
+async function loadUser(){
  if(!tg?.initData){
   document.getElementById("connection").textContent="TELEGRAM REQUIRED";
-  document.getElementById("accountStatus").textContent="برای مشاهده اطلاعات حساب، از داخل تلگرام وارد شوید";
+  document.getElementById("accountNote").textContent="از داخل ربات تلگرام وارد شوید";
   return;
  }
- try{const d=await request("/me");render(d.user||d)}
- catch(e){
+ try{
+  const d=await api("/me");
+  render(d.user||d);
+ }catch(e){
   document.getElementById("connection").textContent="SERVER OFFLINE";
-  notify(e.message);
+  toast(e.message);
  }
 }
+
 async function mine(){
- if(working)return;working=true;
- const b=document.getElementById("mineBtn");
- b.disabled=true;b.textContent="در حال بررسی...";
+ if(working)return;
+ working=true;
+ const btn=document.getElementById("mineBtn");
+ btn.disabled=true;
+ btn.textContent="در حال بررسی...";
  try{
-  const d=await request("/mine","POST");render(d.user||d);
-  notify(d.message||"درخواست استخراج ثبت شد");
- }catch(e){notify(e.message)}
- finally{working=false;b.disabled=!user;b.textContent="شروع استخراج"}
+  const d=await api("/mine","POST");
+  render(d.user||d);
+  toast(d.message||"درخواست استخراج ثبت شد");
+ }catch(e){toast(e.message)}
+ finally{
+  working=false;
+  btn.disabled=!user;
+  btn.textContent="شروع استخراج";
+ }
 }
+
 async function upgrade(){
- if(working)return;working=true;
- const b=document.getElementById("upgradeBtn");
- b.disabled=true;b.textContent="در حال بررسی...";
+ if(working)return;
+ working=true;
+ const btn=document.getElementById("upgradeBtn");
+ btn.disabled=true;
+ btn.textContent="در حال بررسی...";
  try{
-  const d=await request("/upgrade","POST");render(d.user||d);
-  notify(d.message||"ارتقا ثبت شد");
- }catch(e){notify(e.message)}
- finally{working=false;b.disabled=!user;b.textContent="ارتقا با ۵۰۰ EMC"}
+  const d=await api("/upgrade","POST");
+  render(d.user||d);
+  toast(d.message||"ارتقا ثبت شد");
+ }catch(e){toast(e.message)}
+ finally{
+  working=false;
+  btn.disabled=!user;
+  btn.textContent="ارتقا با ۵۰۰ EMC";
+ }
 }
+
 function invite(){
  const link=user?.referral_link;
- if(!link){notify("لینک دعوت هنوز از سرور دریافت نشده");return}
+ if(!link){toast("لینک دعوت از سرور دریافت نشده است");return}
  const url="https://t.me/share/url?url="+encodeURIComponent(link);
  if(tg?.openTelegramLink)tg.openTelegramLink(url);
- else if(navigator.clipboard)navigator.clipboard.writeText(link).then(()=>notify("لینک کپی شد"));
+ else if(navigator.clipboard)navigator.clipboard.writeText(link).then(()=>toast("لینک کپی شد"));
 }
-load();
+
+loadUser();
 </script>
 </body>
 </html>
