@@ -1,115 +1,458 @@
-.stat strong{display:block;color:#42e991;font-size:22px;margin-top:10px}
-.market-row,.rank-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #20392b}
-.green{color:#42e991}
-.red{color:#ff6666}
-.muted{color:#91ad9c;font-size:12px;line-height:2}
-.ref-link{direction:ltr;overflow-wrap:anywhere;background:#081810;padding:12px;border-radius:10px;margin-top:15px;font-size:11px}
-.tabs{position:fixed;bottom:0;left:0;right:0;background:#0b1b13;border-top:1px solid #234b36;display:flex;justify-content:space-around;padding:10px 3px 22px}
-.tab{background:transparent;color:#91ad9c;width:auto;font-size:12px;padding:8px}
-.tab.active{color:#42e991}
-.page{display:none}
-.page.active{display:block}
-#message{display:none;background:#183b29;padding:12px;border-radius:10px;margin-bottom:15px;font-size:13px}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07130f">
+<title>SOURCE OF LIFE</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+:root{
+--bg:#06110d;
+--green:#8df5a8;
+--gold:#f5d77c;
+--muted:#9bb2a3;
+--panel:#0d2118;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+background:radial-gradient(ellipse at 50% 0%,#205b3b,#07130f 55%,#030906);
+color:#f2fff5;
+font-family:Arial,sans-serif;
+min-height:100vh;
+}
+.app{max-width:480px;margin:auto;padding:18px 15px 100px}
+header{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+width:47px;height:47px;border-radius:15px;
+background:linear-gradient(145deg,#d8ffad,#25834e);
+display:grid;place-items:center;font-size:25px;
+box-shadow:0 0 25px #70ed8c55
+}
+.brand b{font-size:14px;letter-spacing:1px}
+.brand small{display:block;color:var(--muted);margin-top:5px}
+.status{color:var(--green);font-size:11px}
+.hero{text-align:center;padding:20px 0}
+.planet-wrap{
+height:205px;display:grid;place-items:center;position:relative
+}
+.planet{
+width:170px;height:170px;border-radius:50%;
+background:radial-gradient(circle at 30% 24%,#efffc2,#8be58a 12%,#329c5d 36%,#12613e 70%,#082d21);
+box-shadow:inset -20px -20px 30px #03170f,0 0 45px #63ef8c77;
+position:relative
+}
+.planet:before{
+content:"";position:absolute;inset:40px -25px;
+border:12px solid #e7d58a;
+border-left-color:#b58d3e;border-bottom-color:#7a622f;
+border-radius:50%;transform:rotate(-25deg)
+}
+.planet:after{
+content:"";position:absolute;width:55px;height:55px;
+top:35px;left:28px;background:#d4ffae;
+filter:blur(25px);border-radius:50%
+}
+.orbit{
+position:absolute;width:220px;height:65px;
+border:1px solid #c4e8a966;border-radius:50%;
+transform:rotate(-18deg)
+}
+.spark{position:absolute;color:var(--gold);font-size:20px}
+.hero h1{font-size:23px;letter-spacing:2px;margin:8px 0}
+.hero p{font-size:12px;color:var(--muted)}
+.card{
+background:linear-gradient(145deg,#112b1e,#091b12);
+border:1px solid #315c3d;
+border-radius:19px;padding:16px;margin:13px 0;
+box-shadow:0 10px 30px #0003
+}
+.balance{text-align:center}
+.balance small{color:var(--muted)}
+.amount{font-size:36px;color:var(--gold);font-weight:bold;margin:8px}
+.unit{font-size:12px;color:var(--green)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{
+background:#10291c;border:1px solid #2d5439;
+border-radius:15px;padding:13px
+}
+.stat small{color:var(--muted);font-size:11px}
+.stat b{display:block;margin-top:7px;font-size:16px}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.head b{font-size:14px}
+.head span{font-size:11px;color:var(--muted)}
+button{
+cursor:pointer;border:0;border-radius:13px;
+font-weight:bold;font-size:14px
+}
+.primary{
+width:100%;padding:15px;
+background:linear-gradient(100deg,#a7f7a8,#e8d68b);
+color:#0b2818;
+box-shadow:0 5px 0 #547d48
+}
+.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #547d48}
+.primary:disabled{opacity:.55;cursor:default;transform:none}
+.progress{height:8px;background:#1e3829;border-radius:20px;overflow:hidden;margin:13px 0}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#4bc879,#e4d17c)}
+.rowline{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+.task{
+display:flex;justify-content:space-between;align-items:center;
+padding:12px 0;border-bottom:1px solid #254331;font-size:12px
+}
+.task:last-child{border:0}
+.pill{background:#173c28;color:var(--green);padding:7px 11px;border-radius:20px;font-size:10px}
+.invite{
+width:100%;padding:13px;background:#173b29;
+border:1px solid #497c51;color:#e4ffe9;margin-top:12px
+}
+.muted{color:var(--muted);font-size:12px;line-height:1.9}
+.tabs{
+position:fixed;bottom:0;left:0;right:0;
+background:#07130fee;backdrop-filter:blur(14px);
+border-top:1px solid #244a34;z-index:5
+}
+.tabs-inner{
+max-width:480px;margin:auto;display:flex;
+justify-content:space-around;padding:11px 4px
+}
+.tab{
+background:none;color:#8ea99a;
+display:grid;gap:4px;justify-items:center;
+font-size:10px;min-width:65px
+}
+.tab strong{font-size:20px}
+.tab.active{color:var(--green)}
+.toast{
+position:fixed;top:15px;left:50%;transform:translateX(-50%);
+background:#173b29;border:1px solid #65b878;
+color:white;padding:12px 16px;border-radius:12px;
+font-size:12px;display:none;z-index:10
+}
 </style>
 </head>
+
 <body>
+<div class="toast" id="toast"></div>
+
+<main class="app">
 
 <header>
-<div class="logo">🌱 LIFE SOURCE</div>
-<div class="green">● ONLINE</div>
+<div class="brand">
+<div class="logo">🌱</div>
+<div>
+<b>SOURCE OF LIFE</b>
+<small>منبع زندگی</small>
+</div>
+</div>
+<div class="status">● آنلاین</div>
 </header>
 
-<div id="message"></div>
+<section class="hero">
+<div class="planet-wrap">
+<div class="orbit"></div>
+<div class="planet"></div>
+<span class="spark" style="top:20px;right:65px">✦</span>
+<span class="spark" style="bottom:25px;left:65px">✧</span>
+</div>
+<h1>SOURCE OF LIFE</h1>
+<p>دنیای انرژی و استخراج دیجیتال</p>
+</section>
 
-<section id="home" class="page active">
-<div class="card">
-<div class="label">موجودی امتیاز شما</div>
-<div class="balance" id="balance">0.00</div>
-<div class="label">LIFE POINTS</div>
-<button class="primary" id="mineButton" onclick="startMining()">شروع استخراج 🚀</button>
-<button class="secondary" id="claimButton" onclick="claimMining()" disabled>دریافت امتیاز</button>
-<p class="muted" style="text-align:center">نرخ استخراج: <span id="rate">10</span> امتیاز در ساعت</p>
+<section class="card balance">
+<small>موجودی شما</small>
+<div class="amount" id="balance">0.00</div>
+<div class="unit">SOL POINTS</div>
+</section>
+
+<div class="grid">
+<div class="stat">
+<small>⛏️ استخراج روزانه</small>
+<b id="mined">0 / 100</b>
+</div>
+<div class="stat">
+<small>👥 دوستان</small>
+<b id="refCount">0 نفر</b>
+</div>
 </div>
 
-<div class="stats">
-<div class="stat"><small>کل درآمد</small><strong id="totalEarned">0</strong></div>
-<div class="stat"><small>دعوت‌ها</small><strong id="referrals">0</strong></div>
+<section class="card" id="home">
+<div class="head">
+<b>⚡ استخراج انرژی</b>
+<span id="timer">آماده شروع</span>
 </div>
 
-<div class="card">
-<h3>📊 بازار ارزها</h3>
-<div id="market">در حال دریافت قیمت‌ها...</div>
+<div style="text-align:center;padding:10px">
+<div style="font-size:31px;color:var(--gold);font-weight:bold">
+100 SOL
+</div>
+<div class="muted">پاداش هر دوره ۲۴ ساعته</div>
+</div>
+
+<button class="primary" id="startBtn">
+شروع استخراج
+</button>
+
+<div class="progress">
+<div class="bar" id="mineBar"></div>
+</div>
+
+<div class="rowline">
+<span>پیشرفت استخراج</span>
+<span id="progressText">۰٪</span>
 </div>
 </section>
 
-<section id="invite" class="page">
-<div class="card">
-<h3>👥 دعوت دوستان</h3>
-<p class="muted">دوستانت را دعوت کن و به ازای هر دعوت موفق امتیاز بگیر.</p>
-<div class="balance" id="refReward">100</div>
-<div class="label">LIFE POINTS برای هر دعوت موفق</div>
-<div id="inviteLink" class="ref-link">در حال ساخت لینک...</div>
-<button class="primary" onclick="copyInvite()">کپی لینک دعوت</button>
-<button class="secondary" onclick="shareInvite()">ارسال به دوستان</button>
+<section class="card">
+<div class="head">
+<b>👆 دریافت انرژی</b>
+<span>هر لمس +1</span>
+</div>
+<button class="primary" id="tapBtn">
+🌿 دریافت انرژی
+</button>
+</section>
+
+<section class="card" id="tasks">
+<div class="head">
+<b>🎯 مأموریت‌ها</b>
+<span>فعالیت‌های شما</span>
+</div>
+<div class="task">
+<span>📅 ورود روزانه</span>
+<span class="pill">به‌زودی</span>
+</div>
+<div class="task">
+<span>👥 دعوت دوستان</span>
+<span class="pill">پاداش</span>
+</div>
+<div class="task">
+<span>📢 عضویت کانال</span>
+<span class="pill">به‌زودی</span>
 </div>
 </section>
 
-<section id="ranking" class="page">
-<div class="card">
-<h3>🏆 جدول برترین‌ها</h3>
-<div id="leaderboard">در حال دریافت...</div>
+<section class="card" id="friends">
+<div class="head">
+<b>👥 دعوت دوستان</b>
+<span>دعوت اختصاصی</span>
 </div>
-</section>
-
-<section id="profile" class="page">
-<div class="card">
-<h3>👤 حساب کاربری</h3>
-<p class="muted">نام کاربر</p><strong id="profileName">-</strong>
-<p class="muted">شناسه تلگرام</p><strong id="profileId">-</strong>
-<p class="muted">موجودی</p><strong id="profileBalance">0</strong>
-<hr>
 <p class="muted">
-امتیازهای این برنامه فعلاً امتیاز داخلی هستند و توکن قابل انتقال بلاکچینی نیستند.
+دوستانت را به SOURCE OF LIFE دعوت کن و همراه آن‌ها رشد کن.
 </p>
-</div>
+<button class="invite" id="shareBtn">
+اشتراک‌گذاری لینک دعوت
+</button>
 </section>
+
+<section class="card" id="wallet">
+<div class="head">
+<b>👛 کیف پول</b>
+<span>TON Network</span>
+</div>
+<p class="muted">
+اتصال کیف پول و امکانات دریافت توکن در بخش کیف پول قرار می‌گیرد.
+</p>
+<button class="invite" id="walletBtn">
+اتصال کیف پول به‌زودی
+</button>
+</section>
+
+<p class="muted" style="text-align:center">
+SOURCE OF LIFE • منبع زندگی
+</p>
+
+</main>
 
 <nav class="tabs">
-<button class="tab active" onclick="showPage('home',this)">🏠 خانه</button>
-<button class="tab" onclick="showPage('invite',this)">👥 دعوت</button>
-<button class="tab" onclick="showPage('ranking',this)">🏆 رتبه‌ها</button>
-<button class="tab" onclick="showPage('profile',this)">👤 پروفایل</button>
+<div class="tabs-inner">
+<button class="tab active" data-target="home">
+<strong>🌍</strong>خانه
+</button>
+<button class="tab" data-target="tasks">
+<strong>🎯</strong>مأموریت
+</button>
+<button class="tab" data-target="friends">
+<strong>👥</strong>دعوت
+</button>
+<button class="tab" data-target="wallet">
+<strong>👛</strong>کیف پول
+</button>
+</div>
 </nav>
 
 <script>
 const tg=window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand();}
 
-let userData=null;
-let timer=null;
-let lastClaim=0;
-let rate=10;
-
-function message(text){
- const el=document.getElementById("message");
- el.textContent=text;
- el.style.display="block";
- setTimeout(()=>el.style.display="none",3500);
+if(tg){
+tg.ready();
+tg.expand();
+try{
+tg.setHeaderColor('#07130f');
+tg.setBackgroundColor('#07130f');
+}catch(e){}
 }
 
-function showPage(id,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
- btn.classList.add("active");
- if(id==="ranking")loadRanking();
+const $=id=>document.getElementById(id);
+
+let data;
+
+try{
+data=JSON.parse(localStorage.getItem('source_life')||'{}');
+}catch(e){data={};}
+
+data={
+balance:Number(data.balance)||0,
+mineStart:Number(data.mineStart)||0,
+mineClaimed:Boolean(data.mineClaimed),
+...data
+};
+
+function save(){
+localStorage.setItem('source_life',JSON.stringify(data));
+render();
 }
 
-async function api(url,method="GET"){
- const headers={"Content-Type":"application/json"};
- if(tg?.initData)headers["x-telegram-init-data"]=tg.initData;
- const r=await fetch(url,{method,headers});
- const d=await r.json();
- if(!r.ok)throw new Error(d.error||"خطا در ارتباط");
- return d;
+function notify(message){
+$('toast').textContent=message;
+$('toast').style.display='block';
+setTimeout(()=>$('toast').style.display='none',2300);
 }
+
+function render(){
+
+$('balance').textContent=Number(data.balance).toFixed(2);
+
+$('mined').textContent=
+(data.mineClaimed?100:0)+' / 100';
+
+const active=data.mineStart>0&&!data.mineClaimed;
+
+if(active){
+
+const elapsed=Date.now()-data.mineStart;
+const progress=Math.min(1,elapsed/86400000);
+
+$('mineBar').style.width=(progress*100)+'%';
+
+$('progressText').textContent=
+Math.floor(progress*100)+'٪';
+
+$('timer').textContent=
+progress>=1?'پاداش آماده دریافت':'در حال استخراج';
+
+$('startBtn').textContent=
+progress>=1?'دریافت ۱۰۰ امتیاز':'استخراج در جریان است';
+
+$('startBtn').disabled=progress<1;
+
+}else{
+
+$('mineBar').style.width='0%';
+$('progressText').textContent='۰٪';
+
+$('timer').textContent=
+data.mineClaimed?'دوره امروز تکمیل شد':'آماده شروع';
+
+$('startBtn').textContent=
+data.mineClaimed?'استخراج امروز تکمیل شد':'شروع استخراج';
+
+$('startBtn').disabled=!!data.mineClaimed;
+
+}
+}
+
+$('startBtn').onclick=()=>{
+
+if(!data.mineStart&&!data.mineClaimed){
+
+data.mineStart=Date.now();
+save();
+notify('استخراج شروع شد');
+
+}else if(
+data.mineStart &&
+!data.mineClaimed &&
+Date.now()-data.mineStart>=86400000
+){
+
+data.balance+=100;
+data.mineClaimed=true;
+save();
+
+notify('۱۰۰ امتیاز به موجودی اضافه شد');
+
+}
+};
+
+$('tapBtn').onclick=()=>{
+
+data.balance+=1;
+save();
+notify('+1 انرژی دریافت شد');
+
+};
+
+$('shareBtn').onclick=()=>{
+
+const user=tg?.initDataUnsafe?.user;
+
+const botUsername='YOUR_BOT';
+
+if(!user){
+notify('ربات تلگرام هنوز متصل نشده است');
+return;
+}
+
+const link=
+'https://t.me/'+botUsername+'?start='+user.id;
+
+if(tg){
+tg.openTelegramLink(
+'https://t.me/share/url?url='+
+encodeURIComponent(link)+
+'&text='+
+encodeURIComponent('به SOURCE OF LIFE بپیوند!')
+);
+}else if(navigator.clipboard){
+navigator.clipboard.writeText(link)
+.then(()=>notify('لینک دعوت کپی شد'));
+}
+
+};
+
+$('walletBtn').onclick=()=>{
+notify('اتصال کیف پول در مرحله بعد فعال می‌شود');
+};
+
+document.querySelectorAll('.tab').forEach(button=>{
+
+button.onclick=()=>{
+
+document.querySelectorAll('.tab').forEach(b=>
+b.classList.remove('active')
+);
+
+button.classList.add('active');
+
+document.getElementById(button.dataset.target)
+.scrollIntoView({
+behavior:'smooth',
+block:'start'
+});
+
+};
+
+});
+
+render();
+
+setInterval(render,1000);
+</script>
+
+</body>
+</html>
