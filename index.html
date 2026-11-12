@@ -120,6 +120,31 @@ button{cursor:pointer}
 .task:last-child{border:0}
 .task button{width:auto;padding:9px 13px;font-size:11px}
 .small{font-size:11px;color:var(--muted);line-height:1.8}
+
+/* شعار سبز زمردی */
+.mining-slogan{
+ background:linear-gradient(135deg,#092b1c,#075c3b,#087448);
+ border:1px solid #168b5b;
+ border-radius:16px;
+ padding:17px 10px;
+ margin-top:16px;
+ text-align:center;
+ color:#b9ffda;
+ font-size:15px;
+ font-weight:800;
+ box-shadow:0 0 20px rgba(0,213,139,.10);
+}
+.mining-slogan .slogan-gem{
+ display:inline-block;
+ margin:0 5px;
+}
+.slogan-note{
+ text-align:center;
+ color:#789888;
+ font-size:10px;
+ margin:8px 0 0;
+ line-height:1.8;
+}
 .toast{
  position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
  background:#173b2a;border:1px solid #34704c;color:white;
@@ -159,6 +184,11 @@ button{cursor:pointer}
    <div style="text-align:left"><span class="green" id="change">+0.00%</span><div class="label">قیمت شبیه‌سازی‌شده</div></div>
   </div>
   <div class="chartbox"><canvas id="homeChart"></canvas></div>
+  <div class="mining-slogan">
+   <span class="slogan-gem">💎</span>
+   ماینینگ بات هرگز نمی‌خوابه!
+   <span class="slogan-gem">💚</span>
+  </div>
  </div>
  <h3 class="section-title">دارایی‌های شما</h3>
  <div class="card" id="homeAssets"></div>
@@ -182,6 +212,11 @@ button{cursor:pointer}
    <button onclick="setPeriod('1M',this)">1M</button>
   </div>
   <div class="chartbox"><canvas id="marketChart"></canvas></div>
+  <div class="mining-slogan">
+   <span class="slogan-gem">💎</span>
+   ماینینگ بات هرگز نمی‌خوابه!
+   <span class="slogan-gem">💚</span>
+  </div>
  </div>
  <div class="card">
   <div class="row"><strong>جفت‌ارزها</strong><span class="label">قیمت‌های نمونه</span></div>
@@ -236,6 +271,12 @@ button{cursor:pointer}
    <p class="small">مقدار تتر به موجودی دارایی‌های شما اضافه شد.</p>
    <button class="btn secondary" onclick="go('assets')">مشاهده موجودی تتر</button>
   </div>
+  <div class="mining-slogan">
+   <span class="slogan-gem">💎</span>
+   ماینینگ بات هرگز نمی‌خوابه!
+   <span class="slogan-gem">💚</span>
+  </div>
+  <p class="slogan-note">محاسبه و ثبت این تبدیل داخل برنامه انجام می‌شود؛ انتقال واقعی رمزارز انجام نمی‌شود.</p>
  </div>
  <h3 class="section-title">تاریخچه تبدیل‌ها</h3>
  <div class="card" id="swapHistory"><p class="small">هنوز تبدیلی ثبت نشده است.</p></div>
