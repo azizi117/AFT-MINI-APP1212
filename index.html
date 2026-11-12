@@ -1,87 +1,336 @@
- grid=document.getElementById("marketGrid");
- const status=document.getElementById("marketStatus");
 
- status.textContent="در حال بروزرسانی قیمت‌ها...";
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04150e">
+<title>EMERALD COIN | EMC</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
+:root{--green:#50ff9b;--gold:#e8d58b;--dark:#04150e}
+body{
+ margin:0;color:white;font-family:Tahoma,Arial,sans-serif;
+ background:radial-gradient(ellipse at 50% 15%,#176c45,transparent 48%),
+ linear-gradient(160deg,#04150e,#020906 85%);min-height:100vh
+}
+button{font-family:inherit;cursor:pointer}
+.app{max-width:480px;margin:auto;padding:16px 14px 110px;overflow:hidden}
+header{display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+ width:48px;height:48px;display:grid;place-items:center;
+ border-radius:14px;background:linear-gradient(145deg,#a9ffd0,#087b48);
+ color:#06351e;font-size:27px;box-shadow:0 0 22px #35ff9b66
+}
+.brand-name{font-size:21px;font-weight:900;color:#a5ffd0}
+.brand-name small{display:block;font-size:10px;letter-spacing:4px;color:#fff;margin-top:4px}
+.online{font-size:11px;color:#9dffbd;background:#0a3824;padding:9px 12px;border-radius:30px;border:1px solid #37bd78}
+.subtitle{text-align:center;color:#a3cdb5;font-size:10px;letter-spacing:2px;margin:18px 0}
+.scene{height:280px;position:relative;display:flex;align-items:center;justify-content:center;perspective:800px}
+.glow{position:absolute;width:230px;height:230px;border-radius:50%;background:#29ff9a33;filter:blur(40px)}
+.coin{
+ width:195px;height:195px;border-radius:50%;position:relative;
+ display:grid;place-items:center;
+ background:radial-gradient(circle at 35% 25%,#d4ffe6,#36dc91 25%,#087744 65%,#02351f);
+ border:8px double #b8ffda;
+ box-shadow:0 0 30px #39ff9c99,0 0 75px #00b96c44,inset 0 0 25px #fff8;
+ animation:float 4s ease-in-out infinite
+}
+.coin:before{content:"";position:absolute;inset:12px;border:3px solid #a8ffd0;border-radius:50%}
+.coin:after{content:"";position:absolute;width:220px;height:65px;border:3px solid #a5ffd0;border-radius:50%;transform:rotate(-25deg)}
+.symbol{font-size:75px;font-weight:1000;color:#064328;text-shadow:2px 3px 0 #aaffd0;z-index:2}
+@keyframes float{50%{transform:translateY(-12px) rotateY(8deg)}}
+.scene-label{position:absolute;bottom:3px;color:#aaffd0;font-size:12px;font-weight:bold}
+.card,.panel{
+ background:linear-gradient(145deg,#153d2b,#071b11);
+ border:1px solid #347451;border-radius:20px;padding:16px;
+ box-shadow:0 9px 25px #0007,inset 0 1px 10px #ffffff0c;margin-top:14px
+}
+.balance-card{text-align:center;border-color:#b9d9a0}
+.balance-label{font-size:12px;color:#c5e5d1}
+.balance{font-size:38px;font-weight:900;color:#b4ffd0;margin:12px 0;direction:ltr}
+.unit{font-size:13px;color:#a8eec5;letter-spacing:4px}
+.collect{
+ width:100%;margin-top:14px;padding:17px 10px;border-radius:15px;
+ border:2px solid #b4ffd0;background:linear-gradient(180deg,#8dffc0,#16a866);
+ color:#03351e;font-size:15px;font-weight:900;
+ box-shadow:0 6px 0 #075b35,0 0 25px #39ff9b44
+}
+.collect:active{transform:translateY(4px);box-shadow:0 2px 0 #075b35}
+.collect:disabled{opacity:.4}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}
+.stat{padding:13px 4px;text-align:center;background:#102e20;border:1px solid #315b41;border-radius:14px}
+.stat span{font-size:22px}
+.stat b{display:block;color:#b6ffd1;font-size:16px;margin:7px 0}
+.stat small{font-size:9px;color:#a6c8b0}
+.panel-title{font-size:14px;color:#b7ffd1;font-weight:bold;margin-bottom:13px}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#c4d9ca;margin:13px 0}
+.row b{color:#c1ffda}
+.action{border:1px solid #a5ffd0;background:linear-gradient(145deg,#9cffc5,#26b978);color:#043b22;border-radius:10px;padding:10px 14px;font-weight:bold}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:18px 0}
+.tab{background:#123323;color:#b4d6c0;border:1px solid #315d41;border-radius:10px;padding:12px 2px;font-size:10px}
+.tab.active{background:#76e9a6;color:#05371f;font-weight:bold}
+.page{display:none}.page.active{display:block}
+.item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#153624;border:1px solid #386044;border-radius:12px;padding:12px;margin:9px 0}
+.item-info{flex:1}.item-info b{font-size:12px;color:#c1ffd8}
+.item-info small{display:block;color:#aac8b3;font-size:10px;margin-top:6px}
+.buy{background:linear-gradient(145deg,#a8ffd0,#36b87c);color:#063b22;border:0;border-radius:9px;padding:10px;font-weight:bold;font-size:10px}
+.buy:disabled{opacity:.35}
+.chart{width:100%;height:150px}
+.notice{text-align:center;font-size:10px;color:#91b49d;line-height:1.9;margin-top:12px}
+.profile{text-align:center}
+.avatar{font-size:48px}
+.footer{text-align:center;color:#63816c;font-size:9px;margin-top:25px}
+.toast{position:fixed;z-index:99;bottom:90px;left:50%;transform:translateX(-50%);display:none;background:#baffd4;color:#06351e;padding:13px 18px;border-radius:12px;font-size:12px;font-weight:bold;white-space:nowrap}
+.bottom-nav{
+ position:fixed;z-index:50;bottom:8px;left:50%;transform:translateX(-50%);
+ width:min(460px,calc(100% - 22px));display:grid;grid-template-columns:repeat(4,1fr);
+ gap:5px;padding:8px;border:1px solid #46785a;border-radius:18px;
+ background:#06180ff2;backdrop-filter:blur(15px)
+}
+.nav-btn{background:transparent;color:#a8c6b1;padding:8px 2px;border:0;border-radius:10px;font-size:10px}
+.nav-btn span{display:block;font-size:20px;margin-bottom:5px}
+.nav-btn.active{color:#a8ffd0;background:#16452c}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand">
+  <div class="logo">💎</div>
+  <div class="brand-name">EMERALD COIN<small>EMC ECOSYSTEM</small></div>
+ </div>
+ <div class="online">🟢 ONLINE</div>
+</header>
+<div class="subtitle">WELCOME TO THE EMERALD ECOSYSTEM</div>
 
- try{
+<section id="home" class="page active">
+ <div class="scene">
+  <div class="glow"></div>
+  <div class="coin"><div class="symbol">E</div></div>
+  <div class="scene-label">💎 THE POWER OF EMERALD</div>
+ </div>
 
-  const ids=marketCoins.map(c=>c.id).join(",");
+ <div class="card balance-card">
+  <div class="balance-label">موجودی زمرد شما</div>
+  <div class="balance" id="balance">0</div>
+  <div class="unit">EMERALD COIN</div>
+ </div>
 
-  const url=
-   "https://api.coingecko.com/api/v3/simple/price"+
-   "?ids="+encodeURIComponent(ids)+
-   "&vs_currencies=usd&include_24hr_change=true";
+ <button class="collect" onclick="tap()">💎 لمس کن و EMC جمع کن</button>
 
-  const response=await fetch(url,{cache:"no-store"});
+ <div class="stats">
+  <div class="stat"><span>⚡</span><b id="power">1</b><small>قدرت هر لمس</small></div>
+  <div class="stat"><span>🔋</span><b id="energy">100</b><small>انرژی</small></div>
+  <div class="stat"><span>🏆</span><b id="level">1</b><small>سطح</small></div>
+ </div>
 
-  if(!response.ok){
-   throw new Error("Market API error");
-  }
+ <div class="panel">
+  <div class="panel-title">⛏️ استخراج روزانه</div>
+  <div class="row"><span>پاداش هر ۲۴ ساعت</span><b>50 EMC</b></div>
+  <div class="row"><span>وضعیت استخراج</span><b id="mineStatus">آماده</b></div>
+  <div class="row"><span>زمان باقی‌مانده</span><b id="timer">READY</b></div>
+  <button class="collect" id="mineButton" onclick="mine()">شروع استخراج</button>
+ </div>
 
-  const prices=await response.json();
+ <div class="panel">
+  <div class="panel-title">🎁 جایزه روزانه</div>
+  <div class="row"><span>پاداش ورود روزانه</span><b>25 EMC</b></div>
+  <button class="action" id="dailyButton" onclick="daily()">دریافت جایزه</button>
+ </div>
+</section>
 
-  const html=marketCoins.map(coin=>{
+<section id="market" class="page">
+ <div class="panel">
+  <div class="panel-title">📈 قیمت و بازار EMC</div>
+  <div class="row"><span>قیمت آغازین نمایشی</span><b>$0.006000</b></div>
+  <div class="row"><span>تغییرات نمایشی</span><b id="change">+0.00%</b></div>
+  <canvas id="chart" class="chart"></canvas>
+  <div class="notice">نمودار و قیمت فعلاً آزمایشی هستند و قیمت بازار واقعی نیستند.</div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">💰 ارزش موجودی شما</div>
+  <div class="row"><span>موجودی EMC</span><b id="marketBalance">0</b></div>
+  <div class="row"><span>ارزش تقریبی دلاری</span><b id="value">$0.0000</b></div>
+ </div>
+</section>
 
-   const info=prices[coin.id];
-   const price=info?.usd;
-   const change=info?.usd_24h_change;
+<section id="shop" class="page">
+ <div class="panel">
+  <div class="panel-title">🚀 فروشگاه زمرد</div>
+  <div class="item">
+   <div class="item-info"><b>⚡ افزایش قدرت</b><small>دو برابر کردن قدرت لمس</small><small>قیمت: 100 EMC</small></div>
+   <button class="buy" id="powerBuy" onclick="upgrade()">خرید</button>
+  </div>
+  <div class="item">
+   <div class="item-info"><b>🔋 انرژی بیشتر</b><small>افزایش ظرفیت انرژی</small><small>قیمت: 150 EMC</small></div>
+   <button class="buy" id="energyBuy" onclick="energyUpgrade()">خرید</button>
+  </div>
+ </div>
+</section>
 
-   if(price===undefined){
-    return `
-     <div class="market-item">
-      <div class="market-symbol">${coin.symbol}</div>
-      <div class="market-price">—</div>
-      <div class="market-change">دریافت نشد</div>
-     </div>`;
-   }
+<section id="friends" class="page">
+ <div class="panel">
+  <div class="panel-title">👥 دعوت دوستان</div>
+  <div style="text-align:center;font-size:45px;margin:20px">💎🤝💎</div>
+  <div class="notice">دوستان خود را دعوت کن و پاداش بگیر.</div>
+  <div class="row"><span>پاداش هر دعوت</span><b>100 EMC</b></div>
+  <button class="collect" onclick="invite()">دعوت دوستان 🔗</button>
+  <div class="notice" id="inviteStatus">پس از تنظیم نام کاربری ربات، لینک دعوت فعال می‌شود.</div>
+ </div>
+</section>
 
-   const positive=Number(change)>=0;
-   const changeText=Number.isFinite(Number(change))
-    ?(positive?"+":"")+Number(change).toFixed(2)+"%"
-    :"—";
+<section id="profile" class="page">
+ <div class="panel profile">
+  <div class="avatar">💎</div>
+  <h3 id="userName">EMERALD EXPLORER</h3>
+  <div class="notice" id="userId">LOCAL PLAYER</div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">📊 آمار حساب</div>
+  <div class="row"><span>موجودی</span><b id="profileBalance">0</b></div>
+  <div class="row"><span>مجموع لمس‌ها</span><b id="taps">0</b></div>
+  <div class="row"><span>ارتقاها</span><b id="upgrades">0</b></div>
+ </div>
+</section>
 
-   return `
-    <div class="market-item">
-     <div class="market-symbol">${coin.symbol}</div>
-     <div class="market-price">${formatPrice(price)}</div>
-     <div class="market-change ${positive?"market-up":"market-down"}">
-      ${changeText} / 24H
-     </div>
-    </div>`;
+<div class="footer">EMERALD COIN © 2026</div>
+</div>
 
-  }).join("");
+<nav class="bottom-nav">
+ <button class="nav-btn active" onclick="openPage('home',this)"><span>🏠</span>خانه</button>
+ <button class="nav-btn" onclick="openPage('market',this)"><span>📈</span>بازار</button>
+ <button class="nav-btn" onclick="openPage('shop',this)"><span>🛒</span>فروشگاه</button>
+ <button class="nav-btn" onclick="openPage('profile',this)"><span>👤</span>پروفایل</button>
+</nav>
+<div class="toast" id="toast"></div>
 
-  grid.innerHTML=html;
+<script>
+const tg=window.Telegram?.WebApp;
+tg?.ready();tg?.expand();
 
-  const time=new Date().toLocaleTimeString("fa-IR",{
-   hour:"2-digit",
-   minute:"2-digit",
-   second:"2-digit"
-  });
+const KEY="emc_game_v1",DAY=86400000;
+const now=()=>Date.now();
+const today=()=>new Date().toISOString().slice(0,10);
 
-  status.textContent="آخرین بروزرسانی: "+time;
+let data;
+try{data=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){data=null}
+if(!data)data={
+ balance:0,power:1,energy:100,maxEnergy:100,level:1,
+ taps:0,upgrades:0,lastMine:0,lastDaily:"",lastEnergy:now()
+};
 
- }catch(error){
-
-  status.textContent="اتصال به سرویس قیمت برقرار نشد";
-
-  if(!grid.querySelector(".market-item")){
-   grid.innerHTML=
-    '<div class="market-loading" style="grid-column:1/-1">قیمت‌ها فعلاً در دسترس نیستند؛ دوباره تلاش کن.</div>';
-  }
-
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function fmt(n){return Math.floor(n).toLocaleString("en-US")}
+function toast(s){
+ const el=document.getElementById("toast");
+ el.textContent=s;el.style.display="block";
+ setTimeout(()=>el.style.display="none",2200);
+}
+function regenerate(){
+ const units=Math.floor((now()-data.lastEnergy)/10000);
+ if(units>0){
+  data.energy=Math.min(data.maxEnergy,data.energy+units);
+  data.lastEnergy+=units*10000;save();
  }
 }
-
-// دریافت قیمت در شروع و سپس هر ۶۰ ثانیه
-loadMarket();
-setInterval(loadMarket,60000);
-
-/* =====================================
-   TELEGRAM PROFILE
-===================================== */
-
+function update(){
+ regenerate();
+ document.getElementById("balance").textContent=fmt(data.balance);
+ document.getElementById("power").textContent=data.power;
+ document.getElementById("energy").textContent=fmt(data.energy);
+ document.getElementById("level").textContent=data.level;
+ document.getElementById("profileBalance").textContent=fmt(data.balance);
+ document.getElementById("taps").textContent=fmt(data.taps);
+ document.getElementById("upgrades").textContent=fmt(data.upgrades);
+ document.getElementById("marketBalance").textContent=fmt(data.balance);
+ document.getElementById("value").textContent="$"+(data.balance*.006).toFixed(4);
+ document.getElementById("powerBuy").disabled=data.balance<100*data.power;
+ document.getElementById("energyBuy").disabled=data.balance<150;
+ const ready=!data.lastMine||now()-data.lastMine>=DAY;
+ document.getElementById("mineButton").disabled=!ready;
+ document.getElementById("mineButton").textContent=ready?"شروع استخراج":"استخراج در حال انجام";
+ document.getElementById("mineStatus").textContent=ready?"آماده دریافت":"در حال استخراج";
+ document.getElementById("dailyButton").disabled=data.lastDaily===today();
+ document.getElementById("dailyButton").textContent=data.lastDaily===today()?"دریافت شد":"دریافت جایزه";
+}
+function tap(){
+ regenerate();
+ if(data.energy<1){toast("انرژی کافی نیست 🔋");return}
+ data.energy--;data.balance+=data.power;data.taps++;
+ save();update();
+}
+function mine(){
+ if(data.lastMine&&now()-data.lastMine<DAY)return;
+ data.balance+=50;data.lastMine=now();save();update();
+ toast("50 EMC دریافت کردی 💎");
+}
+function daily(){
+ if(data.lastDaily===today())return;
+ data.balance+=25;data.lastDaily=today();save();update();
+ toast("25 EMC جایزه گرفتی 🎁");
+}
+function upgrade(){
+ const cost=100*data.power;
+ if(data.balance<cost)return;
+ data.balance-=cost;data.power++;data.upgrades++;
+ save();update();toast("قدرت ارتقا یافت ⚡");
+}
+function energyUpgrade(){
+ if(data.balance<150)return;
+ data.balance-=150;data.maxEnergy+=100;data.energy+=100;data.upgrades++;
+ save();update();toast("انرژی افزایش یافت 🔋");
+}
+function openPage(id,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav-btn").forEach(x=>x.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="market")drawChart();
+}
+function invite(){
+ const username="YOUR_BOT_USERNAME";
+ const user=tg?.initDataUnsafe?.user;
+ if(!user||username==="YOUR_BOT_USERNAME"){
+  toast("ابتدا نام کاربری ربات را تنظیم کن");return;
+ }
+ const link="https://t.me/"+username+"?start="+user.id;
+ if(tg?.openTelegramLink)tg.openTelegramLink("https://t.me/share/url?url="+encodeURIComponent(link));
+ else if(navigator.share)navigator.share({url:link,title:"EMERALD COIN"});
+ else navigator.clipboard?.writeText(link);
+}
+function updateTimer(){
+ if(!data.lastMine){document.getElementById("timer").textContent="READY";return}
+ let left=DAY-(now()-data.lastMine);
+ if(left<=0){document.getElementById("timer").textContent="READY";return}
+ let h=Math.floor(left/3600000),m=Math.floor(left%3600000/60000),s=Math.floor(left%60000/1000);
+ document.getElementById("timer").textContent=`${h}h ${m}m ${s}s`;
+}
+function drawChart(){
+ const c=document.getElementById("chart"),ctx=c.getContext("2d");
+ const w=c.clientWidth,h=150,dpr=window.devicePixelRatio||1;
+ c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);
+ ctx.clearRect(0,0,w,h);
+ ctx.strokeStyle="#24583c";ctx.lineWidth=1;
+ for(let y=20;y<h;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+ const points=[];
+ for(let i=0;i<24;i++)points.push(h/2+Math.sin(i*.8)*18+Math.sin(i*1.9)*9+(Math.random()*8-4));
+ ctx.beginPath();
+ points.forEach((v,i)=>{let x=i*w/23;if(i===0)ctx.moveTo(x,v);else ctx.lineTo(x,v)});
+ ctx.strokeStyle="#65ffa8";ctx.lineWidth=3;ctx.shadowColor="#42ff9b";ctx.shadowBlur=10;ctx.stroke();
+ ctx.shadowBlur=0;
+}
 const user=tg?.initDataUnsafe?.user;
-
 if(user){
-
+ document.getElementById("userName").textContent=user.first_name||"EMERALD EXPLORER";
+ document.getElementById("userId").textContent="TELEGRAM ID: "+user.id;
+}
+save();update();updateTimer();drawChart();
+setInterval(()=>{update();updateTimer()},1000);
+window.addEventListener("resize",drawChart);
+</script>
+</body>
+</html>
