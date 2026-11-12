@@ -1,256 +1,336 @@
 
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AFTERLIFE NETWORK</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#07110e;color:white;
- font-family:Arial,sans-serif;padding:18px
-}
-.container{max-width:480px;margin:auto}
-.card{
- background:#10221b;border:1px solid #244638;
- border-radius:17px;padding:18px;margin-bottom:15px
-}
-h2{text-align:center;color:#00e6a0}
-.balance{text-align:center;font-size:35px;color:#00e6a0}
-.small{text-align:center;color:#a3b9ad}
-button,select{
- width:100%;padding:14px;border:0;border-radius:10px;
- background:#00d99a;color:#04150e;font-weight:bold;
- font-size:16px;margin-top:10px
-}
-button:disabled{background:#53645b;color:white}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#172f25;padding:14px;border-radius:12px;text-align:center}
-.stat strong{display:block;color:#00e6a0;margin-top:8px}
-#chart{width:100%;height:220px}
-</style>
-</head>
-<body>
-<div class="container">
+// ===============================
+// LIFE SOURCE - USER SYSTEM
+// ===============================
 
-<div class="card">
-<h2>♾️ AFTERLIFE NETWORK</h2>
-<select id="language" onchange="setLanguage(this.value)">
-<option value="fa">🇮🇷 فارسی</option>
-<option value="en">🇬🇧 English</option>
-<option value="zh">🇨🇳 中文</option>
-<option value="ar">🇸🇦 العربية</option>
-</select>
-</div>
+let userData = {};
+let timer = null;
+let rate = 50;
+let lang = "fa";
 
-<div class="card">
-<p id="balanceTitle" class="small">موجودی توکن</p>
-<div class="balance"><span id="balance">0</span></div>
-<p class="small">AFTERLIFE (AFT)</p>
-</div>
-
-<div class="card">
-<div class="stats">
-<div class="stat">
-<span id="levelTitle">لول کاربر</span>
-<strong id="level">1</strong>
-</div>
-<div class="stat">
-<span id="speedTitle">سرعت استخراج</span>
-<strong id="speed">50 AFT / 24h</strong>
-</div>
-<div class="stat">
-<span id="priceTitle">قیمت توکن</span>
-<strong id="price">$0.001</strong>
-</div>
-<div class="stat">
-<span id="nextTitle">تا لول بعدی</span>
-<strong id="nextLevel">100 AFT</strong>
-</div>
-</div>
-</div>
-
-<div class="card">
-<h3 id="miningTitle">استخراج توکن</h3>
-<button id="mineButton" onclick="startMining()">شروع استخراج</button>
-<p id="timer" class="small">آماده استخراج</p>
-</div>
-
-<div class="card">
-<h3 id="chartTitle">نمودار قیمت AFTERLIFE</h3>
-<canvas id="chart"></canvas>
-<p id="chartStatus" class="small">نمودار آزمایشی قیمت</p>
-</div>
-
-</div>
-
-<script>
-const STORAGE="afterlife_mining_v1";
-
-let data={
- balance:0,
- lastMining:0
-};
-
-try{
- data={...data,...JSON.parse(localStorage.getItem(STORAGE)||"{}")};
-}catch(e){}
-
-const RATE=50;
-const PERIOD=24*60*60*1000;
-const TOKEN_PRICE=0.001;
-
-const translations={
-fa:{
-balance:"موجودی توکن",level:"لول کاربر",speed:"سرعت استخراج",
-price:"قیمت توکن",next:"تا لول بعدی",mining:"استخراج توکن",
-start:"شروع استخراج",wait:"زمان باقی‌مانده",ready:"آماده استخراج",
-chart:"نمودار قیمت AFTERLIFE"
-},
-en:{
-balance:"Token Balance",level:"User Level",speed:"Mining Speed",
-price:"Token Price",next:"Next Level",mining:"Token Mining",
-start:"Start Mining",wait:"Time Remaining",ready:"Ready to Mine",
-chart:"AFTERLIFE Price Chart"
-},
-zh:{
-balance:"代币余额",level:"用户等级",speed:"挖矿速度",
-price:"代币价格",next:"下一级",mining:"代币挖矿",
-start:"开始挖矿",wait:"剩余时间",ready:"准备挖矿",
-chart:"AFTERLIFE价格图表"
-},
-ar:{
-balance:"رصيد العملات",level:"مستوى المستخدم",speed:"سرعة التعدين",
-price:"سعر العملة",next:"المستوى التالي",mining:"تعدين العملات",
-start:"ابدأ التعدين",wait:"الوقت المتبقي",ready:"جاهز للتعدين",
-chart:"مخطط سعر AFTERLIFE"
-}
-};
-
-let lang="fa";
-
-function setLanguage(l){
- lang=l;
- const t=translations[l];
- document.documentElement.lang=l;
- document.documentElement.dir=l==="fa"||l==="ar"?"rtl":"ltr";
- document.getElementById("balanceTitle").textContent=t.balance;
- document.getElementById("levelTitle").textContent=t.level;
- document.getElementById("speedTitle").textContent=t.speed;
- document.getElementById("priceTitle").textContent=t.price;
- document.getElementById("nextTitle").textContent=t.next;
- document.getElementById("miningTitle").textContent=t.mining;
- document.getElementById("chartTitle").textContent=t.chart;
- document.getElementById("mineButton").textContent=t.start;
- update();
-}
-
-function getLevel(){
- return Math.floor(data.balance/100)+1;
-}
-
-function getSpeed(){
- return RATE*getLevel();
-}
-
-function save(){
- localStorage.setItem(STORAGE,JSON.stringify(data));
-}
-
-function startMining(){
- const now=Date.now();
-
- if(data.lastMining && now-data.lastMining<PERIOD){
- alert("هنوز ۲۴ ساعت کامل نشده است.");
- return;
- }
-
- data.balance+=getSpeed();
- data.lastMining=now;
- save();
- update();
-}
-
-function update(){
- const level=getLevel();
- const speed=getSpeed();
-
- document.getElementById("balance").textContent=
- data.balance.toLocaleString();
-
- document.getElementById("level").textContent=level;
- document.getElementById("speed").textContent=
- speed+" AFT / 24h";
-
- document.getElementById("price").textContent=
- "$"+TOKEN_PRICE.toFixed(3);
-
- document.getElementById("nextLevel").textContent=
- (level*100-data.balance)+" AFT";
-
- const remaining=PERIOD-(Date.now()-data.lastMining);
- const btn=document.getElementById("mineButton");
-
- if(data.lastMining && remaining>0){
- btn.disabled=true;
- document.getElementById("timer").textContent=
- translations[lang].wait+": "+formatTime(remaining);
- }else{
- btn.disabled=false;
- document.getElementById("timer").textContent=
- translations[lang].ready;
- }
-}
-
-function formatTime(ms){
- const h=Math.floor(ms/3600000);
- const m=Math.floor(ms%3600000/60000);
- const s=Math.floor(ms%60000/1000);
- return [h,m,s].map(x=>String(x).padStart(2,"0")).join(":");
-}
-
-setInterval(update,1000);
-setLanguage("fa");
-
-// نمودار آزمایشی قیمت
-const labels=[];
-const prices=[];
-let currentPrice=TOKEN_PRICE;
-
-for(let i=0;i<24;i++){
- labels.push(i+":00");
- prices.push(Number(currentPrice.toFixed(6)));
- currentPrice*=1+(Math.random()-.5)*.04;
-}
-
-new Chart(document.getElementById("chart"),{
- type:"line",
- data:{
- labels,
- datasets:[{
- data:prices,
- borderColor:"#00d99a",
- backgroundColor:"rgba(0,217,154,.10)",
- borderWidth:2,
- pointRadius:0,
- fill:true,
- tension:.3
- }]
+const PERIOD = 24 * 60 * 60;
+const translations = {
+ fa: {
+  start:"شروع استخراج 🚀",
+  active:"استخراج فعال است ✅",
+  ready:"آماده استخراج",
+  balance:"موجودی",
+  mining:"استخراج LIFE شروع شد 🚀",
+  languages:"زبان فارسی"
  },
- options:{
- responsive:true,
- maintainAspectRatio:false,
- plugins:{legend:{display:false}},
- scales:{
- x:{ticks:{color:"#91aa9d",maxTicksLimit:5},
- grid:{color:"#ffffff0b"}},
- y:{ticks:{color:"#91aa9d"},
- grid:{color:"#ffffff0b"}}
+ en: {
+  start:"Start Mining 🚀",
+  active:"Mining Active ✅",
+  ready:"Ready to mine",
+  balance:"Balance",
+  mining:"LIFE Mining Started 🚀",
+  languages:"English"
+ },
+ zh: {
+  start:"开始挖矿 🚀",
+  active:"挖矿进行中 ✅",
+  ready:"准备挖矿",
+  balance:"余额",
+  mining:"LIFE 挖矿已开始 🚀",
+  languages:"中文"
+ },
+ ar: {
+  start:"ابدأ التعدين 🚀",
+  active:"التعدين نشط ✅",
+  ready:"جاهز للتعدين",
+  balance:"الرصيد",
+  mining:"بدأ تعدين LIFE 🚀",
+  languages:"العربية"
  }
+};
+
+function setLanguage(language) {
+ lang = translations[language] ? language : "fa";
+
+ document.documentElement.lang = lang;
+ document.documentElement.dir =
+  lang === "fa" || lang === "ar" ? "rtl" : "ltr";
+
+ const selector = document.getElementById("language");
+ if(selector) selector.value = lang;
+
+ const button = document.getElementById("mineButton");
+ if(button && !userData.mining_active) {
+  button.textContent = translations[lang].start;
  }
-});
-</script>
-</body>
-</html>
+}
+
+// ===============================
+// LEVEL SYSTEM
+// ===============================
+
+function getLevel(balance) {
+ return Math.floor(Number(balance) / 100) + 1;
+}
+
+function getMiningRate(balance) {
+ return 50 * getLevel(balance);
+}
+
+// ===============================
+// UPDATE USER
+// ===============================
+
+function updateUser(u) {
+ userData = u;
+
+ const balance = Number(u.balance || 0);
+ const total = Number(u.total_earned || 0);
+
+ document.getElementById("balance").textContent =
+  balance.toFixed(2);
+
+ document.getElementById("totalEarned").textContent =
+  total.toFixed(2);
+
+ document.getElementById("referrals").textContent =
+  u.referrals || 0;
+
+ document.getElementById("profileName").textContent =
+  u.first_name || u.username || "کاربر";
+
+ document.getElementById("profileId").textContent = u.id;
+
+ document.getElementById("profileBalance").textContent =
+  balance.toFixed(2);
+
+ // Level
+ const level = getLevel(balance);
+ const miningSpeed = getMiningRate(balance);
+
+ const levelElement = document.getElementById("level");
+ const speedElement = document.getElementById("rate");
+ const nextElement = document.getElementById("nextLevel");
+
+ if(levelElement) levelElement.textContent = level;
+
+ if(speedElement) {
+  speedElement.textContent = miningSpeed + " LIFE / 24h";
+ }
+
+ if(nextElement) {
+  nextElement.textContent = (level * 100 - balance).toFixed(2);
+ }
+
+ const active = u.mining_active;
+
+ document.getElementById("mineButton").disabled = active;
+
+ document.getElementById("mineButton").textContent =
+  active ? translations[lang].active :
+  translations[lang].start;
+
+ document.getElementById("claimButton").disabled = !active;
+
+ lastClaim = u.last_claim_at || 0;
+
+ clearInterval(timer);
+
+ if(active) {
+  timer = setInterval(() => {
+
+   const elapsed = Math.max(
+    0,
+    Date.now() / 1000 - lastClaim
+   );
+
+   const earned = Math.min(
+    elapsed / PERIOD * miningSpeed,
+    miningSpeed
+   );
+
+   document.getElementById("balance").textContent =
+    (balance + earned).toFixed(2);
+
+  }, 1000);
+ }
+}
+
+// ===============================
+// LOAD USER
+// ===============================
+
+async function loadUser() {
+ const d = await api("/api/bootstrap");
+
+ updateUser(d.user);
+
+ const bot = d.bot_username;
+
+ document.getElementById("inviteLink").textContent =
+  bot
+   ? "https://t.me/" + bot + "?startapp=ref_" + d.user.id
+   : "نام کاربری ربات در سرور تنظیم نشده است.";
+}
+
+// ===============================
+// START MINING
+// ===============================
+
+async function startMining() {
+ try {
+  await api("/api/mine/start", "POST");
+  await loadUser();
+  message(translations[lang].mining);
+ } catch(e) {
+  message(e.message);
+ }
+}
+
+// ===============================
+// CLAIM MINING
+// ===============================
+
+async function claimMining() {
+ try {
+  const d = await api("/api/mine/claim", "POST");
+
+  if(d.user) updateUser(d.user);
+
+  message(
+   d.earned > 0
+    ? "دریافت " + d.earned + " LIFE موفق بود!"
+    : "هنوز امتیازی برای دریافت نداری."
+  );
+
+ } catch(e) {
+  message(e.message);
+ }
+}
+
+// ===============================
+// INVITE SYSTEM
+// ===============================
+
+async function copyInvite() {
+ const link = document.getElementById("inviteLink").textContent;
+
+ try {
+  await navigator.clipboard.writeText(link);
+  message("لینک کپی شد!");
+ } catch(e) {
+  message("کپی لینک ممکن نیست.");
+ }
+}
+
+function shareInvite() {
+ const link = document.getElementById("inviteLink").textContent;
+
+ const url =
+  "https://t.me/share/url?url=" +
+  encodeURIComponent(link) +
+  "&text=" +
+  encodeURIComponent("به LIFE SOURCE بپیوند!");
+
+ if(tg?.openTelegramLink) {
+  tg.openTelegramLink(url);
+ } else {
+  window.open(url);
+ }
+}
+
+// ===============================
+// MARKET
+// ===============================
+
+async function loadMarket() {
+ const box = document.getElementById("market");
+
+ try {
+  const d = await api("/api/market");
+
+  const coins = [
+   ["Bitcoin","BTC",d.prices.bitcoin],
+   ["Ethereum","ETH",d.prices.ethereum],
+   ["Toncoin","TON",d.prices.toncoin],
+   ["Solana","SOL",d.prices.solana]
+  ];
+
+  box.innerHTML = "";
+
+  coins.forEach(([name,symbol,c]) => {
+   if(!c) return;
+
+   const row = document.createElement("div");
+   row.className = "market-row";
+
+   const left = document.createElement("span");
+   left.textContent = name + " (" + symbol + ")";
+
+   const right = document.createElement("span");
+
+   right.textContent =
+    "$" + Number(c.usd).toLocaleString("en-US", {
+     maximumFractionDigits:4
+    });
+
+   row.append(left,right);
+   box.appendChild(row);
+
+   const change = document.createElement("div");
+
+   change.className =
+    "muted " +
+    (Number(c.usd_24h_change) >= 0 ? "green" : "red");
+
+   change.textContent =
+    (Number(c.usd_24h_change) >= 0 ? "+" : "") +
+    Number(c.usd_24h_change || 0).toFixed(2) +
+    "% در ۲۴ ساعت";
+
+   right.appendChild(change);
+  });
+
+ } catch(e) {
+  box.textContent = "قیمت‌ها فعلاً در دسترس نیستند.";
+ }
+}
+
+// ===============================
+// LEADERBOARD
+// ===============================
+
+async function loadRanking() {
+ const box = document.getElementById("leaderboard");
+
+ try {
+  const d = await api("/api/leaderboard");
+
+  box.innerHTML = "";
+
+  d.users.forEach((u,i) => {
+
+   const row = document.createElement("div");
+   row.className = "rank-row";
+
+   const name = document.createElement("span");
+
+   name.textContent =
+    (i+1) + ". " +
+    (u.first_name || u.username || "کاربر");
+
+   const score = document.createElement("strong");
+   score.className = "green";
+
+   score.textContent =
+    Number(u.balance).toFixed(2) + " LIFE";
+
+   row.append(name,score);
+   box.appendChild(row);
+  });
+
+ } catch(e) {
+  box.textContent = e.message;
+ }
+}
+
+// ===============================
+// LANGUAGE INITIALIZATION
+// ===============================
+
+setLanguage("fa");
