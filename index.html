@@ -51,6 +51,77 @@ letter-spacing:3px;color:#edffd5;
 }
 @keyframes float{50%{transform:translateY(-9px)}}
 
+/* LIVE CRYPTO MARKET */
+.market-box{
+background:linear-gradient(145deg,#102b20,#0a1d16);
+border:1px solid #315b3d;
+border-radius:16px;
+padding:13px;
+margin:20px 0 17px;
+text-align:right;
+}
+.market-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
+.market-title{font-size:13px;font-weight:bold;color:#dfff9e}
+.market-status{font-size:9px;color:#9bb9a0}
+.market-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+}
+.market-item{
+background:#183729;
+border:1px solid #2c513a;
+border-radius:11px;
+padding:10px 5px;
+text-align:center;
+min-width:0;
+}
+.market-symbol{
+font-size:11px;
+font-weight:bold;
+color:#dfff9e;
+margin-bottom:7px;
+direction:ltr;
+}
+.market-price{
+font-size:11px;
+font-weight:bold;
+color:#fff;
+direction:ltr;
+white-space:nowrap;
+}
+.market-change{
+font-size:9px;
+margin-top:6px;
+direction:ltr;
+}
+.market-up{color:#6ee99b}
+.market-down{color:#ff7777}
+.market-loading{
+font-size:10px;
+color:#a8c2ae;
+text-align:center;
+padding:12px;
+}
+.market-footer{
+font-size:9px;
+color:#769b81;
+text-align:center;
+margin-top:10px;
+}
+.market-refresh{
+background:#234632;
+color:#dfff9e;
+padding:7px 10px;
+border-radius:8px;
+font-size:10px;
+}
+
 .balance-label{font-size:12px;color:#a8c2ae}
 .balance{font-size:37px;font-weight:bold;color:#dfff9e;margin:8px}
 .unit{font-size:13px;color:#9acb9e;letter-spacing:3px;font-weight:bold}
@@ -138,6 +209,22 @@ white-space:nowrap;
  <div class="coin-logo">
   <div class="coin-text">OF</div>
   <div class="coin-sub">FLIE</div>
+ </div>
+
+ <!-- LIVE MARKET -->
+ <div class="market-box">
+  <div class="market-head">
+   <div class="market-title">📈 LIVE CRYPTO MARKET</div>
+   <button class="market-refresh" onclick="loadMarket()">↻ بروزرسانی</button>
+  </div>
+
+  <div class="market-grid" id="marketGrid">
+   <div class="market-loading">در حال دریافت قیمت ارزها...</div>
+  </div>
+
+  <div class="market-footer" id="marketStatus">
+   قیمت‌ها به دلار آمریکا • به‌روزرسانی خودکار
+  </div>
  </div>
 
  <div class="balance-label">موجودی توکن شما</div>
@@ -318,22 +405,16 @@ function migrate(){
 
  data.balance=Math.max(0,Number(data.balance)||0);
  data.tapPower=Math.max(1,Number(data.tapPower)||1);
-
- // استخراج برای همه حساب‌ها ۵۰ توکن است
  data.minePower=50;
-
  data.maxEnergy=Math.max(100,Number(data.maxEnergy)||100);
  data.energy=Math.max(0,Math.min(data.maxEnergy,Number(data.energy)||0));
-
  data.taps=Number(data.taps)||0;
  data.upgrades=Number(data.upgrades)||0;
  data.lastMine=Number(data.lastMine)||0;
  data.lastEnergyTime=Number(data.lastEnergyTime)||now();
-
  data.missionClaims=Array.isArray(data.missionClaims)?data.missionClaims:[];
  data.lastDay=data.lastDay||today();
 
- // حفظ سطح قبلی کاربران
  const oldLevel=Math.floor(Math.sqrt(data.balance/500))+1;
  data.level=Math.max(oldLevel,Number(data.level)||1);
 }
@@ -447,7 +528,6 @@ function claimMining(){
   return;
  }
 
- // پاداش ثابت ۵۰ توکن
  data.balance+=50;
  data.lastMine=now();
 
@@ -488,7 +568,6 @@ function upgrade(type){
  toast("ارتقا با موفقیت انجام شد 🚀");
 }
 
-// افزایش سطح با ۱۰۰ توکن
 function upgradeLevel(){
 
  const cost=100;
@@ -622,6 +701,116 @@ function updateTimer(){
 
  el.textContent=`${h} ساعت ${m} دقیقه ${s} ثانیه`;
 }
+
+/* =====================================
+   LIVE CRYPTO PRICES - COINGECKO API
+===================================== */
+
+const marketCoins=[
+ {id:"bitcoin",symbol:"BTC",name:"Bitcoin"},
+ {id:"ethereum",symbol:"ETH",name:"Ethereum"},
+ {id:"binancecoin",symbol:"BNB",name:"BNB"},
+ {id:"solana",symbol:"SOL",name:"Solana"},
+ {id:"ripple",symbol:"XRP",name:"XRP"},
+ {id:"the-open-network",symbol:"TON",name:"Toncoin"}
+];
+
+function formatPrice(price){
+
+ if(price===undefined||price===null||!Number.isFinite(Number(price))){
+  return "—";
+ }
+
+ return "$"+Number(price).toLocaleString("en-US",{
+  minimumFractionDigits:2,
+  maximumFractionDigits:price<1?6:2
+ });
+}
+
+async function loadMarket(){
+
+ const grid=document.getElementById("marketGrid");
+ const status=document.getElementById("marketStatus");
+
+ status.textContent="در حال بروزرسانی قیمت‌ها...";
+
+ try{
+
+  const ids=marketCoins.map(c=>c.id).join(",");
+
+  const url=
+   "https://api.coingecko.com/api/v3/simple/price"+
+   "?ids="+encodeURIComponent(ids)+
+   "&vs_currencies=usd&include_24hr_change=true";
+
+  const response=await fetch(url,{cache:"no-store"});
+
+  if(!response.ok){
+   throw new Error("Market API error");
+  }
+
+  const prices=await response.json();
+
+  const html=marketCoins.map(coin=>{
+
+   const info=prices[coin.id];
+   const price=info?.usd;
+   const change=info?.usd_24h_change;
+
+   if(price===undefined){
+    return `
+     <div class="market-item">
+      <div class="market-symbol">${coin.symbol}</div>
+      <div class="market-price">—</div>
+      <div class="market-change">دریافت نشد</div>
+     </div>`;
+   }
+
+   const positive=Number(change)>=0;
+   const changeText=Number.isFinite(Number(change))
+    ?(positive?"+":"")+Number(change).toFixed(2)+"%"
+    :"—";
+
+   return `
+    <div class="market-item">
+     <div class="market-symbol">${coin.symbol}</div>
+     <div class="market-price">${formatPrice(price)}</div>
+     <div class="market-change ${positive?"market-up":"market-down"}">
+      ${changeText} / 24H
+     </div>
+    </div>`;
+
+  }).join("");
+
+  grid.innerHTML=html;
+
+  const time=new Date().toLocaleTimeString("fa-IR",{
+   hour:"2-digit",
+   minute:"2-digit",
+   second:"2-digit"
+  });
+
+  status.textContent="آخرین بروزرسانی: "+time;
+
+ }catch(error){
+
+  status.textContent="اتصال به سرویس قیمت برقرار نشد";
+
+  if(!grid.querySelector(".market-item")){
+   grid.innerHTML=
+    '<div class="market-loading" style="grid-column:1/-1">قیمت‌ها فعلاً در دسترس نیستند؛ دوباره تلاش کن.</div>';
+  }
+
+ }
+}
+
+// دریافت قیمت در شروع و سپس هر ۶۰ ثانیه
+loadMarket();
+setInterval(loadMarket,60000);
+
+/* =====================================
+   TELEGRAM PROFILE
+===================================== */
 
 const user=tg?.initDataUnsafe?.user;
 
