@@ -3,574 +3,598 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#06140f">
 <title>EMERALD COIN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{
---bg:#050b08;--panel:#0c1711;--panel2:#102219;
---green:#20e58b;--mint:#8affc1;--gold:#e8c879;
---red:#ff586b;--muted:#81968a;--line:rgba(119,255,178,.13);
+ --bg:#06140f;--panel:#0d2119;--panel2:#10291f;
+ --green:#19d58b;--green2:#00a96b;--gold:#d7b76a;
+ --text:#f1fff8;--muted:#8ba99a;--line:#1d3b2d;
+ --red:#ff6678;
 }
 *{box-sizing:border-box}
 body{
-margin:0;background:radial-gradient(circle at top,#123322 0,#07110b 35%,#050b08 75%);
-color:#f2fff7;font-family:Arial,Tahoma,sans-serif;
-min-height:100vh;padding-bottom:90px
+ margin:0;background:radial-gradient(circle at 50% -10%,#174c35 0,#06140f 42%);
+ color:var(--text);font-family:Arial,Tahoma,sans-serif;
+ padding-bottom:95px;
 }
-button,input,select{font-family:inherit}
+button,input,select{font:inherit}
 button{cursor:pointer}
-.container{max-width:520px;margin:auto;padding:15px}
-.top{
-display:flex;align-items:center;justify-content:space-between;
-padding:10px 2px 18px
-}
+.app{max-width:520px;margin:auto;padding:16px}
+.top{display:flex;align-items:center;justify-content:space-between;margin:8px 0 20px}
 .brand{display:flex;align-items:center;gap:10px}
 .logo{
-width:45px;height:45px;border-radius:15px;
-display:grid;place-items:center;font-size:25px;font-weight:900;
-background:linear-gradient(145deg,#b4ffcf,#07894f 55%,#034b2b);
-color:#042314;box-shadow:0 0 22px #20e58b44
+ width:43px;height:43px;border-radius:14px;
+ display:grid;place-items:center;font-size:25px;
+ background:linear-gradient(145deg,#30e7a0,#087447);
+ box-shadow:0 5px 22px #00c77b35;
 }
 .brand h2{font-size:17px;margin:0;letter-spacing:1px}
-.brand small{color:var(--mint);font-size:10px}
-.status{
-border:1px solid var(--line);background:#102219;
-padding:8px 11px;border-radius:20px;font-size:10px;color:var(--mint)
-}
+.brand small{font-size:10px;color:var(--muted)}
+.demo{font-size:9px;color:#b9d8c7;border:1px solid #315542;padding:5px 8px;border-radius:20px}
 .card{
-background:linear-gradient(145deg,rgba(18,39,27,.97),rgba(9,20,14,.97));
-border:1px solid var(--line);border-radius:20px;
-padding:17px;margin-bottom:14px;
-box-shadow:0 10px 30px #0003
+ background:linear-gradient(145deg,#102a20,#0b1d16);
+ border:1px solid var(--line);border-radius:20px;padding:17px;
+ margin-bottom:14px;box-shadow:0 8px 25px #0002;
 }
 .label{font-size:12px;color:var(--muted)}
-.balance{
-font-size:34px;font-weight:900;margin:9px 0;color:white;
-direction:ltr;text-align:right
-}
-.coin{color:var(--mint);font-size:13px}
+.big{font-size:32px;font-weight:bold;margin:9px 0}
+.green{color:var(--green)}
+.gold{color:var(--gold)}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.price{font-size:23px;font-weight:900;direction:ltr}
-.up{color:var(--green)}.down{color:var(--red)}
-.small{font-size:11px;color:var(--muted)}
-.token-info{
-display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.stat{background:#0b1d16;border:1px solid var(--line);border-radius:15px;padding:14px}
+.stat strong{display:block;font-size:18px;margin-top:8px}
+.btn{
+ border:0;border-radius:13px;padding:13px 15px;
+ color:#04150d;font-weight:bold;
+ background:linear-gradient(120deg,#39e8a3,#0dbb77);
+ width:100%;
 }
-.info{
-background:#07130c;border:1px solid var(--line);
-border-radius:12px;padding:10px 5px;text-align:center
-}
-.info b{display:block;font-size:12px;margin-top:6px}
-.info span{font-size:10px;color:var(--muted)}
-.gem-wrap{
-height:190px;display:grid;place-items:center;
-background:radial-gradient(circle,#145b37 0%,#0b2115 45%,transparent 72%);
-margin:5px 0
-}
-.gem{
-width:125px;height:125px;filter:drop-shadow(0 0 24px #20e58b88);
-animation:float 3s ease-in-out infinite
-}
-@keyframes float{50%{transform:translateY(-9px) rotate(3deg)}}
-.primary{
-width:100%;border:0;border-radius:14px;padding:15px;
-background:linear-gradient(100deg,#0ba65d,#39f5a0);
-color:#032515;font-weight:900;font-size:15px;
-box-shadow:0 7px 22px #20e58b30
-}
-.secondary{
-border:1px solid var(--line);background:#14291d;color:var(--mint);
-border-radius:12px;padding:12px;font-weight:bold
-}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{
-padding:13px;background:#07130c;border-radius:13px;border:1px solid var(--line)
-}
-.stat b{display:block;margin-top:7px;font-size:17px}
-.section-title{font-size:16px;font-weight:900;margin:20px 2px 12px}
-.page{display:none}.page.active{display:block}
+.btn.secondary{background:#173c2b;color:#d9ffeb;border:1px solid #286044}
+.btn.goldbtn{background:linear-gradient(120deg,#e8d18a,#b38b39);color:#211a08}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .nav{
-position:fixed;bottom:0;left:0;right:0;z-index:10;
-background:#07110cf5;border-top:1px solid var(--line);
-display:flex;justify-content:space-around;padding:10px 4px 14px;
-backdrop-filter:blur(15px)
+ position:fixed;bottom:0;left:0;right:0;z-index:10;
+ background:#081810f5;border-top:1px solid var(--line);
+ display:flex;justify-content:center;gap:2px;padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+ backdrop-filter:blur(15px);
 }
 .nav button{
-border:0;background:none;color:#82988b;font-size:10px;
-display:flex;flex-direction:column;align-items:center;gap:5px
+ flex:1;max-width:75px;border:0;background:none;color:#789888;
+ font-size:10px;padding:7px 1px;border-radius:12px;
 }
-.nav button span{font-size:20px}
-.nav button.active{color:var(--green)}
-input,select{
-width:100%;background:#07130c;color:white;border:1px solid var(--line);
-border-radius:12px;padding:13px;margin:7px 0 12px;outline:none
+.nav button span{display:block;font-size:19px;margin-bottom:4px}
+.nav button.active{color:var(--green);background:#123424}
+.page{display:none}
+.page.active{display:block}
+.section-title{font-size:16px;margin:20px 2px 12px}
+.coin{display:flex;align-items:center;gap:10px}
+.coinicon{
+ width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+ background:#153d2b;color:var(--green);font-weight:bold
 }
-input:focus,select:focus{border-color:var(--green)}
-.tabs{display:flex;gap:7px;margin:12px 0}
-.tabs button{
-flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);
-background:#0b1a11;color:var(--muted)
+.coinicon.usdt{background:#123a37;color:#35d9b0}
+.coinicon.eth{background:#242c4c;color:#aab8ff}
+.coinicon.btc{background:#48351b;color:#ffc46c}
+.asset{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.asset:last-child{border:0}
+.asset small{display:block;color:var(--muted);margin-top:4px}
+.chartbox{height:210px;position:relative}
+.tabs{display:flex;gap:6px;margin:12px 0}
+.tabs button{background:#10271d;border:1px solid var(--line);color:var(--muted);padding:7px 12px;border-radius:9px;font-size:11px}
+.tabs button.active{background:#16442f;color:var(--green)}
+.field{margin:13px 0}
+.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
+.field input,.field select{
+ width:100%;background:#07170f;color:white;border:1px solid #28513b;
+ border-radius:12px;padding:14px;outline:none;
 }
-.tabs button.active{background:#17452c;color:var(--mint);border-color:#20e58b}
-.chart-box{height:220px;position:relative;margin-top:12px}
-.coin-row{
-display:flex;align-items:center;justify-content:space-between;
-padding:13px 0;border-bottom:1px solid var(--line)
+.swapbox{background:#081a12;border:1px solid var(--line);border-radius:16px;padding:13px;margin:12px 0}
+.swapcoin{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.swapcoin select{width:110px;background:#153324;color:white;border:1px solid #315c43;padding:10px;border-radius:10px}
+.swapcoin input{min-width:0;flex:1;background:transparent;border:0;color:white;font-size:20px;outline:none}
+.swaparrow{text-align:center;color:var(--green);font-size:22px;margin:4px}
+.info-line{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:10px 0}
+.success{
+ display:none;background:#103a28;border:1px solid #218455;
+ padding:15px;border-radius:14px;margin-top:13px;
 }
-.coin-icon{
-width:35px;height:35px;border-radius:50%;display:grid;place-items:center;
-font-weight:bold;background:#192d21
+.success strong{color:var(--green);font-size:20px}
+.history-item{padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}
+.history-item:last-child{border:0}
+.mining-circle{
+ width:190px;height:190px;border-radius:50%;margin:22px auto;
+ border:7px solid #164d34;outline:2px solid #1c7950;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ background:radial-gradient(circle,#16442e,#091a12);
+ box-shadow:0 0 35px #00d17a20;
 }
-.notice{
-padding:10px;border-radius:10px;background:#332a12;
-color:#f4d98a;font-size:10px;line-height:1.8;margin-top:12px
-}
-.badge{
-font-size:10px;border-radius:20px;padding:5px 9px;
-background:#183a27;color:var(--mint)
-}
+.mining-circle .gem{font-size:43px}
+.progress{height:8px;background:#1a3829;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:linear-gradient(90deg,#00a96b,#48edaa);width:0%}
+.task{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.task:last-child{border:0}
+.task button{width:auto;padding:9px 13px;font-size:11px}
+.small{font-size:11px;color:var(--muted);line-height:1.8}
 .toast{
-position:fixed;top:18px;left:50%;transform:translateX(-50%);
-background:#173a27;border:1px solid var(--green);color:white;
-padding:12px 18px;border-radius:12px;z-index:50;
-display:none;font-size:12px;max-width:90%;text-align:center
+ position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+ background:#173b2a;border:1px solid #34704c;color:white;
+ padding:12px 18px;border-radius:12px;display:none;z-index:20;
+ width:max-content;max-width:90%;font-size:13px;
 }
-.history-item{
-display:flex;justify-content:space-between;padding:12px 0;
-border-bottom:1px solid var(--line);font-size:12px
-}
-.footer{text-align:center;color:#60776a;font-size:10px;padding:20px}
 </style>
 </head>
 <body>
-<div class="toast" id="toast"></div>
-
-<div class="container">
+<div class="app">
 <header class="top">
  <div class="brand">
-  <div class="logo">E</div>
-  <div>
-   <h2>EMERALD COIN</h2>
-   <small>EMC DIGITAL ECOSYSTEM</small>
-  </div>
+  <div class="logo">💎</div>
+  <div><h2>EMERALD COIN</h2><small>THE EMERALD ECOSYSTEM</small></div>
  </div>
- <div class="status">● TON NETWORK</div>
+ <span class="demo">DEMO</span>
 </header>
 
 <!-- HOME -->
 <section class="page active" id="home">
  <div class="card">
+  <div class="row"><span class="label">ارزش کل دارایی‌ها</span><span class="gold">◆ EMC</span></div>
+  <div class="big" id="portfolioValue">$0.00</div>
   <div class="row">
-   <span class="label">موجودی حساب شما</span>
-   <span class="badge">EMC WALLET</span>
-  </div>
-  <div class="balance" id="balance">0.00</div>
-  <div class="coin">EMERALD COIN · EMC</div>
-  <div class="token-info">
-   <div class="info"><span>قیمت هر EMC</span><b id="homePrice">$0.007000</b></div>
-   <div class="info"><span>ارزش موجودی</span><b id="portfolio">$0.00</b></div>
-   <div class="info"><span>سطح کاربر</span><b id="homeLevel">1</b></div>
+   <span class="label">موجودی EMC</span>
+   <strong class="green" id="homeBalance">0 EMC</strong>
   </div>
  </div>
-
+ <div class="grid2">
+  <div class="stat"><span class="label">کل استخراج</span><strong id="homeEarned">0 EMC</strong></div>
+  <div class="stat"><span class="label">سطح حساب</span><strong class="gold" id="homeLevel">Level 1</strong></div>
+ </div>
+ <h3 class="section-title">قیمت و بازار EMC</h3>
  <div class="card">
   <div class="row">
-   <div>
-    <div class="label">قیمت EMC</div>
-    <div class="price" id="mainPrice">$0.007000</div>
-   </div>
-   <div style="text-align:left">
-    <div class="label">تغییرات بازار</div>
-    <b class="up" id="priceChange">+0.00%</b>
-   </div>
+   <div><div class="label">EMC / USDT</div><div class="big green" id="price">$0.007000</div></div>
+   <div style="text-align:left"><span class="green" id="change">+0.00%</span><div class="label">قیمت شبیه‌سازی‌شده</div></div>
   </div>
-  <div class="small" style="margin-top:7px">نمودار شبیه‌سازی قیمت EMC</div>
-  <div class="chart-box"><canvas id="priceChart"></canvas></div>
-  <div class="notice">قیمت و نمودار این نسخه شبیه‌سازی‌شده هستند و به بازار یا صرافی واقعی متصل نیستند.</div>
+  <div class="chartbox"><canvas id="homeChart"></canvas></div>
  </div>
-
+ <h3 class="section-title">دارایی‌های شما</h3>
+ <div class="card" id="homeAssets"></div>
+ <h3 class="section-title">استخراج سریع</h3>
  <div class="card">
-  <div class="row">
-   <div><div class="label">استخراج روزانه</div><b style="font-size:21px;color:var(--mint)">200 EMC</b></div>
-   <span class="badge">هر ۲۴ ساعت</span>
-  </div>
-  <div class="gem-wrap">
-   <svg class="gem" viewBox="0 0 200 200">
-    <defs>
-     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#c0ffd7"/><stop offset=".45" stop-color="#21e88d"/><stop offset="1" stop-color="#056337"/>
-     </linearGradient>
-     <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#72ffc0"/><stop offset="1" stop-color="#087443"/>
-     </linearGradient>
-    </defs>
-    <path d="M42 25 L158 25 L190 72 L100 185 L10 72Z" fill="url(#g1)" stroke="#a7ffd0" stroke-width="3"/>
-    <path d="M42 25 L72 72 L10 72Z" fill="#b8ffda"/>
-    <path d="M42 25 L100 25 L72 72Z" fill="#45ed9a"/>
-    <path d="M100 25 L158 25 L128 72 L72 72Z" fill="#13bd70"/>
-    <path d="M158 25 L190 72 L128 72Z" fill="#79ffc0"/>
-    <path d="M10 72 L72 72 L100 185Z" fill="#087a45"/>
-    <path d="M72 72 L128 72 L100 185Z" fill="url(#g2)"/>
-    <path d="M128 72 L190 72 L100 185Z" fill="#034d2c"/>
-   </svg>
-  </div>
-  <button class="primary" id="mineBtn" onclick="claimMining()">شروع استخراج 200 EMC</button>
-  <div class="row" style="margin-top:13px">
-   <span class="small">زمان باقی‌مانده</span>
-   <b id="timer">آماده استخراج</b>
-  </div>
- </div>
-
- <div class="grid2">
-  <div class="stat"><span class="label">مجموع درآمد</span><b id="totalEarned">0 EMC</b></div>
-  <div class="stat"><span class="label">زیرمجموعه‌ها</span><b id="referrals">0</b></div>
- </div>
-
- <div class="section-title">دسترسی سریع</div>
- <div class="grid2">
-  <button class="secondary" onclick="showPage('swap')">⇄ تبدیل توکن</button>
-  <button class="secondary" onclick="showPage('market')">▥ بازار EMC</button>
+  <div class="row"><span class="label">پاداش روزانه</span><strong class="green">200 EMC</strong></div>
+  <p class="small">هر ۲۴ ساعت یک‌بار استخراج را فعال کن.</p>
+  <button class="btn" onclick="go('mining')">رفتن به استخراج</button>
  </div>
 </section>
 
 <!-- MARKET -->
 <section class="page" id="market">
- <div class="section-title">بازار EMERALD COIN</div>
+ <h3 class="section-title">بازار ارزها</h3>
  <div class="card">
-  <div class="row">
-   <div><div class="label">EMC / USD</div><div class="price" id="marketPrice">$0.007000</div></div>
-   <span class="badge">PRICE SIMULATOR</span>
+  <div class="row"><div><span class="label">EMERALD COIN</span><div class="big green" id="marketPrice">$0.007000</div></div><div class="gold">💎 EMC</div></div>
+  <div class="tabs">
+   <button class="active" onclick="setPeriod('1H',this)">1H</button>
+   <button onclick="setPeriod('1D',this)">1D</button>
+   <button onclick="setPeriod('1W',this)">1W</button>
+   <button onclick="setPeriod('1M',this)">1M</button>
   </div>
-  <div class="chart-box"><canvas id="marketChart"></canvas></div>
-  <div class="grid2" style="margin-top:15px">
-   <div class="stat"><span class="label">قیمت شروع</span><b>$0.007000</b></div>
-   <div class="stat"><span class="label">تغییرات</span><b id="marketChange" class="up">0.00%</b></div>
-  </div>
-  <div class="notice">این بازار آزمایشی است. قیمت‌ها، حجم معاملات و نمودار داده واقعی بازار نیستند.</div>
+  <div class="chartbox"><canvas id="marketChart"></canvas></div>
  </div>
- <div class="section-title">جفت‌های معاملاتی</div>
  <div class="card">
-  <div class="coin-row"><div class="row"><div class="coin-icon">E</div><b>EMC / USDT</b></div><b id="pairUsdt">$0.007000</b></div>
-  <div class="coin-row"><div class="row"><div class="coin-icon">Ξ</div><b>EMC / ETH</b></div><b id="pairEth">—</b></div>
-  <div class="coin-row"><div class="row"><div class="coin-icon">₿</div><b>EMC / BTC</b></div><b id="pairBtc">—</b></div>
+  <div class="row"><strong>جفت‌ارزها</strong><span class="label">قیمت‌های نمونه</span></div>
+  <div class="asset"><div class="coin"><div class="coinicon">E</div><div>EMC/USDT<small>Emerald Coin</small></div></div><strong class="green" id="pairEMC">$0.007</strong></div>
+  <div class="asset"><div class="coin"><div class="coinicon usdt">₮</div><div>USDT<small>Tether</small></div></div><strong>$1.00</strong></div>
+  <div class="asset"><div class="coin"><div class="coinicon eth">Ξ</div><div>ETH<small>Ethereum</small></div></div><strong>$3,000</strong></div>
+  <div class="asset"><div class="coin"><div class="coinicon btc">₿</div><div>BTC<small>Bitcoin</small></div></div><strong>$90,000</strong></div>
  </div>
+ <button class="btn" onclick="go('swap')">شروع تبدیل ارز</button>
 </section>
 
 <!-- SWAP -->
 <section class="page" id="swap">
- <div class="section-title">EMC SWAP</div>
+ <h3 class="section-title">تبدیل ارزها</h3>
  <div class="card">
-  <div class="row">
-   <b>تبدیل دارایی</b><span class="badge">SIMULATED SWAP</span>
+  <div class="row"><strong>SWAP</strong><span class="gold">◆ EMERALD EXCHANGE</span></div>
+  <div class="swapbox">
+   <div class="label">پرداخت می‌کنید</div>
+   <div class="swapcoin">
+    <input id="fromAmount" type="number" min="10000" step="any" value="10000" oninput="calculateSwap()">
+    <select id="fromCoin" onchange="calculateSwap()">
+     <option value="EMC">💎 EMC</option>
+     <option value="USDT">₮ USDT</option>
+     <option value="ETH">Ξ ETH</option>
+     <option value="BTC">₿ BTC</option>
+    </select>
+   </div>
+   <div class="info-line"><span>موجودی</span><span id="fromBalance">0 EMC</span></div>
   </div>
-  <div class="label" style="margin-top:18px">پرداخت می‌کنید</div>
-  <div class="row">
-   <input id="swapAmount" type="number" min="0" placeholder="مقدار را وارد کنید" value="1000" oninput="calculateSwap()">
-   <select id="fromCoin" onchange="calculateSwap()">
-    <option value="EMC">EMC</option>
-    <option value="USDT">USDT</option>
-    <option value="ETH">ETH</option>
-    <option value="BTC">BTC</option>
-   </select>
+  <div class="swaparrow">⇅</div>
+  <div class="swapbox">
+   <div class="label">دریافت می‌کنید</div>
+   <div class="swapcoin">
+    <input id="toAmount" type="text" readonly value="69.79">
+    <select id="toCoin" onchange="calculateSwap()">
+     <option value="USDT">₮ USDT</option>
+     <option value="EMC">💎 EMC</option>
+     <option value="ETH">Ξ ETH</option>
+     <option value="BTC">₿ BTC</option>
+    </select>
+   </div>
+   <div class="info-line"><span>موجودی</span><span id="toBalance">0 USDT</span></div>
   </div>
-  <div style="text-align:center;color:var(--green);font-size:24px">⇅</div>
-  <div class="label">دریافت می‌کنید</div>
-  <div class="row">
-   <input id="swapOutput" readonly placeholder="مقدار دریافتی">
-   <select id="toCoin" onchange="calculateSwap()">
-    <option value="USDT">USDT</option>
-    <option value="EMC">EMC</option>
-    <option value="ETH">ETH</option>
-    <option value="BTC">BTC</option>
-   </select>
+  <div class="info-line"><span>نرخ تبدیل</span><span id="swapRate">1 EMC = 0.007 USDT</span></div>
+  <div class="info-line"><span>کارمزد</span><span>0.3%</span></div>
+  <div class="info-line"><span>حداقل تبدیل EMC</span><strong class="gold">10,000 EMC</strong></div>
+  <div class="info-line"><span>دریافتی نهایی</span><strong class="green" id="swapFinal">69.79 USDT</strong></div>
+  <button class="btn" onclick="confirmSwap()">تأیید تبدیل</button>
+  <div class="success" id="swapSuccess">
+   <div class="label">تبدیل با موفقیت ثبت شد</div>
+   <strong id="successAmount">69.79 USDT</strong>
+   <p class="small">مقدار تتر به موجودی دارایی‌های شما اضافه شد.</p>
+   <button class="btn secondary" onclick="go('assets')">مشاهده موجودی تتر</button>
   </div>
-  <div class="grid2">
-   <div class="stat"><span class="label">قیمت EMC</span><b id="swapPrice">$0.007</b></div>
-   <div class="stat"><span class="label">کارمزد شبیه‌سازی</span><b>0.3%</b></div>
-  </div>
-  <button class="primary" style="margin-top:15px" onclick="executeSwap()">تأیید تبدیل</button>
-  <div class="notice">این بخش فقط محاسبه و ثبت محلی انجام می‌دهد. هیچ رمزارزی منتقل یا مبادله نمی‌شود.</div>
  </div>
- <div class="section-title">آخرین تبدیل‌ها</div>
- <div class="card" id="swapHistory"><div class="small">هنوز تبدیلی ثبت نشده است.</div></div>
+ <h3 class="section-title">تاریخچه تبدیل‌ها</h3>
+ <div class="card" id="swapHistory"><p class="small">هنوز تبدیلی ثبت نشده است.</p></div>
+</section>
+
+<!-- ASSETS -->
+<section class="page" id="assets">
+ <h3 class="section-title">دارایی‌های من</h3>
+ <div class="card">
+  <span class="label">ارزش مجموع دارایی‌ها</span>
+  <div class="big green" id="assetTotal">$0.00</div>
+  <span class="label">موجودی ارزهای حساب</span>
+ </div>
+ <div class="card" id="assetList"></div>
+ <button class="btn" onclick="go('swap')">تبدیل دارایی‌ها</button>
+</section>
+
+<!-- MINING -->
+<section class="page" id="mining">
+ <h3 class="section-title">استخراج EMERALD</h3>
+ <div class="card" style="text-align:center">
+  <div class="mining-circle">
+   <div class="gem">💎</div>
+   <strong class="green" style="font-size:24px">+200 EMC</strong>
+   <span class="label">پاداش هر ۲۴ ساعت</span>
+  </div>
+  <div class="label" id="miningStatus">آماده استخراج</div>
+  <div class="progress"><div id="mineProgress"></div></div>
+  <div class="row"><span class="label">زمان باقی‌مانده</span><strong id="countdown">آماده</strong></div>
+  <br>
+  <button class="btn" id="mineButton" onclick="mine()">شروع استخراج</button>
+ </div>
+ <div class="grid2">
+  <div class="stat"><span class="label">مجموع استخراج</span><strong id="mineEarned">0 EMC</strong></div>
+  <div class="stat"><span class="label">سطح فعلی</span><strong id="mineLevel">1</strong></div>
+ </div>
 </section>
 
 <!-- TASKS -->
 <section class="page" id="tasks">
- <div class="section-title">ماموریت‌ها</div>
+ <h3 class="section-title">وظایف و پاداش‌ها</h3>
  <div class="card">
-  <div class="coin-row"><div><b>ورود روزانه</b><div class="small">هر روز وارد برنامه شو</div></div><b class="up">+50 EMC</b></div>
-  <div class="coin-row"><div><b>دعوت دوستان</b><div class="small">دوستان خود را دعوت کن</div></div><b class="up">+25 EMC</b></div>
-  <div class="coin-row"><div><b>عضویت در کانال</b><div class="small">کانال پروژه را دنبال کن</div></div><b class="up">+10 EMC</b></div>
-  <div class="notice">پاداش‌های این بخش در نسخه محلی شبیه‌سازی‌شده‌اند و تأیید سرور ندارند.</div>
+  <div class="task"><div><strong>عضویت در کانال</strong><div class="small">پاداش 100 EMC</div></div><button class="btn secondary" onclick="taskReward('channel',100)">دریافت</button></div>
+  <div class="task"><div><strong>دعوت از دوستان</strong><div class="small">پاداش 200 EMC</div></div><button class="btn secondary" onclick="taskReward('invite',200)">دریافت</button></div>
+  <div class="task"><div><strong>بازدید از پروژه</strong><div class="small">پاداش 50 EMC</div></div><button class="btn secondary" onclick="taskReward('visit',50)">دریافت</button></div>
  </div>
 </section>
 
 <!-- FRIENDS -->
 <section class="page" id="friends">
- <div class="section-title">دعوت دوستان</div>
+ <h3 class="section-title">دعوت از دوستان</h3>
  <div class="card">
   <div style="font-size:35px;text-align:center">👥</div>
-  <h3 style="text-align:center">دوستانت را دعوت کن</h3>
-  <p class="small" style="text-align:center">کد دعوت خود را با دوستان به اشتراک بگذار.</p>
-  <div class="stat" style="text-align:center">
-   <span class="label">کد دعوت</span>
-   <b id="inviteCode">EMERALD-0000</b>
-  </div>
-  <button class="primary" style="margin-top:15px" onclick="copyInvite()">کپی کد دعوت</button>
+  <div class="big green" style="text-align:center" id="refCount">0</div>
+  <p class="label" style="text-align:center">تعداد دوستان دعوت‌شده</p>
+  <p class="small">لینک دعوت خود را با دوستانت به اشتراک بگذار.</p>
+  <div class="field"><input id="refLink" readonly value="لینک دعوت شما"></div>
+  <button class="btn" onclick="copyReferral()">کپی لینک دعوت</button>
  </div>
 </section>
 
 <!-- UPGRADE -->
 <section class="page" id="upgrade">
- <div class="section-title">ارتقای سطح</div>
- <div class="card">
-  <div class="gem-wrap" style="height:120px">
-   <div style="font-size:65px;filter:drop-shadow(0 0 20px #20e58b)">💎</div>
-  </div>
-  <div class="row"><span class="label">سطح فعلی</span><b id="level">1</b></div>
-  <div class="row" style="margin-top:15px"><span class="label">هزینه ارتقا</span><b class="coin">500 EMC</b></div>
-  <button class="primary" style="margin-top:18px" onclick="upgradeLevel()">ارتقای سطح</button>
+ <h3 class="section-title">ارتقای سطح</h3>
+ <div class="card" style="text-align:center">
+  <div style="font-size:55px">🏆</div>
+  <div class="label">سطح فعلی شما</div>
+  <div class="big gold" id="upgradeLevel">LEVEL 1</div>
+  <p class="small">با ارتقای سطح، حساب خود را پیشرفت بده.</p>
+  <div class="info-line"><span>هزینه ارتقا</span><strong>500 EMC</strong></div>
+  <div class="info-line"><span>موجودی EMC</span><strong id="upgradeBalance">0 EMC</strong></div>
+  <button class="btn goldbtn" onclick="upgrade()">ارتقای سطح</button>
  </div>
 </section>
 
 <!-- WALLET -->
 <section class="page" id="wallet">
- <div class="section-title">کیف پول</div>
+ <h3 class="section-title">کیف پول</h3>
  <div class="card">
   <div style="font-size:35px;text-align:center">👛</div>
-  <h3 style="text-align:center">EMC WALLET</h3>
-  <div class="stat">
-   <span class="label">موجودی EMC</span>
-   <b id="walletBalance">0 EMC</b>
-  </div>
-  <button class="primary" style="margin-top:15px" onclick="toast('اتصال واقعی کیف پول هنوز فعال نشده است.')">اتصال TON Wallet</button>
-  <button class="secondary" style="width:100%;margin-top:10px" onclick="toast('برداشت واقعی هنوز فعال نشده است.')">درخواست برداشت</button>
-  <div class="notice">برای انتقال واقعی توکن، قرارداد Jetton روی TON و اتصال کیف پول و سرور لازم است.</div>
+  <h3 style="text-align:center">کیف پول EMERALD</h3>
+  <p class="small" style="text-align:center">اتصال کیف پول و انتقال واقعی نیازمند قرارداد Jetton و اتصال TON Connect است.</p>
+  <button class="btn" onclick="toast('اتصال TON Connect در نسخه بعدی قابل افزودن است.')">اتصال کیف پول TON</button>
  </div>
 </section>
-
-<div class="footer">EMERALD COIN · EMC · TON ECOSYSTEM</div>
 </div>
 
 <nav class="nav">
- <button class="active" data-page="home" onclick="showPage('home',this)"><span>⌂</span>خانه</button>
- <button data-page="market" onclick="showPage('market',this)"><span>▥</span>بازار</button>
- <button data-page="swap" onclick="showPage('swap',this)"><span>⇄</span>Swap</button>
- <button data-page="tasks" onclick="showPage('tasks',this)"><span>☑</span>ماموریت</button>
- <button data-page="friends" onclick="showPage('friends',this)"><span>♧</span>دعوت</button>
- <button data-page="upgrade" onclick="showPage('upgrade',this)"><span>⬆</span>ارتقا</button>
- <button data-page="wallet" onclick="showPage('wallet',this)"><span>◉</span>کیف پول</button>
+ <button class="active" onclick="go('home',this)"><span>⌂</span>خانه</button>
+ <button onclick="go('market',this)"><span>▥</span>بازار</button>
+ <button onclick="go('swap',this)"><span>⇄</span>سوآپ</button>
+ <button onclick="go('assets',this)"><span>◈</span>دارایی</button>
+ <button onclick="go('mining',this)"><span>⛏</span>استخراج</button>
+ <button onclick="go('tasks',this)"><span>☷</span>وظایف</button>
+ <button onclick="go('friends',this)"><span>♧</span>دعوت</button>
+ <button onclick="go('wallet',this)"><span>◉</span>کیف پول</button>
 </nav>
+<div class="toast" id="toast"></div>
 
 <script>
-const tg=window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand();}
-
-const KEY='emerald_coin_ui_v4';
+const START_PRICE=0.007;
+const FEE=0.003;
+const MIN_EMC_SWAP=10000;
 const DAY=24*60*60*1000;
+const rates={EMC:START_PRICE,USDT:1,ETH:3000,BTC:90000};
 
-let data={balance:0,earned:0,level:1,lastMine:0,referrals:0};
+let state={
+ balance:0,earned:0,level:1,lastMine:0,referrals:0,
+ assets:{EMC:0,USDT:0,ETH:0,BTC:0},
+ history:[],tasks:[]
+};
+
 try{
- const saved=JSON.parse(localStorage.getItem(KEY));
- if(saved)data={...data,...saved};
+ const saved=JSON.parse(localStorage.getItem('emerald_exchange_v2'));
+ if(saved){
+  state={...state,...saved};
+  state.assets={...{EMC:0,USDT:0,ETH:0,BTC:0},...(saved.assets||{})};
+  state.history=Array.isArray(saved.history)?saved.history:[];
+  state.tasks=Array.isArray(saved.tasks)?saved.tasks:[];
+ }
 }catch(e){}
 
-function save(){localStorage.setItem(KEY,JSON.stringify(data));}
-
+function syncBalance(){
+ state.balance=Number(state.assets.EMC)||0;
+}
+function save(){
+ syncBalance();
+ localStorage.setItem('emerald_exchange_v2',JSON.stringify(state));
+}
+function money(n){return Number(n||0).toLocaleString('en-US',{maximumFractionDigits:4})}
+function usd(n){return '$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function toast(message){
  const el=document.getElementById('toast');
  el.textContent=message;el.style.display='block';
  clearTimeout(window.toastTimer);
  window.toastTimer=setTimeout(()=>el.style.display='none',2600);
 }
-
-function showPage(page,btn){
+function go(id,button){
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(page)?.classList.add('active');
+ document.getElementById(id).classList.add('active');
  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
- const target=btn||document.querySelector('[data-page="'+page+'"]');
- if(target)target.classList.add('active');
- if(page==='swap')calculateSwap();
+ if(button)button.classList.add('active');
+ else{
+  const index={home:0,market:1,swap:2,assets:3,mining:4,tasks:5,friends:6,wallet:7}[id];
+  document.querySelectorAll('.nav button')[index]?.classList.add('active');
+ }
+ render();
+ if(id==='swap')calculateSwap();
 }
-
-function updateUserName(){
- const name=tg?.initDataUnsafe?.user?.first_name||'کاربر';
- const invite='EMERALD-'+(tg?.initDataUnsafe?.user?.id||'0000');
- document.getElementById('inviteCode').textContent=invite;
+function portfolio(){
+ return Object.keys(rates).reduce((sum,c)=>sum+(Number(state.assets[c])||0)*rates[c],0);
 }
-
+function renderAssets(){
+ const names={EMC:'Emerald Coin',USDT:'Tether',ETH:'Ethereum',BTC:'Bitcoin'};
+ const symbols={EMC:'E',USDT:'₮',ETH:'Ξ',BTC:'₿'};
+ let html='';
+ Object.keys(names).forEach(c=>{
+  const amount=Number(state.assets[c])||0;
+  html+=`<div class="asset">
+   <div class="coin"><div class="coinicon ${c.toLowerCase()}">${symbols[c]}</div>
+   <div><strong>${c}</strong><small>${names[c]}</small></div></div>
+   <div style="text-align:left"><strong>${money(amount)}</strong><small>${usd(amount*rates[c])}</small></div>
+  </div>`;
+ });
+ document.getElementById('assetList').innerHTML=html;
+ document.getElementById('homeAssets').innerHTML=html;
+ document.getElementById('assetTotal').textContent=usd(portfolio());
+ document.getElementById('portfolioValue').textContent=usd(portfolio());
+}
 function render(){
- document.getElementById('balance').textContent=Number(data.balance).toFixed(2);
- document.getElementById('totalEarned').textContent=Number(data.earned).toFixed(2)+' EMC';
- document.getElementById('referrals').textContent=data.referrals;
- document.getElementById('level').textContent=data.level;
- document.getElementById('homeLevel').textContent=data.level;
- document.getElementById('walletBalance').textContent=Number(data.balance).toFixed(2)+' EMC';
- document.getElementById('portfolio').textContent='$'+(data.balance*price).toFixed(2);
- updateMiningTimer();
+ syncBalance();
+ const b=money(state.assets.EMC);
+ document.getElementById('homeBalance').textContent=b+' EMC';
+ document.getElementById('homeEarned').textContent=money(state.earned)+' EMC';
+ document.getElementById('homeLevel').textContent='Level '+state.level;
+ document.getElementById('mineEarned').textContent=money(state.earned)+' EMC';
+ document.getElementById('mineLevel').textContent=state.level;
+ document.getElementById('upgradeLevel').textContent='LEVEL '+state.level;
+ document.getElementById('upgradeBalance').textContent=b+' EMC';
+ document.getElementById('refCount').textContent=state.referrals;
+ renderAssets();
+ renderHistory();
+ updateMining();
+ save();
 }
-
-function claimMining(){
+function mine(){
  const now=Date.now();
- if(data.lastMine&&now-data.lastMine<DAY){
+ if(state.lastMine&&now-state.lastMine<DAY){
   toast('هنوز زمان استخراج بعدی نرسیده است.');return;
  }
- data.balance+=200;data.earned+=200;data.lastMine=now;
- save();render();toast('200 EMC به موجودی محلی اضافه شد!');
+ state.assets.EMC+=200;
+ state.earned+=200;
+ state.lastMine=now;
+ render();
+ toast('۲۰۰ EMC به موجودی شما اضافه شد.');
 }
-
-function updateMiningTimer(){
- const btn=document.getElementById('mineBtn');
- const timer=document.getElementById('timer');
- const remaining=DAY-(Date.now()-data.lastMine);
- if(!data.lastMine||remaining<=0){
-  timer.textContent='آماده استخراج';
-  btn.disabled=false;btn.textContent='شروع استخراج 200 EMC';
-  btn.style.opacity='1';return;
+function updateMining(){
+ const now=Date.now();
+ const elapsed=state.lastMine?now-state.lastMine:DAY;
+ const remaining=Math.max(0,DAY-elapsed);
+ const ready=remaining===0;
+ document.getElementById('mineButton').disabled=!ready;
+ document.getElementById('miningStatus').textContent=ready?'آماده استخراج':'استخراج فعال است';
+ document.getElementById('mineProgress').style.width=(Math.min(1,elapsed/DAY)*100)+'%';
+ if(ready)document.getElementById('countdown').textContent='آماده';
+ else{
+  const h=Math.floor(remaining/3600000);
+  const m=Math.floor((remaining%3600000)/60000);
+  const s=Math.floor((remaining%60000)/1000);
+  document.getElementById('countdown').textContent=`${h}س ${m}د ${s}ث`;
  }
- const h=Math.floor(remaining/3600000);
- const m=Math.floor((remaining%3600000)/60000);
- const s=Math.floor((remaining%60000)/1000);
- timer.textContent=[h,m,s].map(v=>String(v).padStart(2,'0')).join(':');
- btn.disabled=true;btn.textContent='استخراج انجام شد';
- btn.style.opacity='.55';
 }
-
-function upgradeLevel(){
- if(data.balance<500){toast('موجودی کافی نیست؛ برای ارتقا 500 EMC لازم است.');return;}
- data.balance-=500;data.level++;
- save();render();toast('سطح شما ارتقا یافت!');
+function upgrade(){
+ if(state.assets.EMC<500){toast('موجودی EMC برای ارتقا کافی نیست.');return;}
+ state.assets.EMC-=500;
+ state.level++;
+ render();
+ toast('سطح حساب شما ارتقا یافت!');
 }
-
-function copyInvite(){
- const code=document.getElementById('inviteCode').textContent;
- if(navigator.clipboard?.writeText){
-  navigator.clipboard.writeText(code).then(()=>toast('کد دعوت کپی شد!')).catch(()=>toast(code));
- }else toast(code);
+function calculateSwap(){
+ const from=document.getElementById('fromCoin').value;
+ const to=document.getElementById('toCoin').value;
+ const amount=Number(document.getElementById('fromAmount').value)||0;
+ const gross=from===to?0:amount*rates[from]/rates[to];
+ const received=gross*(1-FEE);
+ document.getElementById('toAmount').value=money(received);
+ document.getElementById('fromBalance').textContent=money(state.assets[from])+' '+from;
+ document.getElementById('toBalance').textContent=money(state.assets[to])+' '+to;
+ document.getElementById('swapRate').textContent=from===to?'جفت‌ارز یکسان':`1 ${from} = ${money(rates[from]/rates[to])} ${to}`;
+ document.getElementById('swapFinal').textContent=money(received)+' '+to;
+ document.getElementById('swapSuccess').style.display='none';
 }
-
-/* شبیه‌ساز قیمت EMC */
-let price=0.007;
-let startPrice=0.007;
-let priceHistory=[];
-let labels=[];
-for(let i=0;i<30;i++){
- labels.push(String(i+1));
- priceHistory.push(0.007+(Math.random()-.5)*0.00025);
+function confirmSwap(){
+ const amount=Number(document.getElementById('fromAmount').value);
+ const from=document.getElementById('fromCoin').value;
+ const to=document.getElementById('toCoin').value;
+ if(!Number.isFinite(amount)||amount<=0){toast('مقدار معتبر وارد کن.');return;}
+ if(from===to){toast('دو ارز متفاوت انتخاب کن.');return;}
+ if(from==='EMC'&&amount<MIN_EMC_SWAP){
+  toast('حداقل تبدیل 10,000 EMC است.');return;
+ }
+ if(amount>Number(state.assets[from])){
+  toast('موجودی '+from+' کافی نیست.');return;
+ }
+ const received=amount*rates[from]/rates[to]*(1-FEE);
+ if(!Number.isFinite(received)||received<=0){toast('مقدار تبدیل معتبر نیست.');return;}
+ state.assets[from]-=amount;
+ state.assets[to]+=received;
+ state.history.unshift({
+  from,to,amount,received,
+  date:new Date().toLocaleString('fa-IR')
+ });
+ state.history=state.history.slice(0,50);
+ save();
+ render();
+ calculateSwap();
+ document.getElementById('successAmount').textContent=money(received)+' '+to;
+ document.getElementById('swapSuccess').style.display='block';
+ toast(money(received)+' '+to+' به موجودی اضافه شد.');
 }
-priceHistory[29]=price;
-
-function formatPrice(v){return '$'+Number(v).toFixed(6);}
-
-function makeChart(id){
- const canvas=document.getElementById(id);
- if(!canvas||!window.Chart)return null;
- return new Chart(canvas,{
+function renderHistory(){
+ const el=document.getElementById('swapHistory');
+ if(!state.history.length){
+  el.innerHTML='<p class="small">هنوز تبدیلی ثبت نشده است.</p>';return;
+ }
+ el.innerHTML=state.history.map(x=>`
+  <div class="history-item">
+   <div class="row"><strong>${money(x.amount)} ${x.from} ← ${money(x.received)} ${x.to}</strong><span class="green">انجام شد</span></div>
+   <div class="small">${x.date||''}</div>
+  </div>`).join('');
+}
+function taskReward(id,amount){
+ if(state.tasks.includes(id)){toast('این وظیفه قبلاً دریافت شده است.');return;}
+ state.tasks.push(id);
+ state.assets.EMC+=amount;
+ state.earned+=amount;
+ render();
+ toast(amount+' EMC دریافت کردی.');
+ document.querySelectorAll('.task button').forEach((b,i)=>{
+  const ids=['channel','invite','visit'];
+  if(ids[i]===id){b.textContent='دریافت شد';b.disabled=true;}
+ });
+}
+function copyReferral(){
+ const link=document.getElementById('refLink').value;
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(link).then(()=>toast('لینک کپی شد.')).catch(()=>toast(link));
+ }else toast(link);
+}
+function setupReferral(){
+ let user='emerald-user';
+ try{
+  const tg=window.Telegram?.WebApp;
+  if(tg?.initDataUnsafe?.user?.id)user=tg.initDataUnsafe.user.id;
+ }catch(e){}
+ document.getElementById('refLink').value=location.origin+location.pathname+'?ref='+user;
+}
+let homeChart,marketChart;
+let chartValues=Array.from({length:30},(_,i)=>START_PRICE*(1+(Math.random()-.5)*.08));
+function createChart(id){
+ const ctx=document.getElementById(id);
+ if(!ctx||!window.Chart)return null;
+ return new Chart(ctx,{
   type:'line',
-  data:{
-   labels:labels,
-   datasets:[{
-    data:priceHistory,
-    borderColor:'#20e58b',
-    backgroundColor:'rgba(32,229,139,.10)',
-    borderWidth:2,fill:true,tension:.35,
-    pointRadius:0,pointHoverRadius:4
-   }]
-  },
+  data:{labels:chartValues.map((_,i)=>i),datasets:[{
+   data:chartValues,borderColor:'#19d58b',backgroundColor:'rgba(25,213,139,.10)',
+   fill:true,tension:.35,pointRadius:0,borderWidth:2
+  }]},
   options:{
    responsive:true,maintainAspectRatio:false,
-   plugins:{legend:{display:false}},
+   plugins:{legend:{display:false},tooltip:{enabled:true}},
    scales:{
     x:{display:false,grid:{display:false}},
-    y:{ticks:{color:'#81968a',font:{size:9},callback:v=>'$'+Number(v).toFixed(4)},grid:{color:'rgba(255,255,255,.06)'}}
+    y:{ticks:{color:'#8ba99a',font:{size:9}},grid:{color:'rgba(120,160,130,.12)'}}
    }
   }
  });
 }
-let chart1=null,chart2=null;
-
-function updatePriceUI(){
- const change=((price-startPrice)/startPrice)*100;
- const changeText=(change>=0?'+':'')+change.toFixed(2)+'%';
- ['mainPrice','marketPrice','homePrice','swapPrice'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el)el.textContent=formatPrice(price);
- });
- ['priceChange','marketChange'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el){el.textContent=changeText;el.className=change>=0?'up':'down';}
- });
- document.getElementById('portfolio').textContent='$'+(data.balance*price).toFixed(2);
- document.getElementById('pairUsdt').textContent=formatPrice(price);
- // نرخ‌های نمونه صرفاً برای محاسبه نمایشی هستند.
- const ethUsd=3000,bTCUsd=90000;
- document.getElementById('pairEth').textContent=(price/ethUsd).toFixed(9)+' ETH';
- document.getElementById('pairBtc').textContent=(price/bTCUsd).toFixed(10)+' BTC';
+function refreshCharts(){
+ if(homeChart){homeChart.data.datasets[0].data=chartValues;homeChart.update('none');}
+ if(marketChart){marketChart.data.datasets[0].data=chartValues;marketChart.update('none');}
+}
+function setPeriod(period,btn){
+ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ toast('بازه نمودار: '+period);
+}
+function updatePrice(){
+ const previous=rates.EMC;
+ rates.EMC=Math.max(.0001,rates.EMC*(1+(Math.random()-.49)*.012));
+ chartValues.push(rates.EMC);
+ if(chartValues.length>30)chartValues.shift();
+ const price='$'+rates.EMC.toFixed(6);
+ document.getElementById('price').textContent=price;
+ document.getElementById('marketPrice').textContent=price;
+ document.getElementById('pairEMC').textContent=price;
+ document.getElementById('change').textContent=((rates.EMC/START_PRICE-1)*100).toFixed(2)+'%';
+ refreshCharts();
+ renderAssets();
  calculateSwap();
 }
-
-function tickPrice(){
- const old=price;
- const movement=(Math.random()-.48)*0.000055;
- price=Math.max(0.0001,price+movement);
- labels.push(new Date().toLocaleTimeString('fa-IR'));
- priceHistory.push(price);
- if(labels.length>30){labels.shift();priceHistory.shift();}
- const color=price>=old?'#20e58b':'#ff586b';
- [chart1,chart2].forEach(chart=>{
-  if(chart){
-   chart.data.labels=labels;
-   chart.data.datasets[0].data=priceHistory;
-   chart.data.datasets[0].borderColor=color;
-   chart.update('none');
-  }
+function init(){
+ const tg=window.Telegram?.WebApp;
+ if(tg){tg.ready();tg.expand();}
+ homeChart=createChart('homeChart');
+ marketChart=createChart('marketChart');
+ setupReferral();
+ state.tasks.forEach(id=>{
+  const ids=['channel','invite','visit'];
+  document.querySelectorAll('.task button').forEach((b,i)=>{
+   if(ids[i]===id){b.textContent='دریافت شد';b.disabled=true;}
+  });
  });
- updatePriceUI();
+ render();
+ calculateSwap();
+ setInterval(updateMining,1000);
+ setInterval(updatePrice,5000);
 }
-
-function calculateSwap(){
- const amount=Number(document.getElementById('swapAmount')?.value||0);
- const from=document.getElementById('fromCoin')?.value||'EMC';
- const to=document.getElementById('toCoin')?.value||'USDT';
- const rates={EMC:price,USDT:1,ETH:3000,BTC:90000};
- let result=0;
- if(rates[from]&&rates[to]&&from!==to)result=amount*rates[from]/rates[to]*0.997;
- else if(from===to)result=amount;
- const output=document.getElementById('swapOutput');
- if(output)output.value=Number(result).toFixed(to==='BTC'?10:to==='ETH'?8:4);
-}
-
-function executeSwap(){
- const amount=Number(document.getElementById('swapAmount').value);
- const from=document.getElementById('fromCoin').value;
- const to=document.getElementById('toCoin').value;
- const result=document.getElementById('swapOutput').value;
- if(!amount||amount<=0){toast('مقدار معتبر وارد کنید.');return;}
- if(from===to){toast('دو ارز متفاوت انتخاب کنید.');return;}
- const box=document.getElementById('swapHistory');
- const empty=box.querySelector('.small');
- if(empty)box.innerHTML='';
- const item=document.createElement('div');
- item.className='history-item';
- const left=document.createElement('span');
- const right=document.createElement('b');
- left.textContent=amount+' '+from+' ← تبدیل به '+to;
- right.textContent=result+' '+to;
- item.append(left,right);
- box.prepend(item);
- toast('تبدیل شبیه‌سازی‌شده ثبت شد.');
-}
-
-updateUserName();
-render();
-chart1=makeChart('priceChart');
-chart2=makeChart('marketChart');
-updatePriceUI();
-setInterval(updateMiningTimer,1000);
-setInterval(tickPrice,5000);
+init();
 </script>
 </body>
 </html>
