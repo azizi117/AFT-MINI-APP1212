@@ -1,403 +1,644 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#06140d">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06130d">
 <title>EMERALD COIN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
-:root{--bg:#06140d;--panel:#0c2116;--panel2:#102b1b;--line:#285239;--green:#54dc8a;--mint:#c0f5d0;--gold:#d9bb75;--muted:#91aa99}
+:root{
+--bg:#06130d;
+--card:#0c2117;
+--card2:#102d20;
+--green:#19d68a;
+--gold:#dfbd72;
+--text:#effff5;
+--muted:#8ca99a;
+--line:#254735;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 50% -15%,#28633d,transparent 43%),var(--bg);color:#effff2;font-family:'Vazirmatn',Arial,sans-serif;padding-bottom:90px}
+body{
+margin:0;
+background:radial-gradient(ellipse at top,#17452c,#06130d 55%,#030a06);
+color:var(--text);
+font-family:Arial,Tahoma,sans-serif;
+}
 button,input,select{font:inherit}
-button{cursor:pointer}
-.app{max-width:560px;margin:auto;padding:0 14px}
-header{height:76px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#06140de8;backdrop-filter:blur(15px);z-index:10}
+.app{max-width:1050px;margin:auto;padding:16px 14px 100px}
+.header{
+display:flex;align-items:center;justify-content:space-between;
+gap:12px;margin-bottom:18px
+}
 .brand{display:flex;align-items:center;gap:10px}
-.logo{width:43px;height:43px;border-radius:14px;background:linear-gradient(145deg,#d9c17e,#1d7540);display:grid;place-items:center;border:1px solid #e2ca86}
-.logo svg{width:29px}
-.brand b{font-size:15px;letter-spacing:1px}
-.brand small{display:block;color:var(--gold);font-size:9px;letter-spacing:2px}
-select{background:#102b1b;color:#d9f8e1;border:1px solid var(--line);padding:8px;border-radius:10px;font-size:11px;max-width:125px}
-.page{display:none}.page.active{display:block;animation:fade .25s}
-@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.hero{padding:20px;border:1px solid #456c48;border-radius:23px;background:linear-gradient(135deg,#1b472b,#0b2015 70%);box-shadow:0 15px 40px #0005;position:relative;overflow:hidden}
-.eyebrow{font-size:10px;color:#b8d3bf}
-.balance{font-size:34px;font-weight:900;color:#d5f9df;direction:ltr;text-align:right;margin:8px 0}
-.balance small{font-size:13px;color:var(--gold)}
-.hero-foot{border-top:1px solid #ffffff20;padding-top:12px;display:flex;justify-content:space-between;font-size:10px;color:#b4cdbb}
-.hero-foot b{color:var(--mint)}
-.gem-stage{height:235px;display:grid;place-items:center;position:relative}
-.gem{width:190px;height:210px;filter:drop-shadow(0 0 20px #4cda8b88);animation:float 4s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-9px) rotate(2deg)}}
-.gem.small{width:65px;height:72px;animation:none}
-.card{background:linear-gradient(145deg,#10291b,#0a1d13);border:1px solid var(--line);border-radius:18px;padding:15px;margin:13px 0}
-.head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
-.head b{font-size:13px}
-.tag{font-size:9px;color:var(--gold);border:1px solid #705d32;padding:5px 9px;border-radius:20px}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
-.stat{background:#0b2417;border:1px solid #244a32;border-radius:14px;padding:12px}
-.stat small{font-size:9px;color:var(--muted)}
-.stat strong{display:block;color:var(--mint);font-size:19px;margin-top:5px}
-.btn{background:linear-gradient(110deg,#238b4c,#9be7ad);color:#082414;border:0;border-radius:12px;padding:12px 15px;font-size:11px;font-weight:900}
-.btn.block{width:100%;margin-top:9px}
-.btn.dark{background:#163c27;color:#d4f6de;border:1px solid #376447}
-.btn.gold{background:linear-gradient(110deg,#997537,#e6d39a);color:#211a0c}
-.btn:disabled{opacity:.4}
-.muted{font-size:10px;color:var(--muted);line-height:1.9}
-.progress{height:8px;background:#1a3b27;border-radius:20px;overflow:hidden}
-.progress i{display:block;height:100%;background:linear-gradient(90deg,#269e59,#b9f4cb);width:0}
-.coinbutton{width:100%;display:grid;place-items:center;background:transparent;border:0}
-.coinbutton:active .gem{transform:scale(.94)}
-.section-title{font-size:18px;font-weight:900;margin:15px 2px 5px}
-.section-sub{font-size:10px;color:var(--muted);margin-bottom:14px}
-.tabs{position:fixed;bottom:0;left:0;right:0;z-index:20;max-width:560px;margin:auto;background:#071a10f2;backdrop-filter:blur(15px);border-top:1px solid #244c32;display:flex;justify-content:space-around;padding:8px 2px calc(8px + env(safe-area-inset-bottom))}
-.tabs button{border:0;background:none;color:#8da695;font-size:9px;padding:3px}
-.tabs button span{display:block;font-size:19px;margin-bottom:3px}
-.tabs button.active{color:#b9f5ca}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:10px 0;font-size:11px}
-input{width:100%;background:#07170e;border:1px solid #31583c;border-radius:11px;padding:12px;color:white;margin:7px 0;direction:ltr;font-size:11px}
-.task{padding:13px;background:#0b2116;border:1px solid #244a32;border-radius:14px;margin:9px 0}
-.task b{font-size:11px}.reward{color:var(--gold);font-size:10px}
-.chart{width:100%;height:155px;display:block}
-.notice{background:#292719;border:1px solid #675733;color:#e1cc91;padding:11px;border-radius:11px;font-size:10px;line-height:1.9}
-.history{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #1e3b29;font-size:10px;gap:8px}
-.positive{color:#8ee9a8}.negative{color:#ff9999}
-.toast{position:fixed;z-index:50;top:15px;left:50%;transform:translate(-50%,-100px);background:#153b26;border:1px solid #65c886;border-radius:12px;padding:12px 17px;font-size:11px;transition:.25s;text-align:center;max-width:90%}
-.toast.show{transform:translate(-50%,0)}
-.profile{display:flex;align-items:center;gap:12px}
-.avatar{width:55px;height:55px;border-radius:17px;background:linear-gradient(145deg,#d9c17e,#237346);display:grid;place-items:center}
-.avatar svg{width:37px}
+.brand svg{width:52px;height:52px}
+.brand strong{display:block;letter-spacing:1px;font-size:16px}
+.brand small{color:var(--muted);font-size:10px;letter-spacing:2px}
+select{
+background:var(--card);color:white;border:1px solid var(--line);
+padding:9px;border-radius:10px
+}
+.card{
+background:linear-gradient(145deg,#102d20,#08180f);
+border:1px solid var(--line);
+border-radius:19px;padding:17px;
+box-shadow:0 12px 35px #0005;
+}
+.hero{
+display:grid;grid-template-columns:1fr 1fr;
+gap:14px;
+}
+.coin{
+min-height:300px;display:grid;place-items:center;
+background:radial-gradient(circle,#155332,#08170e 70%);
+overflow:hidden
+}
+.coin svg{width:min(100%,300px);filter:drop-shadow(0 12px 22px #0009)}
+.pricebox{display:flex;flex-direction:column;justify-content:center}
+.label{font-size:11px;color:#9cceb2;letter-spacing:2px}
+.price{font-size:45px;font-weight:bold;margin:12px 0}
+.price span{font-size:14px;color:var(--gold)}
+.muted{font-size:11px;color:var(--muted);line-height:1.8}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:17px}
+.tag{
+background:#10291c;border:1px solid var(--line);
+padding:7px 10px;border-radius:20px;font-size:10px;color:#bcebd0
+}
+.stats{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:10px;margin:14px 0
+}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px}
+.stat small{color:var(--muted);font-size:11px}
+.stat b{display:block;font-size:20px;margin-top:6px}
+.section{margin-top:14px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.heading h3{font-size:15px;margin:0}
+.chartbox{height:190px}
+canvas{width:100%;height:100%}
+.ranges{display:flex;gap:6px}
+.ranges button{
+background:#10291c;color:#9fc9af;border:1px solid var(--line);
+padding:6px 10px;border-radius:8px;font-size:11px
+}
+.ranges button.active{background:#17643b;color:white}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mine{text-align:center}
+.gem{
+width:110px;height:110px;margin:12px auto;
+background:linear-gradient(140deg,#b7ffd7,#1acb78 35%,#07502b 75%);
+clip-path:polygon(50% 0,88% 20%,100% 62%,50% 100%,0 62%,12% 20%);
+display:grid;place-items:center;
+color:#07351d;font-size:32px;font-weight:900;
+filter:drop-shadow(0 0 18px #19d68a)
+}
+.primary{
+width:100%;border:0;border-radius:12px;padding:14px;
+background:linear-gradient(100deg,#16b96f,#a2edbd);
+color:#052415;font-weight:bold
+}
+.primary:disabled{opacity:.4}
+.secondary{
+background:#143423;color:white;border:1px solid var(--line);
+padding:9px 12px;border-radius:10px
+}
+.row{
+display:flex;align-items:center;justify-content:space-between;
+gap:10px;padding:12px 0;border-bottom:1px solid var(--line)
+}
+.row:last-child{border:0}
+.row small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.progress{height:7px;background:#06130d;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress i{display:block;height:100%;background:var(--green);width:0}
+.refbox{display:flex;gap:7px}
+.refbox input{
+min-width:0;flex:1;background:#06130d;color:white;
+border:1px solid var(--line);border-radius:10px;padding:10px
+}
+.note{font-size:10px;color:var(--muted);line-height:1.8;margin-top:10px}
+.bottom{
+position:fixed;bottom:0;left:0;right:0;
+display:flex;justify-content:space-around;
+background:#06130df2;backdrop-filter:blur(12px);
+border-top:1px solid var(--line);
+padding:12px 5px calc(12px + env(safe-area-inset-bottom));
+z-index:5
+}
+.bottom button{
+border:0;background:none;color:#8ca99a;
+font-size:10px;display:grid;gap:5px;justify-items:center
+}
+.bottom button span{font-size:19px}
+.bottom button.active{color:#80efb5}
+.toast{
+position:fixed;top:15px;left:50%;transform:translateX(-50%);
+background:#17452c;border:1px solid #4b9c6c;
+padding:12px 17px;border-radius:12px;
+opacity:0;pointer-events:none;transition:.2s;z-index:9
+}
+.toast.show{opacity:1}
+@media(max-width:650px){
+.hero,.two{grid-template-columns:1fr}
+.coin{min-height:245px}
+.coin svg{width:240px}
+.price{font-size:39px}
+.stats{gap:7px}
+.stat{padding:10px}
+.stat b{font-size:16px}
+}
 </style>
 </head>
+
 <body>
 <div class="app">
-<header>
- <div class="brand">
-  <div class="logo">
-   <svg viewBox="0 0 100 110"><path d="M50 3 94 35 75 94 50 107 25 94 6 35Z" fill="#174b2b" stroke="#e7d28e" stroke-width="4"/><path d="M50 3 50 107 25 94 6 35Z" fill="#65d88b"/><path d="M50 3 94 35 50 49Z" fill="#b7f4c6"/><path d="M6 35 50 49 25 94Z" fill="#2e9c58"/><path d="M94 35 50 49 75 94Z" fill="#176b3d"/><path d="M50 49 50 107 75 94Z" fill="#9ae9ad"/></svg>
-  </div>
-  <div><b>EMERALD COIN</b><small>THE DIGITAL GEM</small></div>
- </div>
- <select id="language" aria-label="Language">
-  <option value="fa">🇮🇷 فارسی</option>
-  <option value="en">🇬🇧 English</option>
-  <option value="ar">🇸🇦 العربية</option>
-  <option value="zh">🇨🇳 中文</option>
- </select>
-</header>
 
-<section class="page active" id="home">
- <div class="hero">
-  <div class="eyebrow" data-t="balance">موجودی کل دارایی</div>
-  <div class="balance"><span id="balance">0.00</span> <small>EMC</small></div>
-  <div class="hero-foot"><span><span data-t="earned">کل درآمد</span>: <b id="earned">0</b></span><span><span data-t="level">لول</span>: <b id="level">1</b></span></div>
- </div>
- <button class="coinbutton" id="gemButton" aria-label="Emerald">
-  <div class="gem-stage">
-   <svg class="gem" viewBox="0 0 220 240">
-    <defs>
-     <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4e5a8"/><stop offset=".5" stop-color="#997d43"/><stop offset="1" stop-color="#f4e5a8"/></linearGradient>
-     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d6ffcf"/><stop offset=".45" stop-color="#3cdb83"/><stop offset="1" stop-color="#07502b"/></linearGradient>
-    </defs>
-    <path d="M110 5 207 75 170 205 110 235 50 205 13 75Z" fill="#0a4226" stroke="url(#edge)" stroke-width="7"/>
-    <path d="M110 5 207 75 110 105Z" fill="#b8ffc8"/>
-    <path d="M13 75 110 5 110 105Z" fill="#4de18b"/>
-    <path d="M13 75 110 105 50 205Z" fill="#20a85c"/>
-    <path d="M207 75 110 105 170 205Z" fill="#08713c"/>
-    <path d="M110 105 50 205 110 235Z" fill="#40d77c"/>
-    <path d="M110 105 170 205 110 235Z" fill="#0b542e"/>
-    <path d="M110 5 110 105" stroke="#e5ffd9" stroke-opacity=".7" stroke-width="2"/>
-    <path d="M13 75 207 75" stroke="#d2ffcf" stroke-opacity=".35" stroke-width="2"/>
-    <path d="M110 105 110 235" stroke="#d2ffcf" stroke-opacity=".35" stroke-width="2"/>
-   </svg>
-  </div>
- </button>
- <div class="muted" style="text-align:center" data-t="gemHint">زمرد را لمس کن و وارد دنیای EMERALD شو</div>
- <div class="card">
-  <div class="head"><b data-t="mining">استخراج روزانه</b><span class="tag">24 HOURS</span></div>
-  <div class="row"><span data-t="reward">پاداش استخراج</span><b class="positive">+40 EMC</b></div>
-  <button class="btn block" id="mineBtn" data-t="mineBtn">دریافت ۴۰ توکن</button>
-  <div class="muted" id="timer" style="margin-top:8px"></div>
- </div>
- <div class="stats">
-  <div class="stat"><small data-t="power">قدرت استخراج</small><strong id="power">1</strong></div>
-  <div class="stat"><small data-t="xp">امتیاز XP</small><strong id="xp">0</strong></div>
-  <div class="stat"><small data-t="totalMines">تعداد استخراج</small><strong id="mines">0</strong></div>
-  <div class="stat"><small data-t="referrals">دعوت دوستان</small><strong id="referrals">0</strong></div>
- </div>
- <div class="card">
-  <div class="head"><b data-t="progress">پیشرفت سطح</b><span class="tag" id="levelTag">LEVEL 1</span></div>
-  <div class="row"><span data-t="nextLevel">XP تا سطح بعدی</span><b id="xpNext">0 / 250</b></div>
-  <div class="progress"><i id="xpBar"></i></div>
- </div>
- <div class="card">
-  <div class="head"><b data-t="history">تاریخچه موجودی</b><span class="tag">ACCOUNT</span></div>
-  <canvas id="chart" class="chart"></canvas>
-  <div class="muted" data-t="chartNote">نمودار تغییر موجودی حساب شما را نشان می‌دهد.</div>
- </div>
-</section>
+<header class="header">
+<div class="brand">
 
-<section class="page" id="upgrade">
- <div class="section-title" data-t="upgradeTitle">مرکز ارتقای لول</div>
- <div class="section-sub" data-t="upgradeSub">با پرداخت EMC سطح حساب خود را ارتقا بده.</div>
- <div class="card">
-  <div class="head"><b data-t="levelUpgrade">ارتقای سطح کاربری</b><span class="tag">LEVEL UP</span></div>
-  <div class="gem-stage" style="height:115px"><svg class="gem small" viewBox="0 0 220 240"><path d="M110 5 207 75 170 205 110 235 50 205 13 75Z" fill="#137441" stroke="#d9bb75" stroke-width="7"/><path d="M110 5 207 75 110 105Z" fill="#c0ffd0"/><path d="M13 75 110 5 110 105Z" fill="#52dc8b"/><path d="M13 75 110 105 50 205Z" fill="#168b4a"/><path d="M207 75 110 105 170 205Z" fill="#07512c"/><path d="M110 105 50 205 110 235Z" fill="#45d77d"/><path d="M110 105 170 205 110 235Z" fill="#0b5b32"/></svg></div>
-  <div class="stats">
-   <div class="stat"><small data-t="currentLevel">لول فعلی</small><strong id="currentLevel">1</strong></div>
-   <div class="stat"><small data-t="nextLevelName">لول بعدی</small><strong id="nextLevel">2</strong></div>
-  </div>
-  <div class="row"><span data-t="upgradeCost">هزینه ارتقا</span><b class="reward" id="levelCost">100 EMC</b></div>
-  <div class="notice" data-t="levelRule">هزینه هر ارتقا چهار برابر ارتقای قبلی می‌شود.</div>
-  <button class="btn block" id="levelUpBtn" data-t="upgradeBtn">ارتقای لول</button>
- </div>
- <div class="card">
-  <div class="head"><b data-t="levelTable">جدول هزینه لول‌ها</b><span class="tag">EMC</span></div>
-  <div id="levelList"></div>
- </div>
-</section>
+<!-- لوگوی زمردی اختصاصی -->
+<svg viewBox="0 0 100 100">
+<defs>
+<linearGradient id="emerald" x1="0" y1="0" x2="1" y2="1">
+<stop stop-color="#c6ffe0"/>
+<stop offset=".3" stop-color="#22df88"/>
+<stop offset=".7" stop-color="#08703e"/>
+<stop offset="1" stop-color="#02351d"/>
+</linearGradient>
+</defs>
+<circle cx="50" cy="50" r="47" fill="#a17a37"/>
+<circle cx="50" cy="50" r="43" fill="#082718" stroke="#f0d18a" stroke-width="2"/>
+<path d="M50 8 L82 25 L91 60 L50 91 L9 60 L18 25Z" fill="url(#emerald)" stroke="#e4c477" stroke-width="2"/>
+<path d="M18 25 L50 35 L82 25 L50 8Z" fill="#9dffd0" opacity=".45"/>
+<path d="M18 25 L50 91 L50 35Z" fill="#04733e" opacity=".7"/>
+<path d="M82 25 L50 91 L50 35Z" fill="#003b21" opacity=".6"/>
+<path d="M50 35 L18 25 L9 60 L50 91Z" fill="none" stroke="#b4fbd0" opacity=".5"/>
+<path d="M50 35 L82 25 L91 60 L50 91Z" fill="none" stroke="#b4fbd0" opacity=".5"/>
+</svg>
 
-<section class="page" id="tasks">
- <div class="section-title" data-t="missions">مأموریت‌ها</div>
- <div class="section-sub" data-t="missionsSub">فعالیت کن و پاداش دریافت کن.</div>
- <div class="card">
-  <div class="head"><b data-t="daily">مأموریت روزانه</b><span class="tag">DAILY</span></div>
-  <div class="task">
-   <div class="row"><b data-t="dailyMine">یک بار استخراج روزانه</b><b class="reward">+10 EMC</b></div>
-   <div class="row"><span class="muted" id="mineMissionStatus">تکمیل نشده</span><button class="btn dark" id="mineMissionClaim" data-t="claim">دریافت</button></div>
-  </div>
-  <div class="task">
-   <div class="row"><b data-t="dailyLogin">ورود روزانه</b><b class="reward">+5 EMC</b></div>
-   <div class="row"><span class="muted" id="loginMissionStatus">تکمیل نشده</span><button class="btn dark" id="loginMissionClaim" data-t="claim">دریافت</button></div>
-  </div>
- </div>
- <div class="card">
-  <div class="head"><b data-t="invite">دعوت دوستان</b><span class="tag">REFERRAL</span></div>
-  <p class="muted" data-t="inviteText">لینک اختصاصی خود را با دوستانت به اشتراک بگذار.</p>
-  <div class="row"><span data-t="refReward">پاداش هر دعوت تأییدشده</span><b class="reward">100 EMC</b></div>
-  <input id="refLink" readonly>
-  <button class="btn block" id="copyRef" data-t="copy">کپی لینک</button>
-  <div class="notice" data-t="refNotice">پاداش دعوت در این نسخه نمایشی است. برای تأیید واقعی دعوت به سرور و ربات تلگرام نیاز است.</div>
- </div>
-</section>
-
-<section class="page" id="wallet">
- <div class="section-title" data-t="web3">بخش Web3 و کیف پول</div>
- <div class="section-sub" data-t="web3Sub">آماده‌سازی بخش اتصال به شبکه TON</div>
- <div class="card">
-  <div class="head"><b>💎 TON WALLET</b><span class="tag">WEB3</span></div>
-  <div class="notice" data-t="walletNotice">در این نسخه آدرس کیف پول ذخیره می‌شود؛ اتصال رسمی و تراکنش بلاکچینی هنوز فعال نیست.</div>
-  <input id="walletAddress" placeholder="TON wallet address">
-  <button class="btn block" id="saveWallet" data-t="saveWallet">ذخیره آدرس</button>
-  <div class="row"><span data-t="walletStatus">وضعیت کیف پول</span><b id="walletState" class="positive">Not connected</b></div>
- </div>
- <div class="card">
-  <div class="head"><b data-t="history">تاریخچه فعالیت</b></div>
-  <div id="historyList"></div>
- </div>
-</section>
-
-<section class="page" id="profile">
- <div class="section-title" data-t="profile">پروفایل</div>
- <div class="card">
-  <div class="profile">
-   <div class="avatar"><svg viewBox="0 0 100 110"><path d="M50 3 94 35 75 94 50 107 25 94 6 35Z" fill="#174b2b" stroke="#e7d28e" stroke-width="4"/><path d="M50 3 50 107 25 94 6 35Z" fill="#65d88b"/><path d="M50 3 94 35 50 49Z" fill="#b7f4c6"/><path d="M6 35 50 49 25 94Z" fill="#2e9c58"/><path d="M94 35 50 49 75 94Z" fill="#176b3d"/></svg></div>
-   <div><b id="profileName">Emerald Member</b><div class="muted" id="profileId">EMC MEMBER</div></div>
-  </div>
-  <div class="stats">
-   <div class="stat"><small data-t="balance">موجودی</small><strong id="pBalance">0</strong></div>
-   <div class="stat"><small data-t="earned">کل درآمد</small><strong id="pEarned">0</strong></div>
-   <div class="stat"><small data-t="level">لول</small><strong id="pLevel">1</strong></div>
-   <div class="stat"><small data-t="totalMines">تعداد استخراج</small><strong id="pMines">0</strong></div>
-  </div>
- </div>
- <div class="card">
-  <div class="head"><b data-t="settings">تنظیمات</b></div>
-  <button class="btn dark block" id="backup" data-t="backup">دانلود پشتیبان اطلاعات</button>
-  <button class="btn dark block" id="restore" data-t="restore">بازیابی پشتیبان</button>
-  <input type="file" id="backupFile" accept="application/json" hidden>
-  <button class="btn block" style="background:#653034;color:white" id="reset" data-t="reset">پاک کردن اطلاعات</button>
-  <p class="muted" data-t="localNote">اطلاعات در مرورگر همین دستگاه ذخیره می‌شود.</p>
- </div>
- <div class="muted" style="text-align:center;padding:20px">EMERALD COIN · THE DIGITAL GEM</div>
-</section>
+<div>
+<strong>EMERALD COIN</strong>
+<small>THE EMERALD ECOSYSTEM</small>
+</div>
 </div>
 
-<nav class="tabs">
- <button class="active" data-page="home"><span>⌂</span><i data-t="home">خانه</i></button>
- <button data-page="upgrade"><span>◆</span><i data-t="upgrade">ارتقا</i></button>
- <button data-page="tasks"><span>✧</span><i data-t="missions">مأموریت</i></button>
- <button data-page="wallet"><span>◇</span><i data-t="web3">Web3</i></button>
- <button data-page="profile"><span>◎</span><i data-t="profile">پروفایل</i></button>
+<select id="language">
+<option value="fa">فارسی</option>
+<option value="en">English</option>
+<option value="ar">العربية</option>
+<option value="zh">中文</option>
+</select>
+</header>
+
+<section class="hero">
+
+<div class="card coin">
+<svg viewBox="0 0 400 400">
+<defs>
+<linearGradient id="stone" x1="0" y1="0" x2="1" y2="1">
+<stop stop-color="#c4ffdf"/>
+<stop offset=".25" stop-color="#20d982"/>
+<stop offset=".6" stop-color="#08703d"/>
+<stop offset="1" stop-color="#012d19"/>
+</linearGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+<stop stop-color="#fff0b6"/>
+<stop offset=".5" stop-color="#bd9145"/>
+<stop offset="1" stop-color="#f6d88d"/>
+</linearGradient>
+</defs>
+<circle cx="200" cy="200" r="187" fill="url(#metal)"/>
+<circle cx="200" cy="200" r="177" fill="#06170e" stroke="#f5dc9c" stroke-width="4"/>
+<circle cx="200" cy="200" r="165" fill="url(#stone)" stroke="#b88e49" stroke-width="3"/>
+<path d="M200 35 L315 100 L365 200 L315 300 L200 365 L85 300 L35 200 L85 100Z" fill="none" stroke="#a5ffd0" stroke-width="2" opacity=".6"/>
+<path d="M200 55 L270 120 L200 180 L130 120Z" fill="#c3ffdf" opacity=".6"/>
+<path d="M130 120 L200 180 L115 260Z" fill="#087a43"/>
+<path d="M270 120 L200 180 L285 260Z" fill="#034627"/>
+<path d="M115 260 L200 180 L285 260 L200 340Z" fill="#0b8e4f"/>
+<path d="M200 55 L200 180 L130 120 M200 55 L270 120 L200 180" fill="none" stroke="#e5ffd9" stroke-width="3"/>
+<text x="200" y="220" text-anchor="middle" font-size="42" font-weight="bold" fill="#ffe5a3" stroke="#60421b" stroke-width="1">EMERALD</text>
+<text x="200" y="264" text-anchor="middle" font-size="43" font-weight="bold" fill="#ffe5a3" stroke="#60421b" stroke-width="1">COIN</text>
+<text x="200" y="300" text-anchor="middle" font-size="20" letter-spacing="8" fill="#fff0bc">EMC</text>
+</svg>
+</div>
+
+<div class="card pricebox">
+<div class="label">EMERALD COIN MARKET</div>
+<div class="price">$0.006<span> / EMC</span></div>
+<div class="muted">Reference Price · USD</div>
+<div class="tags">
+<span class="tag">EMC / USD</span>
+<span class="tag">Reference Price</span>
+<span class="tag">Not Exchange Listed</span>
+</div>
+<p class="note">
+قیمت نمایش‌داده‌شده قیمت مرجع پروژه است. برای نمایش قیمت زنده بازار، توکن باید منتشر شود و منبع معتبر قیمت به آن متصل گردد.
+</p>
+</div>
+
+</section>
+
+<div class="stats">
+<div class="stat">
+<small>موجودی شما</small>
+<b><span id="balance">0.00</span> EMC</b>
+</div>
+<div class="stat">
+<small>مجموع درآمد</small>
+<b><span id="earned">0.00</span> EMC</b>
+</div>
+<div class="stat">
+<small>سطح استخراج</small>
+<b id="level">1</b>
+</div>
+</div>
+
+<section class="section card" id="market">
+<div class="heading">
+<h3>نمودار قیمت EMC</h3>
+<div class="ranges">
+<button class="active" data-range="1D">1D</button>
+<button data-range="1W">1W</button>
+<button data-range="1M">1M</button>
+<button data-range="1Y">1Y</button>
+</div>
+</div>
+<div style="font-size:24px;font-weight:bold">$0.00600 USD</div>
+<div class="chartbox">
+<canvas id="chart"></canvas>
+</div>
+<div class="muted">نمودار نمایشی بر اساس قیمت مرجع ۰٫۰۰۶ دلار</div>
+</section>
+
+<section class="section two">
+
+<div class="card mine" id="mining">
+<div class="heading">
+<h3>استخراج روزانه</h3>
+<small class="muted">هر ۲۴ ساعت</small>
+</div>
+<div class="gem">E</div>
+<div style="font-size:25px;font-weight:bold">+40 EMC</div>
+<p class="muted" id="timer">آماده استخراج</p>
+<button class="primary" id="mineBtn">شروع استخراج · ۴۰ EMC</button>
+<p class="note">استخراج فعلی در مرورگر همین دستگاه ذخیره می‌شود.</p>
+</div>
+
+<div class="card">
+<div class="heading">
+<h3>ارتقای سطح</h3>
+<small class="muted">هزینه ×۴</small>
+</div>
+<div class="row">
+<div>
+<b>سطح بعدی</b>
+<small id="upgradeDesc">Level 2 · 100 EMC</small>
+</div>
+<button class="secondary" id="upgradeBtn">100 EMC</button>
+</div>
+<div class="progress"><i id="progress"></i></div>
+<div class="muted">سطح فعلی: <b id="level2">1</b></div>
+<p class="note">هزینه ارتقا: ۱۰۰، ۴۰۰، ۱۶۰۰، ۶۴۰۰ EMC و به همین ترتیب.</p>
+</div>
+
+</section>
+
+<section class="section two">
+
+<div class="card">
+<div class="heading"><h3>ماموریت‌ها</h3><small class="muted">پاداش روزانه</small></div>
+
+<div class="row">
+<div><b>ورود روزانه</b><small>+5 EMC</small></div>
+<button class="secondary" id="loginBtn">دریافت</button>
+</div>
+
+<div class="row">
+<div><b>تکمیل استخراج روزانه</b><small>+10 EMC</small></div>
+<button class="secondary" id="missionBtn">دریافت</button>
+</div>
+</div>
+
+<div class="card">
+<div class="heading"><h3>پروفایل و دعوت دوستان</h3></div>
+<div class="row">
+<div><b>نام کاربر</b><small id="username">Guest</small></div>
+</div>
+<div class="row">
+<div><b>دوستان دعوت‌شده</b><small>0</small></div>
+</div>
+<div class="refbox">
+<input id="refLink" readonly value="Open in Telegram">
+<button class="secondary" id="copyBtn">کپی</button>
+</div>
+<p class="note">برای فعال‌شدن سیستم دعوت، ربات تلگرام و سرور لازم است.</p>
+</div>
+
+</section>
+
+<section class="section card" id="wallet">
+<div class="heading">
+<h3>کیف پول و Web3</h3>
+<small class="muted">TON · EMC</small>
+</div>
+<div class="refbox">
+<input id="walletInput" placeholder="آدرس کیف پول خود را وارد کنید">
+<button class="secondary" id="saveWallet">ذخیره</button>
+</div>
+<p class="note">این بخش فعلاً آدرس را در مرورگر ذخیره می‌کند؛ اتصال واقعی کیف پول و تراکنش بلاکچینی فعال نیست.</p>
+</section>
+
+</div>
+
+<nav class="bottom">
+<button class="active" data-go="top"><span>⌂</span>خانه</button>
+<button data-go="market"><span>▥</span>بازار</button>
+<button data-go="mining"><span>◇</span>استخراج</button>
+<button data-go="wallet"><span>◈</span>کیف پول</button>
 </nav>
+
 <div class="toast" id="toast"></div>
 
 <script>
-(()=>{
 const $=id=>document.getElementById(id);
-const tg=window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand();}
-const tu=tg?.initDataUnsafe?.user;
-const uid=String(tu?.id||"local");
-const KEY="EMERALD_LUXURY_2026_"+uid;
-const today=()=>new Date().toISOString().slice(0,10);
-const now=()=>Date.now();
+const DAY=86400000;
 
-const words={
-fa:{
-balance:"موجودی کل دارایی",earned:"کل درآمد",level:"لول",gemHint:"زمرد را لمس کن و وارد دنیای EMERALD شو",mining:"استخراج روزانه",reward:"پاداش استخراج",mineBtn:"دریافت ۴۰ توکن",power:"قدرت استخراج",xp:"امتیاز XP",totalMines:"تعداد استخراج",referrals:"دعوت دوستان",progress:"پیشرفت سطح",nextLevel:"XP تا سطح بعدی",history:"تاریخچه موجودی",chartNote:"نمودار تغییر موجودی حساب شما را نشان می‌دهد.",upgradeTitle:"مرکز ارتقای لول",upgradeSub:"با پرداخت EMC سطح حساب خود را ارتقا بده.",levelUpgrade:"ارتقای سطح کاربری",currentLevel:"لول فعلی",nextLevelName:"لول بعدی",upgradeCost:"هزینه ارتقا",levelRule:"هزینه هر ارتقا چهار برابر ارتقای قبلی می‌شود.",upgradeBtn:"ارتقای لول",levelTable:"جدول هزینه لول‌ها",missions:"مأموریت‌ها",missionsSub:"فعالیت کن و پاداش دریافت کن.",daily:"مأموریت روزانه",dailyMine:"یک بار استخراج روزانه",dailyLogin:"ورود روزانه",claim:"دریافت",invite:"دعوت دوستان",inviteText:"لینک اختصاصی خود را با دوستانت به اشتراک بگذار.",refReward:"پاداش هر دعوت تأییدشده",copy:"کپی لینک",refNotice:"پاداش دعوت در این نسخه نمایشی است. برای تأیید واقعی دعوت به سرور و ربات تلگرام نیاز است.",web3:"بخش Web3 و کیف پول",web3Sub:"آماده‌سازی بخش اتصال به شبکه TON",walletNotice:"در این نسخه آدرس کیف پول ذخیره می‌شود؛ اتصال رسمی و تراکنش بلاکچینی هنوز فعال نیست.",saveWallet:"ذخیره آدرس",walletStatus:"وضعیت کیف پول",profile:"پروفایل",settings:"تنظیمات",backup:"دانلود پشتیبان اطلاعات",restore:"بازیابی پشتیبان",reset:"پاک کردن اطلاعات",localNote:"اطلاعات در مرورگر همین دستگاه ذخیره می‌شود.",home:"خانه",upgrade:"ارتقا",ready:"استخراج آماده است.",wait:"زمان باقی‌مانده",done:"تکمیل شده",notDone:"تکمیل نشده",notEnough:"موجودی کافی نیست.",success:"با موفقیت انجام شد.",mined:"۴۰ EMC دریافت کردی!",already:"هنوز ۲۴ ساعت کامل نشده است.",walletSaved:"آدرس ذخیره شد.",copyOk:"لینک کپی شد.",confirmReset:"تمام اطلاعات این دستگاه پاک شود؟",invalid:"فایل پشتیبان معتبر نیست."
-},
-en:{
-balance:"Total balance",earned:"Total earned",level:"Level",gemHint:"Touch the emerald and enter the EMERALD world",mining:"Daily mining",reward:"Mining reward",mineBtn:"Claim 40 tokens",power:"Mining power",xp:"XP points",totalMines:"Total mines",referrals:"Referrals",progress:"Level progress",nextLevel:"XP to next level",history:"Balance history",chartNote:"Your account balance history.",upgradeTitle:"Level upgrade center",upgradeSub:"Spend EMC to upgrade your account level.",levelUpgrade:"Account level upgrade",currentLevel:"Current level",nextLevelName:"Next level",upgradeCost:"Upgrade cost",levelRule:"Each upgrade costs four times the previous upgrade.",upgradeBtn:"Upgrade level",levelTable:"Level cost table",missions:"Missions",missionsSub:"Complete activities and earn rewards.",daily:"Daily missions",dailyMine:"Complete one daily mine",dailyLogin:"Daily login",claim:"Claim",invite:"Invite friends",inviteText:"Share your personal invitation link.",refReward:"Reward per verified referral",copy:"Copy link",refNotice:"Referral rewards are demonstrational. Real verification requires a backend and Telegram bot.",web3:"Web3 & Wallet",web3Sub:"TON network connection section",walletNotice:"This version saves your wallet address only. Official connection and blockchain transactions are not active.",saveWallet:"Save address",walletStatus:"Wallet status",profile:"Profile",settings:"Settings",backup:"Download backup",restore:"Restore backup",reset:"Reset data",localNote:"Data is saved in this browser on this device.",home:"Home",upgrade:"Upgrade",ready:"Mining is ready.",wait:"Time remaining",done:"Completed",notDone:"Not completed",notEnough:"Insufficient balance.",success:"Completed successfully.",mined:"You received 40 EMC!",already:"The 24-hour cooldown is not over.",walletSaved:"Wallet address saved.",copyOk:"Link copied.",confirmReset:"Delete all data on this device?",invalid:"Invalid backup file."
-},
-ar:{
-balance:"إجمالي الرصيد",earned:"إجمالي الأرباح",level:"المستوى",gemHint:"المس الزمرد وادخل عالم EMERALD",mining:"التعدين اليومي",reward:"مكافأة التعدين",mineBtn:"استلام 40 رمزاً",power:"قوة التعدين",xp:"نقاط XP",totalMines:"إجمالي عمليات التعدين",referrals:"الإحالات",progress:"تقدم المستوى",nextLevel:"XP للمستوى التالي",history:"سجل الرصيد",chartNote:"مخطط تغير رصيد حسابك.",upgradeTitle:"مركز ترقية المستوى",upgradeSub:"استخدم EMC لترقية مستوى حسابك.",levelUpgrade:"ترقية مستوى الحساب",currentLevel:"المستوى الحالي",nextLevelName:"المستوى التالي",upgradeCost:"تكلفة الترقية",levelRule:"تكلفة كل ترقية أربعة أضعاف الترقية السابقة.",upgradeBtn:"ترقية المستوى",levelTable:"جدول تكلفة المستويات",missions:"المهام",missionsSub:"أكمل الأنشطة واحصل على المكافآت.",daily:"المهام اليومية",dailyMine:"إكمال تعدين يومي واحد",dailyLogin:"تسجيل الدخول اليومي",claim:"استلام",invite:"دعوة الأصدقاء",inviteText:"شارك رابط الدعوة الخاص بك.",refReward:"مكافأة كل إحالة مؤكدة",copy:"نسخ الرابط",refNotice:"مكافآت الإحالة تجريبية. يتطلب التحقق الحقيقي خادماً وبوت تيليجرام.",web3:"Web3 والمحفظة",web3Sub:"قسم الاتصال بشبكة TON",walletNotice:"هذا الإصدار يحفظ عنوان المحفظة فقط. الاتصال الرسمي والمعاملات غير مفعلة.",saveWallet:"حفظ العنوان",walletStatus:"حالة المحفظة",profile:"الملف الشخصي",settings:"الإعدادات",backup:"تنزيل نسخة احتياطية",restore:"استعادة النسخة",reset:"حذف البيانات",localNote:"يتم حفظ البيانات في متصفح هذا الجهاز.",home:"الرئيسية",upgrade:"ترقية",ready:"التعدين جاهز.",wait:"الوقت المتبقي",done:"مكتمل",notDone:"غير مكتمل",notEnough:"الرصيد غير كافٍ.",success:"تم بنجاح.",mined:"لقد حصلت على 40 EMC!",already:"لم تكتمل 24 ساعة بعد.",walletSaved:"تم حفظ العنوان.",copyOk:"تم نسخ الرابط.",confirmReset:"هل تريد حذف جميع بيانات هذا الجهاز؟",invalid:"ملف النسخة الاحتياطية غير صالح."
-},
-zh:{
-balance:"总资产余额",earned:"累计收入",level:"等级",gemHint:"触碰祖母绿，进入 EMERALD 世界",mining:"每日挖矿",reward:"挖矿奖励",mineBtn:"领取 40 代币",power:"挖矿能力",xp:"经验值 XP",totalMines:"挖矿次数",referrals:"邀请好友",progress:"等级进度",nextLevel:"升级所需 XP",history:"余额记录",chartNote:"账户余额变化图表。",upgradeTitle:"等级升级中心",upgradeSub:"使用 EMC 提升账户等级。",levelUpgrade:"账户等级升级",currentLevel:"当前等级",nextLevelName:"下一级",upgradeCost:"升级费用",levelRule:"每次升级费用是上一次的四倍。",upgradeBtn:"升级等级",levelTable:"等级费用表",missions:"任务",missionsSub:"完成活动并获得奖励。",daily:"每日任务",dailyMine:"完成一次每日挖矿",dailyLogin:"每日登录",claim:"领取",invite:"邀请好友",inviteText:"分享你的专属邀请链接。",refReward:"每位已验证邀请的奖励",copy:"复制链接",refNotice:"邀请奖励仅为演示。真实验证需要服务器和 Telegram 机器人。",web3:"Web3 与钱包",web3Sub:"TON 网络连接区域",walletNotice:"此版本仅保存钱包地址。正式连接和区块链交易尚未启用。",saveWallet:"保存地址",walletStatus:"钱包状态",profile:"个人资料",settings:"设置",backup:"下载备份",restore:"恢复备份",reset:"清除数据",localNote:"数据保存在此设备的浏览器中。",home:"首页",upgrade:"升级",ready:"可以开始挖矿。",wait:"剩余时间",done:"已完成",notDone:"未完成",notEnough:"余额不足。",success:"操作成功。",mined:"你获得了 40 EMC！",already:"24 小时冷却时间尚未结束。",walletSaved:"钱包地址已保存。",copyOk:"链接已复制。",confirmReset:"删除此设备上的所有数据？",invalid:"备份文件无效。"
-}
+const defaults={
+balance:0,
+earned:0,
+level:1,
+lastMine:0,
+loginClaim:"",
+mineClaim:"",
+minedToday:"",
+wallet:""
 };
-let lang=localStorage.getItem("emc_lang")||"fa";
-function tr(k){return words[lang]?.[k]||words.fa[k]||k;}
-function setLang(v){
- lang=v;localStorage.setItem("emc_lang",v);
- document.documentElement.lang=v;
- document.documentElement.dir=v==="fa"||v==="ar"?"rtl":"ltr";
- document.querySelectorAll("[data-t]").forEach(el=>el.textContent=tr(el.dataset.t));
- $("language").value=v;render();
-}
-$("language").value=lang;
-$("language").onchange=e=>setLang(e.target.value);
 
-function fresh(){return {balance:0,total:0,level:1,xp:0,mines:0,lastMine:0,lastLogin:today(),loginClaim:"",mineClaim:"",wallet:"",history:[],chart:[0],name:tu?.first_name||"Emerald Member",created:now()};}
 let data;
-try{data={...fresh(),...JSON.parse(localStorage.getItem(KEY)||"{}")};}catch{data=fresh();}
-function save(){localStorage.setItem(KEY,JSON.stringify(data));}
-function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2300);}
-function fmt(n){return Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});}
-function cost(level){return 100*Math.pow(4,level-1);}
-function addHistory(title,amount){data.history.unshift({title,amount,time:now()});data.history=data.history.slice(0,60);}
-function award(amount,title){data.balance+=amount;data.total+=amount;data.xp+=Math.max(1,Math.floor(amount));addHistory(title,amount);data.chart.push(data.balance);data.chart=data.chart.slice(-25);}
-function remaining(){return Math.max(0,86400000-(now()-data.lastMine));}
-function timeText(ms){let s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;return `${h}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;}
-function drawChart(){
- const c=$("chart");if(!c)return;
- const w=c.clientWidth||300,h=155,r=devicePixelRatio||1;
- c.width=w*r;c.height=h*r;const x=c.getContext("2d");x.setTransform(r,0,0,r,0,0);x.clearRect(0,0,w,h);
- for(let i=1;i<4;i++){x.strokeStyle="#244632";x.beginPath();x.moveTo(0,h*i/4);x.lineTo(w,h*i/4);x.stroke();}
- const a=data.chart.length?data.chart:[0],max=Math.max(1,...a),min=Math.min(0,...a),range=Math.max(1,max-min);
- x.beginPath();a.forEach((v,i)=>{const px=a.length===1?w/2:i*w/(a.length-1),py=h-12-(v-min)/range*(h-25);i?x.lineTo(px,py):x.moveTo(px,py);});
- x.strokeStyle="#70e79b";x.lineWidth=2.5;x.stroke();
+try{
+data={...defaults,...JSON.parse(localStorage.getItem("emc_data")||"{}")};
+}catch(e){
+data={...defaults};
 }
-function render(){
- const c=cost(data.level);
- $("balance").textContent=fmt(data.balance);$("earned").textContent=fmt(data.total);
- $("level").textContent=data.level;$("power").textContent=data.level;
- $("xp").textContent=fmt(data.xp);$("mines").textContent=data.mines;
- $("referrals").textContent=0;
- $("currentLevel").textContent=data.level;$("nextLevel").textContent=data.level+1;
- $("levelCost").textContent=fmt(c)+" EMC";
- $("levelTag").textContent="LEVEL "+data.level;
- $("xpNext").textContent=(data.xp%250)+" / 250";
- $("xpBar").style.width=(data.xp%250)/250*100+"%";
- $("mineBtn").disabled=remaining()>0;
- $("mineBtn").textContent=remaining()>0?timeText(remaining()):tr("mineBtn");
- $("timer").textContent=remaining()>0?tr("wait")+": "+timeText(remaining()):tr("ready");
- $("mineMissionStatus").textContent=data.mines>0?tr("done"):tr("notDone");
- $("mineMissionClaim").disabled=data.mines===0||data.mineClaim===today();
- $("loginMissionStatus").textContent=data.lastLogin===today()?tr("done"):tr("notDone");
- $("loginMissionClaim").disabled=data.lastLogin!==today()||data.loginClaim===today();
- $("walletAddress").value=data.wallet;
- $("walletState").textContent=data.wallet?"Saved":"Not connected";
- $("profileName").textContent=data.name;
- $("profileId").textContent="EMERALD MEMBER · "+String(data.created).slice(-6);
- $("pBalance").textContent=fmt(data.balance);$("pEarned").textContent=fmt(data.total);
- $("pLevel").textContent=data.level;$("pMines").textContent=data.mines;
- $("refLink").value="https://t.me/YOUR_BOT_USERNAME?startapp=ref_"+uid;
- $("levelList").innerHTML="";
- for(let i=1;i<=8;i++){
-  const row=document.createElement("div");row.className="history";
-  const a=document.createElement("span");a.textContent="LEVEL "+i+" → "+(i+1);
-  const b=document.createElement("b");b.className="reward";b.textContent=fmt(cost(i))+" EMC";
-  row.append(a,b);$("levelList").append(row);
- }
- $("historyList").innerHTML="";
- if(!data.history.length){$("historyList").innerHTML='<div class="muted">—</div>';}
- data.history.slice(0,25).forEach(item=>{
-  const row=document.createElement("div");row.className="history";
-  const a=document.createElement("span");a.textContent=item.title;
-  const b=document.createElement("b");b.className=item.amount>=0?"positive":"negative";
-  b.textContent=(item.amount>0?"+":"")+fmt(item.amount)+" EMC";
-  row.append(a,b);$("historyList").append(row);
- });
- drawChart();save();
+
+function save(){
+localStorage.setItem("emc_data",JSON.stringify(data));
 }
-$("mineBtn").onclick=()=>{
- if(remaining()>0){toast(tr("already"));return;}
- data.lastMine=now();data.mines++;
- award(40,"Daily mining +40 EMC");
- toast(tr("mined"));render();
- if(tg?.HapticFeedback)tg.HapticFeedback.notificationOccurred("success");
-};
-$("levelUpBtn").onclick=()=>{
- const price=cost(data.level);
- if(data.balance<price){toast(tr("notEnough"));return;}
- data.balance-=price;data.level++;
- addHistory("Level upgrade -"+price,-price);
- toast(tr("success"));render();
-};
-$("mineMissionClaim").onclick=()=>{
- if(!data.mines||data.mineClaim===today())return;
- data.mineClaim=today();award(10,"Daily mining mission +10");render();toast(tr("success"));
-};
-$("loginMissionClaim").onclick=()=>{
- if(data.lastLogin!==today()||data.loginClaim===today())return;
- data.loginClaim=today();award(5,"Daily login +5");render();toast(tr("success"));
-};
-if(data.lastLogin!==today()){data.lastLogin=today();save();}
-$("saveWallet").onclick=()=>{
- const a=$("walletAddress").value.trim();
- if(a.length<30||a.length>100){toast("Invalid wallet address");return;}
- data.wallet=a;save();render();toast(tr("walletSaved"));
-};
-$("copyRef").onclick=async()=>{
- try{await navigator.clipboard.writeText($("refLink").value);toast(tr("copyOk"));}
- catch{$("refLink").select();toast("Copy the selected link");}
-};
-$("backup").onclick=()=>{
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="emerald-coin-backup.json";a.click();URL.revokeObjectURL(url);
-};
-$("restore").onclick=()=>$("backupFile").click();
-$("backupFile").onchange=async e=>{
- const f=e.target.files[0];if(!f)return;
- try{const d=JSON.parse(await f.text());if(typeof d.balance!=="number")throw 0;data={...fresh(),...d};render();toast(tr("success"));}
- catch{toast(tr("invalid"));}
- e.target.value="";
-};
-$("reset").onclick=()=>{
- if(!confirm(tr("confirmReset")))return;
- data=fresh();save();render();
-};
-document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
- document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- b.classList.add("active");$(b.dataset.page).classList.add("active");drawChart();
-});
-$("gemButton").onclick=()=>{
- // The emerald is decorative; mining rewards are only granted by the 24-hour button.
- toast(tr("ready"));
-};
-setInterval(render,1000);
-window.addEventListener("resize",drawChart);
-setLang(lang);
+
+function today(){
+return new Date().toISOString().slice(0,10);
+}
+
+function toast(message){
+$("toast").textContent=message;
+$("toast").classList.add("show");
+setTimeout(()=>$("toast").classList.remove("show"),2200);
+}
+
+function addCoins(amount){
+data.balance+=amount;
+data.earned+=amount;
+save();
 render();
-})();
+}
+
+function upgradeCost(){
+return 100*Math.pow(4,data.level-1);
+}
+
+function remaining(){
+return Math.max(0,DAY-(Date.now()-data.lastMine));
+}
+
+function timeFormat(ms){
+let h=Math.floor(ms/3600000);
+let m=Math.floor(ms%3600000/60000);
+let s=Math.floor(ms%60000/1000);
+return h+" ساعت "+m+" دقیقه "+s+" ثانیه";
+}
+
+function render(){
+$("balance").textContent=data.balance.toFixed(2);
+$("earned").textContent=data.earned.toFixed(2);
+$("level").textContent=data.level;
+$("level2").textContent=data.level;
+
+let cost=upgradeCost();
+
+$("upgradeBtn").textContent=cost.toLocaleString()+" EMC";
+$("upgradeDesc").textContent="Level "+(data.level+1)+" · "+cost.toLocaleString()+" EMC";
+
+let left=remaining();
+
+$("mineBtn").disabled=left>0;
+$("timer").textContent=left>0?"زمان باقی‌مانده: "+timeFormat(left):"آماده استخراج";
+
+$("loginBtn").disabled=data.loginClaim===today();
+$("missionBtn").disabled=data.mineClaim===today()||data.minedToday!==today();
+
+$("loginBtn").textContent=data.loginClaim===today()?"دریافت شد":"دریافت";
+$("missionBtn").textContent=data.mineClaim===today()?"دریافت شد":"دریافت";
+
+$("walletInput").value=data.wallet||"";
+
+let user=window.Telegram?.WebApp?.initDataUnsafe?.user;
+
+$("username").textContent=user?(user.first_name||user.username||"Telegram User"):"Guest";
+
+$("refLink").value=user
+?"https://t.me/YOUR_BOT_USERNAME?start="+user.id
+:"ربات را در تلگرام باز کنید";
+
+$("progress").style.width=Math.min(100,data.balance/cost*100)+"%";
+}
+
+$("mineBtn").onclick=function(){
+if(remaining()>0)return;
+
+data.lastMine=Date.now();
+data.minedToday=today();
+
+addCoins(40);
+toast("+40 EMC");
+};
+
+$("upgradeBtn").onclick=function(){
+let cost=upgradeCost();
+
+if(data.balance<cost){
+toast("موجودی کافی نیست");
+return;
+}
+
+data.balance-=cost;
+data.level++;
+
+save();
+render();
+toast("سطح جدید: "+data.level);
+};
+
+$("loginBtn").onclick=function(){
+if(data.loginClaim===today())return;
+
+data.loginClaim=today();
+addCoins(5);
+toast("+5 EMC");
+};
+
+$("missionBtn").onclick=function(){
+if(data.mineClaim===today())return;
+if(data.minedToday!==today())return;
+
+data.mineClaim=today();
+addCoins(10);
+toast("+10 EMC");
+};
+
+$("saveWallet").onclick=function(){
+data.wallet=$("walletInput").value.trim();
+save();
+toast("آدرس ذخیره شد");
+};
+
+$("copyBtn").onclick=async function(){
+try{
+await navigator.clipboard.writeText($("refLink").value);
+toast("لینک کپی شد");
+}catch(e){
+$("refLink").select();
+document.execCommand("copy");
+toast("کپی شد");
+}
+};
+
+/* PRICE CHART */
+function drawChart(range="1D"){
+let canvas=$("chart");
+let ctx=canvas.getContext("2d");
+let rect=canvas.getBoundingClientRect();
+let dpr=window.devicePixelRatio||1;
+
+canvas.width=rect.width*dpr;
+canvas.height=rect.height*dpr;
+
+ctx.scale(dpr,dpr);
+
+let w=rect.width;
+let h=rect.height;
+let pad=12;
+
+ctx.clearRect(0,0,w,h);
+
+for(let i=0;i<4;i++){
+let y=pad+i*(h-2*pad)/3;
+ctx.strokeStyle="rgba(165,243,207,.12)";
+ctx.beginPath();
+ctx.moveTo(0,y);
+ctx.lineTo(w,y);
+ctx.stroke();
+}
+
+let count=range==="1D"?24:
+range==="1W"?28:
+range==="1M"?30:36;
+
+let values=[];
+
+for(let i=0;i<count;i++){
+let value=
+0.006+
+Math.sin(i*.68)*0.00000016+
+Math.sin(i*.21)*0.00000010;
+
+values.push(value);
+}
+
+let min=Math.min(...values)-0.00000025;
+let max=Math.max(...values)+0.00000025;
+
+let points=values.map((v,i)=>({
+x:pad+i*(w-2*pad)/(count-1),
+y:h-pad-(v-min)/(max-min)*(h-2*pad)
+}));
+
+let gradient=ctx.createLinearGradient(0,0,0,h);
+gradient.addColorStop(0,"rgba(25,214,138,.30)");
+gradient.addColorStop(1,"rgba(25,214,138,0)");
+
+ctx.beginPath();
+
+points.forEach((p,i)=>{
+if(i===0)ctx.moveTo(p.x,p.y);
+else ctx.lineTo(p.x,p.y);
+});
+
+ctx.lineTo(w-pad,h-pad);
+ctx.lineTo(pad,h-pad);
+ctx.closePath();
+
+ctx.fillStyle=gradient;
+ctx.fill();
+
+ctx.beginPath();
+
+points.forEach((p,i)=>{
+if(i===0)ctx.moveTo(p.x,p.y);
+else ctx.lineTo(p.x,p.y);
+});
+
+ctx.strokeStyle="#35e59a";
+ctx.lineWidth=2;
+ctx.stroke();
+
+let last=points[points.length-1];
+
+ctx.beginPath();
+ctx.arc(last.x,last.y,4,0,Math.PI*2);
+ctx.fillStyle="#b4ffd9";
+ctx.fill();
+}
+
+document.querySelectorAll("[data-range]").forEach(button=>{
+button.onclick=function(){
+document.querySelectorAll("[data-range]").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+drawChart(button.dataset.range);
+};
+});
+
+document.querySelectorAll("[data-go]").forEach(button=>{
+button.onclick=function(){
+document.querySelectorAll("[data-go]").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+
+let target=button.dataset.go;
+
+let element=target==="top"
+?document.querySelector(".header")
+:$(target);
+
+element.scrollIntoView({behavior:"smooth",block:"center"});
+};
+});
+
+$("language").onchange=function(e){
+let lang=e.target.value;
+document.documentElement.lang=lang;
+document.documentElement.dir=(lang==="fa"||lang==="ar")?"rtl":"ltr";
+};
+
+setInterval(render,1000);
+
+window.addEventListener("resize",()=>drawChart());
+
+if(window.Telegram&&window.Telegram.WebApp){
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+}
+
+render();
+drawChart();
 </script>
 </body>
-</html>
+ </html>
