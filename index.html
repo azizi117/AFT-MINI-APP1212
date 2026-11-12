@@ -185,6 +185,7 @@ h3.section-title{font-size:16px;margin:20px 2px 12px}
 
 <script>
 const DAY=86400000,FEE=.003,MIN=10000,START_PRICE=.007;
+const BOT_USERNAME='EMC_COIN_bot';
 let rates={EMC:START_PRICE,USDT:1,ETH:3000,BTC:90000};
 
 const words={
@@ -329,13 +330,16 @@ const linkInput=document.getElementById('refLink');
 const status=document.getElementById('refStatus');
 
 if(!user?.id){
-linkInput.value='Open EMERALD COIN inside Telegram';
-status.textContent='Telegram account required';
+linkInput.value='https://t.me/'+BOT_USERNAME;
+status.textContent='Open EMERALD COIN inside Telegram to get your personal referral link.';
 return;
 }
 
 const telegramId=String(user.id);
-linkInput.value=`https://t.me/EMC_COIN_bot?startapp=ref_${telegramId}`;
+
+// Deep link for opening the mini app with a referral parameter.
+// The bot must have a Main Mini App configured in BotFather.
+linkInput.value=`https://t.me/${BOT_USERNAME}?startapp=ref_${telegramId}`;
 
 const startParam=tg.initDataUnsafe?.start_param||'';
 if(startParam.startsWith('ref_')){
@@ -343,21 +347,28 @@ const inviterId=startParam.substring(4);
 if(inviterId!==telegramId&&/^\d+$/.test(inviterId)){
 window.pendingReferral=inviterId;
 status.textContent='Referral detected. Server registration required.';
+}else{
+status.textContent='Your personal invitation link is ready.';
 }
+}else{
+status.textContent='Your personal invitation link is ready.';
 }
 }
 
 async function copyReferral(){
 const link=document.getElementById('refLink').value;
-if(!link.startsWith('https://t.me/')){
-toast('Open the app through Telegram first');return;
-}
 try{
+if(navigator.clipboard&&window.isSecureContext){
 await navigator.clipboard.writeText(link);
+}else{
+const input=document.getElementById('refLink');
+input.select();
+input.setSelectionRange(0,99999);
+document.execCommand('copy');
+}
 toast('Referral link copied! 💎');
 }catch(e){
-document.getElementById('refLink').select();
-toast('Select and copy your referral link');
+toast('Please select and copy the link');
 }
 }
 
