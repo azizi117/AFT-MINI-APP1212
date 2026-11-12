@@ -3,356 +3,254 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f">
-<title>HIYAT | SOURCE OF LIFE</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AFTERLIFE NETWORK</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;background:#07111f;color:white;
- font-family:Arial,sans-serif;
- background-image:
- radial-gradient(circle at 15% 10%,#124d5c,transparent 35%),
- radial-gradient(circle at 90% 80%,#27205b,transparent 35%);
+ margin:0;background:#07110e;color:white;
+ font-family:Arial,sans-serif;padding:18px
 }
-.app{max-width:480px;margin:auto;padding:20px 16px 100px}
-.glass{
- background:#ffffff12;border:1px solid #ffffff25;
- backdrop-filter:blur(18px);
- border-radius:22px;box-shadow:0 10px 35px #0005;
+.container{max-width:480px;margin:auto}
+.card{
+ background:#10221b;border:1px solid #244638;
+ border-radius:17px;padding:18px;margin-bottom:15px
 }
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.brand{font-size:20px;font-weight:bold;letter-spacing:2px}
-.logo{
- width:45px;height:45px;border-radius:15px;
- display:grid;place-items:center;
- background:linear-gradient(135deg,#00e5b0,#2479ff);
- font-size:24px;font-weight:bold;
+h2{text-align:center;color:#00e6a0}
+.balance{text-align:center;font-size:35px;color:#00e6a0}
+.small{text-align:center;color:#a3b9ad}
+button,select{
+ width:100%;padding:14px;border:0;border-radius:10px;
+ background:#00d99a;color:#04150e;font-weight:bold;
+ font-size:16px;margin-top:10px
 }
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.hero{text-align:center;padding:25px 15px;margin-bottom:15px}
-.coin{
- width:125px;height:125px;border-radius:50%;
- margin:auto auto 15px;
- display:grid;place-items:center;
- background:linear-gradient(145deg,#00edb2,#087bcb);
- border:4px solid #ffffff55;
- box-shadow:0 0 45px #00dca766;
- font-size:38px;font-weight:900;
-}
-.hero h1{font-size:26px;margin:8px}
-.subtitle{color:#aabaca;font-size:13px}
-.balance{font-size:36px;color:#52f5c5;font-weight:bold;margin:18px 0 5px}
-.unit{color:#a9bac9;font-size:13px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
-.stat{padding:17px 12px}
-.stat small{color:#9fb2c4}
-.stat strong{display:block;font-size:20px;margin-top:10px}
-.price{color:#50eac0}
-.section{padding:19px;margin:15px 0}
-.section h3{font-size:16px;margin:0 0 15px}
-.progress{height:9px;background:#ffffff20;border-radius:20px;overflow:hidden;margin:13px 0}
-.bar{height:100%;width:0;background:linear-gradient(90deg,#00dca9,#348bff);transition:.3s}
-button{
- border:0;cursor:pointer;color:white;font-size:15px;
- font-weight:bold;border-radius:15px;padding:15px;
- background:linear-gradient(110deg,#08b99b,#2777ef);
-}
-button:disabled{opacity:.4;cursor:not-allowed}
-.main-btn{width:100%;margin-top:10px}
-.secondary{background:#ffffff12;border:1px solid #ffffff30}
-.timer{
- font-size:30px;text-align:center;color:#50eac0;
- margin:20px;direction:ltr;
-}
-.notice{font-size:11px;color:#9eafc0;line-height:1.9}
-.green{color:#50eac0}
-.ref-link{
- background:#071522;padding:12px;border-radius:12px;
- direction:ltr;text-align:left;overflow-wrap:anywhere;
- color:#8eeedb;font-size:12px;margin:12px 0;
-}
-.nav{
- position:fixed;bottom:0;left:0;right:0;
- max-width:480px;margin:auto;display:flex;
- justify-content:space-around;padding:13px 5px;
- background:#0a1928ed;border-top:1px solid #ffffff20;
-}
-.nav button{background:none;padding:7px;font-size:12px}
-select{background:#142638;color:white;padding:9px;border-radius:10px}
+button:disabled{background:#53645b;color:white}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#172f25;padding:14px;border-radius:12px;text-align:center}
+.stat strong{display:block;color:#00e6a0;margin-top:8px}
+#chart{width:100%;height:220px}
 </style>
 </head>
-
 <body>
-<div class="app">
+<div class="container">
 
-<header>
- <div class="row">
-  <div class="logo">H</div>
-  <div>
-   <div class="brand">HIYAT</div>
-   <small style="color:#8ca5b8">SOURCE OF LIFE</small>
-  </div>
- </div>
- <select id="language" onchange="changeLanguage(this.value)">
-  <option value="fa">فارسی</option>
-  <option value="en">English</option>
-  <option value="ar">العربية</option>
- </select>
-</header>
-
-<div class="hero glass">
- <div class="coin">H</div>
- <h1>HIYAT</h1>
- <div class="subtitle">SOURCE OF LIFE</div>
- <div class="balance" id="balance">0.0000</div>
- <div class="unit">HIYAT TOKEN</div>
+<div class="card">
+<h2>♾️ AFTERLIFE NETWORK</h2>
+<select id="language" onchange="setLanguage(this.value)">
+<option value="fa">🇮🇷 فارسی</option>
+<option value="en">🇬🇧 English</option>
+<option value="zh">🇨🇳 中文</option>
+<option value="ar">🇸🇦 العربية</option>
+</select>
 </div>
 
-<div class="grid">
- <div class="stat glass">
-  <small id="priceLabel">قیمت هر توکن</small>
-  <strong class="price">$0.005</strong>
-  <small>USD</small>
- </div>
- <div class="stat glass">
-  <small>پاداش استخراج</small>
-  <strong>200</strong>
-  <small>HIYAT / 24H</small>
- </div>
- <div class="stat glass">
-  <small>دعوت‌های من</small>
-  <strong id="refCount">0</strong>
- </div>
- <div class="stat glass">
-  <small>موجودی دلاری محاسباتی</small>
-  <strong class="price" id="usdValue">$0.00</strong>
- </div>
+<div class="card">
+<p id="balanceTitle" class="small">موجودی توکن</p>
+<div class="balance"><span id="balance">0</span></div>
+<p class="small">AFTERLIFE (AFT)</p>
 </div>
 
-<div class="section glass">
- <div class="row">
-  <h3>⛏ استخراج HIYAT</h3>
-  <span class="green" id="status">● متوقف</span>
- </div>
-
- <div class="timer" id="timer">24:00:00</div>
-
- <div class="row">
-  <small>پیشرفت استخراج</small>
-  <small id="percent">0%</small>
- </div>
-
- <div class="progress">
-  <div class="bar" id="bar"></div>
- </div>
-
- <div class="row">
-  <small>پاداش این دوره</small>
-  <strong id="earned">0 / 200</strong>
- </div>
-
- <button class="main-btn" id="mineButton" onclick="startMining()">
-  ▶ شروع استخراج
- </button>
-
- <button class="main-btn secondary" id="claimButton"
- onclick="claimReward()" disabled>
-  دریافت ۲۰۰ توکن
- </button>
-
- <p class="notice">
- هر ۲۴ ساعت ۲۰۰ توکن استخراج می‌شود.
- پس از تکمیل زمان، پاداش را دریافت کنید.
- </p>
+<div class="card">
+<div class="stats">
+<div class="stat">
+<span id="levelTitle">لول کاربر</span>
+<strong id="level">1</strong>
+</div>
+<div class="stat">
+<span id="speedTitle">سرعت استخراج</span>
+<strong id="speed">50 AFT / 24h</strong>
+</div>
+<div class="stat">
+<span id="priceTitle">قیمت توکن</span>
+<strong id="price">$0.001</strong>
+</div>
+<div class="stat">
+<span id="nextTitle">تا لول بعدی</span>
+<strong id="nextLevel">100 AFT</strong>
+</div>
+</div>
 </div>
 
-<div class="section glass">
- <h3>🎁 دعوت دوستان</h3>
- <p class="notice">دوستان خود را به شبکه HIYAT دعوت کنید.</p>
- <div class="ref-link" id="refLink">Loading...</div>
- <button class="main-btn" onclick="copyLink()">کپی لینک دعوت</button>
- <button class="main-btn secondary" onclick="shareLink()">اشتراک‌گذاری</button>
+<div class="card">
+<h3 id="miningTitle">استخراج توکن</h3>
+<button id="mineButton" onclick="startMining()">شروع استخراج</button>
+<p id="timer" class="small">آماده استخراج</p>
 </div>
 
-<div class="section glass">
- <h3>👛 کیف پول</h3>
- <div class="row">
-  <span>موجودی HIYAT</span>
-  <strong class="green" id="wallet">0.0000</strong>
- </div>
- <p class="notice">
- قیمت محاسباتی بر اساس نرخ ثابت ۰٫۰۰۵ دلار است.
- برداشت واقعی پس از اتصال قرارداد و سرور فعال می‌شود.
- </p>
-</div>
-
-<div class="section glass">
- <h3>🌐 جامعه HIYAT</h3>
- <p class="notice">به جامعه SOURCE OF LIFE بپیوندید.</p>
- <button class="main-btn secondary"
- onclick="window.open('https://t.me/plathominer_app','_blank')">
- Telegram
- </button>
+<div class="card">
+<h3 id="chartTitle">نمودار قیمت AFTERLIFE</h3>
+<canvas id="chart"></canvas>
+<p id="chartStatus" class="small">نمودار آزمایشی قیمت</p>
 </div>
 
 </div>
-
-<nav class="nav">
- <button onclick="scrollTo(0,0)">🏠 خانه</button>
- <button onclick="document.getElementById('mineButton').scrollIntoView()">⛏ استخراج</button>
- <button onclick="document.getElementById('refLink').scrollIntoView()">🎁 دعوت</button>
- <button onclick="document.getElementById('wallet').scrollIntoView()">👛 کیف پول</button>
-</nav>
 
 <script>
-const tg=window.Telegram?.WebApp;
-tg?.ready();
-tg?.expand();
+const STORAGE="afterlife_mining_v1";
 
-const REWARD=200;
-const PERIOD=24*60*60*1000;
-const PRICE=0.005;
-const KEY="HIYAT_NETWORK_V1";
-
-const userId=String(tg?.initDataUnsafe?.user?.id||"guest");
-
-let data;
+let data={
+ balance:0,
+ lastMining:0
+};
 
 try{
- data=JSON.parse(localStorage.getItem(KEY))||{};
-}catch(e){
- data={};
+ data={...data,...JSON.parse(localStorage.getItem(STORAGE)||"{}")};
+}catch(e){}
+
+const RATE=50;
+const PERIOD=24*60*60*1000;
+const TOKEN_PRICE=0.001;
+
+const translations={
+fa:{
+balance:"موجودی توکن",level:"لول کاربر",speed:"سرعت استخراج",
+price:"قیمت توکن",next:"تا لول بعدی",mining:"استخراج توکن",
+start:"شروع استخراج",wait:"زمان باقی‌مانده",ready:"آماده استخراج",
+chart:"نمودار قیمت AFTERLIFE"
+},
+en:{
+balance:"Token Balance",level:"User Level",speed:"Mining Speed",
+price:"Token Price",next:"Next Level",mining:"Token Mining",
+start:"Start Mining",wait:"Time Remaining",ready:"Ready to Mine",
+chart:"AFTERLIFE Price Chart"
+},
+zh:{
+balance:"代币余额",level:"用户等级",speed:"挖矿速度",
+price:"代币价格",next:"下一级",mining:"代币挖矿",
+start:"开始挖矿",wait:"剩余时间",ready:"准备挖矿",
+chart:"AFTERLIFE价格图表"
+},
+ar:{
+balance:"رصيد العملات",level:"مستوى المستخدم",speed:"سرعة التعدين",
+price:"سعر العملة",next:"المستوى التالي",mining:"تعدين العملات",
+start:"ابدأ التعدين",wait:"الوقت المتبقي",ready:"جاهز للتعدين",
+chart:"مخطط سعر AFTERLIFE"
+}
+};
+
+let lang="fa";
+
+function setLanguage(l){
+ lang=l;
+ const t=translations[l];
+ document.documentElement.lang=l;
+ document.documentElement.dir=l==="fa"||l==="ar"?"rtl":"ltr";
+ document.getElementById("balanceTitle").textContent=t.balance;
+ document.getElementById("levelTitle").textContent=t.level;
+ document.getElementById("speedTitle").textContent=t.speed;
+ document.getElementById("priceTitle").textContent=t.price;
+ document.getElementById("nextTitle").textContent=t.next;
+ document.getElementById("miningTitle").textContent=t.mining;
+ document.getElementById("chartTitle").textContent=t.chart;
+ document.getElementById("mineButton").textContent=t.start;
+ update();
 }
 
-if(data.id!==userId){
- data={
-  id:userId,
-  balance:0,
-  miningStartedAt:0,
-  miningEndAt:0,
-  refs:[]
- };
+function getLevel(){
+ return Math.floor(data.balance/100)+1;
 }
 
-data.balance=Number(data.balance||0);
-data.refs=Array.isArray(data.refs)?data.refs:[];
+function getSpeed(){
+ return RATE*getLevel();
+}
 
 function save(){
- localStorage.setItem(KEY,JSON.stringify(data));
+ localStorage.setItem(STORAGE,JSON.stringify(data));
 }
 
 function startMining(){
- if(data.miningEndAt>Date.now())return;
- if(data.miningEndAt>0 && Date.now()<data.miningEndAt)return;
+ const now=Date.now();
 
- data.miningStartedAt=Date.now();
- data.miningEndAt=Date.now()+PERIOD;
+ if(data.lastMining && now-data.lastMining<PERIOD){
+ alert("هنوز ۲۴ ساعت کامل نشده است.");
+ return;
+ }
 
+ data.balance+=getSpeed();
+ data.lastMining=now;
  save();
- render();
+ update();
 }
 
-function claimReward(){
- if(!data.miningEndAt || Date.now()<data.miningEndAt)return;
+function update(){
+ const level=getLevel();
+ const speed=getSpeed();
 
- data.balance+=REWARD;
- data.miningStartedAt=0;
- data.miningEndAt=0;
+ document.getElementById("balance").textContent=
+ data.balance.toLocaleString();
 
- save();
- render();
+ document.getElementById("level").textContent=level;
+ document.getElementById("speed").textContent=
+ speed+" AFT / 24h";
 
- alert("200 HIYAT added!");
+ document.getElementById("price").textContent=
+ "$"+TOKEN_PRICE.toFixed(3);
+
+ document.getElementById("nextLevel").textContent=
+ (level*100-data.balance)+" AFT";
+
+ const remaining=PERIOD-(Date.now()-data.lastMining);
+ const btn=document.getElementById("mineButton");
+
+ if(data.lastMining && remaining>0){
+ btn.disabled=true;
+ document.getElementById("timer").textContent=
+ translations[lang].wait+": "+formatTime(remaining);
+ }else{
+ btn.disabled=false;
+ document.getElementById("timer").textContent=
+ translations[lang].ready;
+ }
 }
 
 function formatTime(ms){
- let s=Math.max(0,Math.floor(ms/1000));
- let h=Math.floor(s/3600);
- let m=Math.floor(s%3600/60);
- let sec=s%60;
-
- return [h,m,sec].map(x=>String(x).padStart(2,"0")).join(":");
+ const h=Math.floor(ms/3600000);
+ const m=Math.floor(ms%3600000/60000);
+ const s=Math.floor(ms%60000/1000);
+ return [h,m,s].map(x=>String(x).padStart(2,"0")).join(":");
 }
 
-function render(){
+setInterval(update,1000);
+setLanguage("fa");
 
- const now=Date.now();
- const running=data.miningEndAt>now && data.miningEndAt>0;
- const done=data.miningEndAt>0 && !running;
+// نمودار آزمایشی قیمت
+const labels=[];
+const prices=[];
+let currentPrice=TOKEN_PRICE;
 
- let progress=0;
+for(let i=0;i<24;i++){
+ labels.push(i+":00");
+ prices.push(Number(currentPrice.toFixed(6)));
+ currentPrice*=1+(Math.random()-.5)*.04;
+}
 
- if(running){
-  progress=(now-data.miningStartedAt)/PERIOD*100;
- }else if(done){
-  progress=100;
+new Chart(document.getElementById("chart"),{
+ type:"line",
+ data:{
+ labels,
+ datasets:[{
+ data:prices,
+ borderColor:"#00d99a",
+ backgroundColor:"rgba(0,217,154,.10)",
+ borderWidth:2,
+ pointRadius:0,
+ fill:true,
+ tension:.3
+ }]
+ },
+ options:{
+ responsive:true,
+ maintainAspectRatio:false,
+ plugins:{legend:{display:false}},
+ scales:{
+ x:{ticks:{color:"#91aa9d",maxTicksLimit:5},
+ grid:{color:"#ffffff0b"}},
+ y:{ticks:{color:"#91aa9d"},
+ grid:{color:"#ffffff0b"}}
  }
-
- progress=Math.max(0,Math.min(100,progress));
-
- document.getElementById("balance").textContent=data.balance.toFixed(4);
- document.getElementById("wallet").textContent=data.balance.toFixed(4);
-
- document.getElementById("usdValue").textContent=
- "$"+(data.balance*PRICE).toFixed(2);
-
- document.getElementById("bar").style.width=progress+"%";
- document.getElementById("percent").textContent=progress.toFixed(1)+"%";
-
- document.getElementById("earned").textContent=
- (REWARD*progress/100).toFixed(2)+" / 200";
-
- document.getElementById("timer").textContent=
- running?formatTime(data.miningEndAt-now):
- done?"00:00:00":"24:00:00";
-
- document.getElementById("status").textContent=
- running?"● فعال":done?"● آماده دریافت":"● متوقف";
-
- document.getElementById("mineButton").disabled=running||done;
- document.getElementById("claimButton").disabled=!done;
-
- document.getElementById("mineButton").textContent=
- running?"استخراج فعال":"▶ شروع استخراج";
-
- document.getElementById("claimButton").textContent=
- done?"دریافت ۲۰۰ توکن":"دریافت ۲۰۰ توکن";
-
- document.getElementById("refCount").textContent=data.refs.length;
-}
-
-const bot="plathominer_app";
-const link="https://t.me/"+bot+"?start=ref_"+userId;
-
-document.getElementById("refLink").textContent=link;
-
-function copyLink(){
- if(navigator.clipboard){
-  navigator.clipboard.writeText(link)
-  .then(()=>alert("لینک کپی شد"))
-  .catch(()=>alert(link));
- }else{
-  alert(link);
  }
-}
-
-function shareLink(){
- window.open(
-  "https://t.me/share/url?url="+encodeURIComponent(link),
-  "_blank"
- );
-}
-
-function changeLanguage(lang){
- document.documentElement.lang=lang;
- document.documentElement.dir=lang==="en"?"ltr":"rtl";
-}
-
-render();
-setInterval(render,1000);
+});
 </script>
 </body>
 </html>
