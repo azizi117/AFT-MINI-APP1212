@@ -3,456 +3,426 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#07130f">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOURCE OF LIFE</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-:root{
---bg:#06110d;
---green:#8df5a8;
---gold:#f5d77c;
---muted:#9bb2a3;
---panel:#0d2118;
-}
 *{box-sizing:border-box}
 body{
-margin:0;
-background:radial-gradient(ellipse at 50% 0%,#205b3b,#07130f 55%,#030906);
-color:#f2fff5;
-font-family:Arial,sans-serif;
-min-height:100vh;
+ margin:0;background:#06130f;color:#fff;
+ font-family:Tahoma,Arial,sans-serif;
+ min-height:100vh;
 }
 .app{max-width:480px;margin:auto;padding:18px 15px 100px}
-header{display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{
-width:47px;height:47px;border-radius:15px;
-background:linear-gradient(145deg,#d8ffad,#25834e);
-display:grid;place-items:center;font-size:25px;
-box-shadow:0 0 25px #70ed8c55
-}
-.brand b{font-size:14px;letter-spacing:1px}
-.brand small{display:block;color:var(--muted);margin-top:5px}
-.status{color:var(--green);font-size:11px}
-.hero{text-align:center;padding:20px 0}
-.planet-wrap{
-height:205px;display:grid;place-items:center;position:relative
-}
+header{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:19px;font-weight:bold;color:#d8ff9b;letter-spacing:1px}
+.status{font-size:11px;color:#8ee7a8;background:#123326;padding:8px 12px;border-radius:20px}
+.subtitle{text-align:center;color:#a8c2ae;font-size:12px;margin-top:8px}
+.hero{text-align:center;margin-top:20px}
 .planet{
-width:170px;height:170px;border-radius:50%;
-background:radial-gradient(circle at 30% 24%,#efffc2,#8be58a 12%,#329c5d 36%,#12613e 70%,#082d21);
-box-shadow:inset -20px -20px 30px #03170f,0 0 45px #63ef8c77;
-position:relative
+ width:205px;height:205px;margin:15px auto;
+ border-radius:50%;
+ background:
+ radial-gradient(circle at 35% 30%,#e8ffad 0%,#80d86d 13%,#218a58 40%,#07533f 68%,#021d1c 100%);
+ box-shadow:0 0 35px #37df7b66,0 0 90px #16b86b33,inset -18px -18px 35px #001a18;
+ position:relative;animation:float 4s ease-in-out infinite;
 }
 .planet:before{
-content:"";position:absolute;inset:40px -25px;
-border:12px solid #e7d58a;
-border-left-color:#b58d3e;border-bottom-color:#7a622f;
-border-radius:50%;transform:rotate(-25deg)
+ content:"";position:absolute;inset:-13px;border:1px solid #a8ff9b55;
+ border-radius:50%;transform:rotate(-25deg) scaleY(.35);
 }
 .planet:after{
-content:"";position:absolute;width:55px;height:55px;
-top:35px;left:28px;background:#d4ffae;
-filter:blur(25px);border-radius:50%
+ content:"";position:absolute;inset:25px;border-radius:50%;
+ background:radial-gradient(circle at 30% 25%,#ffffff33,transparent 45%);
 }
-.orbit{
-position:absolute;width:220px;height:65px;
-border:1px solid #c4e8a966;border-radius:50%;
-transform:rotate(-18deg)
+@keyframes float{50%{transform:translateY(-10px)}}
+.balance-label{font-size:13px;color:#a8c2ae}
+.balance{font-size:36px;font-weight:bold;color:#dfff9e;margin:8px}
+.unit{font-size:13px;color:#9acb9e}
+.level{margin:18px 0 8px;color:#c9e7cb;font-size:13px}
+.progress{height:9px;background:#18372c;border-radius:20px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#52c878,#dfff9e);border-radius:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:20px 0}
+.stat{background:#10271e;border:1px solid #234634;border-radius:14px;padding:13px 5px;text-align:center}
+.stat b{display:block;color:#dfff9e;font-size:17px;margin-bottom:6px}
+.stat small{font-size:10px;color:#a8c2ae}
+.panel{background:#10271e;border:1px solid #234634;border-radius:17px;padding:16px;margin-top:15px}
+.panel-title{font-weight:bold;color:#dfff9e;margin-bottom:13px}
+.mine-info{display:flex;justify-content:space-between;color:#b8d4bd;font-size:12px;margin-bottom:12px}
+button{border:0;cursor:pointer;font-family:inherit}
+.main-btn{
+ width:100%;padding:15px;border-radius:13px;
+ background:linear-gradient(90deg,#7edb70,#dfff9e);
+ color:#092014;font-weight:bold;font-size:15px;
 }
-.spark{position:absolute;color:var(--gold);font-size:20px}
-.hero h1{font-size:23px;letter-spacing:2px;margin:8px 0}
-.hero p{font-size:12px;color:var(--muted)}
-.card{
-background:linear-gradient(145deg,#112b1e,#091b12);
-border:1px solid #315c3d;
-border-radius:19px;padding:16px;margin:13px 0;
-box-shadow:0 10px 30px #0003
+.main-btn:disabled{opacity:.45;cursor:not-allowed}
+.tap-area{text-align:center;margin-top:18px}
+.tap-btn{
+ width:110px;height:110px;border-radius:50%;
+ background:radial-gradient(circle,#dfff9e,#4eae63 65%,#1d6040);
+ color:#092014;font-size:25px;font-weight:bold;
+ box-shadow:0 0 25px #77e89b55;
 }
-.balance{text-align:center}
-.balance small{color:var(--muted)}
-.amount{font-size:36px;color:var(--gold);font-weight:bold;margin:8px}
-.unit{font-size:12px;color:var(--green)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{
-background:#10291c;border:1px solid #2d5439;
-border-radius:15px;padding:13px
-}
-.stat small{color:var(--muted);font-size:11px}
-.stat b{display:block;margin-top:7px;font-size:16px}
-.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
-.head b{font-size:14px}
-.head span{font-size:11px;color:var(--muted)}
-button{
-cursor:pointer;border:0;border-radius:13px;
-font-weight:bold;font-size:14px
-}
-.primary{
-width:100%;padding:15px;
-background:linear-gradient(100deg,#a7f7a8,#e8d68b);
-color:#0b2818;
-box-shadow:0 5px 0 #547d48
-}
-.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #547d48}
-.primary:disabled{opacity:.55;cursor:default;transform:none}
-.progress{height:8px;background:#1e3829;border-radius:20px;overflow:hidden;margin:13px 0}
-.bar{height:100%;width:0;background:linear-gradient(90deg,#4bc879,#e4d17c)}
-.rowline{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
-.task{
-display:flex;justify-content:space-between;align-items:center;
-padding:12px 0;border-bottom:1px solid #254331;font-size:12px
-}
-.task:last-child{border:0}
-.pill{background:#173c28;color:var(--green);padding:7px 11px;border-radius:20px;font-size:10px}
-.invite{
-width:100%;padding:13px;background:#173b29;
-border:1px solid #497c51;color:#e4ffe9;margin-top:12px
-}
-.muted{color:var(--muted);font-size:12px;line-height:1.9}
-.tabs{
-position:fixed;bottom:0;left:0;right:0;
-background:#07130fee;backdrop-filter:blur(14px);
-border-top:1px solid #244a34;z-index:5
-}
-.tabs-inner{
-max-width:480px;margin:auto;display:flex;
-justify-content:space-around;padding:11px 4px
-}
+.tap-btn:active{transform:scale(.94)}
+.tabs{display:flex;gap:8px;margin:20px 0 12px}
 .tab{
-background:none;color:#8ea99a;
-display:grid;gap:4px;justify-items:center;
-font-size:10px;min-width:65px
+ flex:1;background:#142c21;color:#b9d7bd;
+ padding:11px 4px;border-radius:11px;font-size:11px;
+ border:1px solid #274936;
 }
-.tab strong{font-size:20px}
-.tab.active{color:var(--green)}
-.toast{
-position:fixed;top:15px;left:50%;transform:translateX(-50%);
-background:#173b29;border:1px solid #65b878;
-color:white;padding:12px 16px;border-radius:12px;
-font-size:12px;display:none;z-index:10
+.tab.active{background:#dfff9e;color:#092014;font-weight:bold}
+.page{display:none}
+.page.active{display:block}
+.item{
+ background:#153326;border:1px solid #2c503b;
+ padding:13px;border-radius:13px;margin:10px 0;
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
 }
+.item-info{flex:1}
+.item-info b{font-size:13px}
+.item-info small{display:block;color:#a8c2ae;font-size:10px;margin-top:6px;line-height:1.8}
+.buy{
+ background:#dfff9e;color:#092014;border-radius:9px;
+ padding:10px 12px;font-weight:bold;font-size:11px;white-space:nowrap;
+}
+.buy:disabled{opacity:.4}
+.mission-progress{height:6px;background:#284737;border-radius:10px;margin-top:8px;overflow:hidden}
+.mission-progress span{display:block;height:100%;background:#9be889}
+.rank-row{display:flex;justify-content:space-between;padding:13px;border-bottom:1px solid #294638;font-size:12px}
+.rank-row.me{color:#dfff9e;background:#1b3c2b;border-radius:9px}
+.footer{text-align:center;color:#587b64;font-size:10px;margin-top:25px}
+.notice{text-align:center;color:#91b99a;font-size:10px;line-height:1.8;margin-top:12px}
 </style>
 </head>
 
 <body>
-<div class="toast" id="toast"></div>
-
-<main class="app">
+<div class="app">
 
 <header>
-<div class="brand">
-<div class="logo">🌱</div>
-<div>
-<b>SOURCE OF LIFE</b>
-<small>منبع زندگی</small>
-</div>
-</div>
-<div class="status">● آنلاین</div>
+ <div class="logo">🌍 SOURCE OF LIFE</div>
+ <div class="status">● ONLINE</div>
 </header>
 
+<div class="subtitle">منبع زندگی | دنیای انرژی و استخراج</div>
+
 <section class="hero">
-<div class="planet-wrap">
-<div class="orbit"></div>
-<div class="planet"></div>
-<span class="spark" style="top:20px;right:65px">✦</span>
-<span class="spark" style="bottom:25px;left:65px">✧</span>
-</div>
-<h1>SOURCE OF LIFE</h1>
-<p>دنیای انرژی و استخراج دیجیتال</p>
+ <div class="planet"></div>
+ <div class="balance-label">موجودی انرژی شما</div>
+ <div class="balance" id="balance">0</div>
+ <div class="unit">SOL POINTS</div>
 </section>
 
-<section class="card balance">
-<small>موجودی شما</small>
-<div class="amount" id="balance">0.00</div>
-<div class="unit">SOL POINTS</div>
-</section>
+<div class="level">
+ <span id="levelName">سطح ۱</span>
+ <span style="float:left" id="levelProgress">0%</span>
+</div>
+<div class="progress"><span id="levelBar"></span></div>
 
-<div class="grid">
-<div class="stat">
-<small>⛏️ استخراج روزانه</small>
-<b id="mined">0 / 100</b>
-</div>
-<div class="stat">
-<small>👥 دوستان</small>
-<b id="refCount">0 نفر</b>
-</div>
+<div class="stats">
+ <div class="stat"><b id="power">1</b><small>قدرت ضربه</small></div>
+ <div class="stat"><b id="rate">100</b><small>استخراج روزانه</small></div>
+ <div class="stat"><b id="energy">100</b><small>انرژی باقی‌مانده</small></div>
 </div>
 
-<section class="card" id="home">
-<div class="head">
-<b>⚡ استخراج انرژی</b>
-<span id="timer">آماده شروع</span>
+<div class="tabs">
+ <button class="tab active" onclick="showPage('home',this)">خانه</button>
+ <button class="tab" onclick="showPage('shop',this)">فروشگاه</button>
+ <button class="tab" onclick="showPage('missions',this)">مأموریت‌ها</button>
+ <button class="tab" onclick="showPage('rank',this)">رتبه‌بندی</button>
 </div>
 
-<div style="text-align:center;padding:10px">
-<div style="font-size:31px;color:var(--gold);font-weight:bold">
-100 SOL
-</div>
-<div class="muted">پاداش هر دوره ۲۴ ساعته</div>
+<div id="home" class="page active">
+
+ <div class="panel">
+  <div class="panel-title">⚡ استخراج خودکار</div>
+  <div class="mine-info">
+   <span>پاداش روزانه</span>
+   <b id="mineReward">100 SOL</b>
+  </div>
+  <div class="mine-info">
+   <span>زمان باقی‌مانده</span>
+   <b id="timer">آماده استخراج</b>
+  </div>
+  <button class="main-btn" id="mineButton" onclick="claimMining()">شروع استخراج / دریافت پاداش</button>
+ </div>
+
+ <div class="panel tap-area">
+  <div class="panel-title">🌱 انرژی جمع‌آوری کن</div>
+  <p style="font-size:12px;color:#a8c2ae">برای دریافت امتیاز روی سیاره بزن</p>
+  <button class="tap-btn" onclick="tapPlanet()">+<span id="tapPower">1</span></button>
+  <div class="notice">هر ضربه مقداری انرژی به موجودی شما اضافه می‌کند.</div>
+ </div>
+
 </div>
 
-<button class="primary" id="startBtn">
-شروع استخراج
-</button>
+<div id="shop" class="page">
+ <div class="panel">
+  <div class="panel-title">🛒 فروشگاه ارتقا</div>
 
-<div class="progress">
-<div class="bar" id="mineBar"></div>
+  <div class="item">
+   <div class="item-info">
+    <b>⚡ قدرت ضربه</b>
+    <small>افزایش امتیاز دریافتی از هر ضربه</small>
+    <small>هزینه: <span id="tapCost">100</span> SOL</small>
+   </div>
+   <button class="buy" onclick="upgrade('tap')" id="tapBuy">خرید</button>
+  </div>
+
+  <div class="item">
+   <div class="item-info">
+    <b>⛏️ قدرت استخراج</b>
+    <small>افزایش پاداش استخراج روزانه</small>
+    <small>هزینه: <span id="mineCost">300</span> SOL</small>
+   </div>
+   <button class="buy" onclick="upgrade('mine')" id="mineBuy">خرید</button>
+  </div>
+
+  <div class="item">
+   <div class="item-info">
+    <b>🔋 ظرفیت انرژی</b>
+    <small>افزایش ظرفیت انرژی برای ضربه زدن</small>
+    <small>هزینه: <span id="energyCost">200</span> SOL</small>
+   </div>
+   <button class="buy" onclick="upgrade('energy')" id="energyBuy">خرید</button>
+  </div>
+ </div>
 </div>
 
-<div class="rowline">
-<span>پیشرفت استخراج</span>
-<span id="progressText">۰٪</span>
+<div id="missions" class="page">
+ <div class="panel">
+  <div class="panel-title">🎯 مأموریت‌های روزانه</div>
+  <div id="missionList"></div>
+  <div class="notice">مأموریت‌ها هر روز دوباره فعال می‌شوند.</div>
+ </div>
 </div>
-</section>
 
-<section class="card">
-<div class="head">
-<b>👆 دریافت انرژی</b>
-<span>هر لمس +1</span>
+<div id="rank" class="page">
+ <div class="panel">
+  <div class="panel-title">🏆 جدول رتبه‌بندی</div>
+  <div id="leaderboard"></div>
+  <div class="notice">این جدول فعلاً نمایشی و محلی است. رتبه‌بندی واقعی به سرور نیاز دارد.</div>
+ </div>
 </div>
-<button class="primary" id="tapBtn">
-🌿 دریافت انرژی
-</button>
-</section>
 
-<section class="card" id="tasks">
-<div class="head">
-<b>🎯 مأموریت‌ها</b>
-<span>فعالیت‌های شما</span>
+<div class="footer">SOURCE OF LIFE © 2026</div>
 </div>
-<div class="task">
-<span>📅 ورود روزانه</span>
-<span class="pill">به‌زودی</span>
-</div>
-<div class="task">
-<span>👥 دعوت دوستان</span>
-<span class="pill">پاداش</span>
-</div>
-<div class="task">
-<span>📢 عضویت کانال</span>
-<span class="pill">به‌زودی</span>
-</div>
-</section>
-
-<section class="card" id="friends">
-<div class="head">
-<b>👥 دعوت دوستان</b>
-<span>دعوت اختصاصی</span>
-</div>
-<p class="muted">
-دوستانت را به SOURCE OF LIFE دعوت کن و همراه آن‌ها رشد کن.
-</p>
-<button class="invite" id="shareBtn">
-اشتراک‌گذاری لینک دعوت
-</button>
-</section>
-
-<section class="card" id="wallet">
-<div class="head">
-<b>👛 کیف پول</b>
-<span>TON Network</span>
-</div>
-<p class="muted">
-اتصال کیف پول و امکانات دریافت توکن در بخش کیف پول قرار می‌گیرد.
-</p>
-<button class="invite" id="walletBtn">
-اتصال کیف پول به‌زودی
-</button>
-</section>
-
-<p class="muted" style="text-align:center">
-SOURCE OF LIFE • منبع زندگی
-</p>
-
-</main>
-
-<nav class="tabs">
-<div class="tabs-inner">
-<button class="tab active" data-target="home">
-<strong>🌍</strong>خانه
-</button>
-<button class="tab" data-target="tasks">
-<strong>🎯</strong>مأموریت
-</button>
-<button class="tab" data-target="friends">
-<strong>👥</strong>دعوت
-</button>
-<button class="tab" data-target="wallet">
-<strong>👛</strong>کیف پول
-</button>
-</div>
-</nav>
 
 <script>
-const tg=window.Telegram?.WebApp;
+const tg = window.Telegram?.WebApp;
+tg?.ready();
+tg?.expand();
 
-if(tg){
-tg.ready();
-tg.expand();
-try{
-tg.setHeaderColor('#07130f');
-tg.setBackgroundColor('#07130f');
-}catch(e){}
+const KEY = "source_life_v2";
+const today = () => new Date().toISOString().slice(0,10);
+
+let data = JSON.parse(localStorage.getItem(KEY) || "null");
+
+if(!data){
+ data={
+  balance:0,tapPower:1,minePower:100,
+  energy:100,maxEnergy:100,
+  lastMine:0,lastDay:today(),
+  taps:0,upgrades:0,
+  missionClaims:[]
+ };
 }
-
-const $=id=>document.getElementById(id);
-
-let data;
-
-try{
-data=JSON.parse(localStorage.getItem('source_life')||'{}');
-}catch(e){data={};}
-
-data={
-balance:Number(data.balance)||0,
-mineStart:Number(data.mineStart)||0,
-mineClaimed:Boolean(data.mineClaimed),
-...data
-};
 
 function save(){
-localStorage.setItem('source_life',JSON.stringify(data));
-render();
+ localStorage.setItem(KEY,JSON.stringify(data));
 }
 
-function notify(message){
-$('toast').textContent=message;
-$('toast').style.display='block';
-setTimeout(()=>$('toast').style.display='none',2300);
+function resetDaily(){
+ if(data.lastDay !== today()){
+  data.lastDay=today();
+  data.taps=0;
+  data.missionClaims=[];
+  data.energy=data.maxEnergy;
+  save();
+ }
 }
 
-function render(){
-
-$('balance').textContent=Number(data.balance).toFixed(2);
-
-$('mined').textContent=
-(data.mineClaimed?100:0)+' / 100';
-
-const active=data.mineStart>0&&!data.mineClaimed;
-
-if(active){
-
-const elapsed=Date.now()-data.mineStart;
-const progress=Math.min(1,elapsed/86400000);
-
-$('mineBar').style.width=(progress*100)+'%';
-
-$('progressText').textContent=
-Math.floor(progress*100)+'٪';
-
-$('timer').textContent=
-progress>=1?'پاداش آماده دریافت':'در حال استخراج';
-
-$('startBtn').textContent=
-progress>=1?'دریافت ۱۰۰ امتیاز':'استخراج در جریان است';
-
-$('startBtn').disabled=progress<1;
-
-}else{
-
-$('mineBar').style.width='0%';
-$('progressText').textContent='۰٪';
-
-$('timer').textContent=
-data.mineClaimed?'دوره امروز تکمیل شد':'آماده شروع';
-
-$('startBtn').textContent=
-data.mineClaimed?'استخراج امروز تکمیل شد':'شروع استخراج';
-
-$('startBtn').disabled=!!data.mineClaimed;
-
-}
+function format(n){
+ return Math.floor(n).toLocaleString("en-US");
 }
 
-$('startBtn').onclick=()=>{
-
-if(!data.mineStart&&!data.mineClaimed){
-
-data.mineStart=Date.now();
-save();
-notify('استخراج شروع شد');
-
-}else if(
-data.mineStart &&
-!data.mineClaimed &&
-Date.now()-data.mineStart>=86400000
-){
-
-data.balance+=100;
-data.mineClaimed=true;
-save();
-
-notify('۱۰۰ امتیاز به موجودی اضافه شد');
-
-}
-};
-
-$('tapBtn').onclick=()=>{
-
-data.balance+=1;
-save();
-notify('+1 انرژی دریافت شد');
-
-};
-
-$('shareBtn').onclick=()=>{
-
-const user=tg?.initDataUnsafe?.user;
-
-const botUsername='YOUR_BOT';
-
-if(!user){
-notify('ربات تلگرام هنوز متصل نشده است');
-return;
+function getLevel(){
+ return Math.max(1,Math.floor(data.balance/1000)+1);
 }
 
-const link=
-'https://t.me/'+botUsername+'?start='+user.id;
+function update(){
+ resetDaily();
 
-if(tg){
-tg.openTelegramLink(
-'https://t.me/share/url?url='+
-encodeURIComponent(link)+
-'&text='+
-encodeURIComponent('به SOURCE OF LIFE بپیوند!')
-);
-}else if(navigator.clipboard){
-navigator.clipboard.writeText(link)
-.then(()=>notify('لینک دعوت کپی شد'));
+ document.getElementById("balance").textContent=format(data.balance);
+ document.getElementById("power").textContent=format(data.tapPower);
+ document.getElementById("rate").textContent=format(data.minePower);
+ document.getElementById("energy").textContent=format(data.energy);
+ document.getElementById("tapPower").textContent=format(data.tapPower);
+
+ let level=getLevel();
+ let progress=(data.balance%1000)/10;
+ document.getElementById("levelName").textContent="سطح "+level;
+ document.getElementById("levelProgress").textContent=Math.floor(progress)+"%";
+ document.getElementById("levelBar").style.width=progress+"%";
+
+ document.getElementById("mineReward").textContent=format(data.minePower)+" SOL";
+
+ let ready=Date.now()-data.lastMine>=86400000;
+ let button=document.getElementById("mineButton");
+ button.disabled=!ready;
+ button.textContent=ready?"دریافت پاداش استخراج":"استخراج در حال انجام";
+
+ document.getElementById("tapCost").textContent=format(100*data.tapPower);
+ document.getElementById("mineCost").textContent=format(300*(data.minePower/100));
+ document.getElementById("energyCost").textContent=format(200*(data.maxEnergy/100));
+
+ document.getElementById("tapBuy").disabled=data.balance<100*data.tapPower;
+ document.getElementById("mineBuy").disabled=data.balance<300*(data.minePower/100);
+ document.getElementById("energyBuy").disabled=data.balance<200*(data.maxEnergy/100);
+
+ renderMissions();
+ renderLeaderboard();
 }
 
-};
+function tapPlanet(){
+ resetDaily();
+ if(data.energy<data.tapPower){
+  alert("انرژی کافی ندارید. فردا دوباره امتحان کنید.");
+  return;
+ }
+ data.energy-=data.tapPower;
+ data.balance+=data.tapPower;
+ data.taps++;
+ save();
+ update();
+}
 
-$('walletBtn').onclick=()=>{
-notify('اتصال کیف پول در مرحله بعد فعال می‌شود');
-};
+function claimMining(){
+ if(Date.now()-data.lastMine<86400000)return;
+ data.balance+=data.minePower;
+ data.lastMine=Date.now();
+ save();
+ update();
+ alert("تبریک! "+format(data.minePower)+" امتیاز دریافت کردی 🌱");
+}
 
-document.querySelectorAll('.tab').forEach(button=>{
+function upgrade(type){
+ let cost;
+ if(type==="tap"){
+  cost=100*data.tapPower;
+  if(data.balance<cost)return;
+  data.balance-=cost;
+  data.tapPower++;
+ }
+ if(type==="mine"){
+  cost=300*(data.minePower/100);
+  if(data.balance<cost)return;
+  data.balance-=cost;
+  data.minePower+=50;
+ }
+ if(type==="energy"){
+  cost=200*(data.maxEnergy/100);
+  if(data.balance<cost)return;
+  data.balance-=cost;
+  data.maxEnergy+=100;
+  data.energy+=100;
+ }
+ data.upgrades++;
+ save();
+ update();
+ alert("ارتقا با موفقیت انجام شد! 🚀");
+}
 
-button.onclick=()=>{
+const missions=[
+ {id:"tap",name:"جمع‌آوری انرژی",desc:"۲۰ بار روی سیاره ضربه بزن",target:20,reward:50},
+ {id:"mine",name:"استخراج روزانه",desc:"پاداش استخراج روزانه را دریافت کن",target:1,reward:100},
+ {id:"upgrade",name:"پیشرفت",desc:"یک ارتقا از فروشگاه بخر",target:1,reward:75}
+];
 
-document.querySelectorAll('.tab').forEach(b=>
-b.classList.remove('active')
-);
+function missionProgress(m){
+ if(m.id==="tap")return Math.min(data.taps,m.target);
+ if(m.id==="mine")return data.lastMine && new Date(data.lastMine).toISOString().slice(0,10)===today()?1:0;
+ if(m.id==="upgrade")return Math.min(data.upgrades,m.target);
+ return 0;
+}
 
-button.classList.add('active');
+function renderMissions(){
+ let html="";
+ missions.forEach(m=>{
+  let progress=missionProgress(m);
+  let done=data.missionClaims.includes(m.id);
+  html+=`
+   <div class="item">
+    <div class="item-info">
+     <b>${m.name}</b>
+     <small>${m.desc}</small>
+     <small>${progress}/${m.target} • جایزه ${m.reward} SOL</small>
+     <div class="mission-progress"><span style="width:${progress/m.target*100}%"></span></div>
+    </div>
+    <button class="buy" ${progress<m.target||done?"disabled":""}
+    onclick="claimMission('${m.id}')">
+    ${done?"دریافت شد":"دریافت"}
+    </button>
+   </div>`;
+ });
+ document.getElementById("missionList").innerHTML=html;
+}
 
-document.getElementById(button.dataset.target)
-.scrollIntoView({
-behavior:'smooth',
-block:'start'
-});
+function claimMission(id){
+ let m=missions.find(x=>x.id===id);
+ if(!m||data.missionClaims.includes(id)||missionProgress(m)<m.target)return;
+ data.balance+=m.reward;
+ data.missionClaims.push(id);
+ save();
+ update();
+ alert("جایزه مأموریت دریافت شد! 🎁");
+}
 
-};
+function renderLeaderboard(){
+ let fake=[
+  {name:"Green Planet",score:25400},
+  {name:"Life Master",score:18700},
+  {name:"Energy King",score:12900},
+  {name:"Nature Soul",score:8400},
+  {name:"Earth Hero",score:5100}
+ ];
+ let users=[...fake,{name:"شما",score:data.balance,me:true}]
+ .sort((a,b)=>b.score-a.score);
 
-});
+ document.getElementById("leaderboard").innerHTML=users.map((u,i)=>`
+  <div class="rank-row ${u.me?"me":""}">
+   <span>${i+1}. ${u.name}</span>
+   <b>${format(u.score)} SOL</b>
+  </div>`).join("");
+}
 
-render();
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ button.classList.add("active");
+}
 
-setInterval(render,1000);
+function tick(){
+ if(data.lastMine){
+  let remaining=86400000-(Date.now()-data.lastMine);
+  if(remaining>0){
+   let h=Math.floor(remaining/3600000);
+   let m=Math.floor(remaining%3600000/60000);
+   let s=Math.floor(remaining%60000/1000);
+   document.getElementById("timer").textContent=
+   `${h} ساعت ${m} دقیقه ${s} ثانیه`;
+  }else{
+   document.getElementById("timer").textContent="آماده دریافت";
+  }
+ }else{
+  document.getElementById("timer").textContent="آماده دریافت";
+ }
+}
+
+update();
+tick();
+setInterval(tick,1000);
 </script>
-
 </body>
 </html>
