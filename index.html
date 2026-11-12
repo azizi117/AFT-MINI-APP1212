@@ -2,279 +2,69 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>EMERALD COIN PRO | Native</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emerald Coin</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap');
-:root {
-  --bg: #030d08;
-  --panel: rgba(12, 38, 24, 0.85);
-  --green: #00ff9d;
-  --green-dark: #00b36b;
-  --gold: #ffcc00;
-  --text: #ffffff;
-  --muted: #8ca395;
-  --border: rgba(0, 255, 157, 0.2);
-}
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-body {
-  margin: 0; background: var(--bg); color: var(--text);
-  font-family: 'Vazirmatn', sans-serif; min-height: 100vh;
-  padding: 15px 15px 90px 15px; overflow-x: hidden;
-}
-.app { max-width: 480px; margin: 0 auto; }
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.logo-box { display: flex; align-items: center; gap: 10px; }
-.logo {
-  width: 42px; height: 42px; background: linear-gradient(135deg, #00ff9d, #007a4d);
-  border-radius: 12px; display: grid; place-items: center; font-size: 20px; font-weight: 900; color: #02140b;
-  box-shadow: 0 0 15px rgba(0,255,157,0.4);
-}
-.panel {
-  background: var(--panel); border: 1px solid var(--border);
-  border-radius: 20px; padding: 18px; margin-bottom: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-}
-.hero { text-align: center; }
-.balance { font-size: 38px; font-weight: 900; color: var(--green); margin: 5px 0; }
-.crystal-btn {
-  width: 160px; height: 160px; margin: 20px auto; background: none; border: none; cursor: pointer;
-  filter: drop-shadow(0 0 20px rgba(0,255,157,0.5)); transition: transform 0.1s;
-}
-.crystal-btn:active { transform: scale(0.92); }
-.crystal-svg { width: 100%; height: 100%; }
-.progress-bar {
-  width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 10px;
-}
-.progress-fill { height: 100%; background: var(--green); width: 100%; transition: width 0.2s; }
-.btn {
-  width: 100%; border: none; border-radius: 14px; padding: 14px;
-  font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer;
-  background: linear-gradient(135deg, #00ff9d, #00b36b); color: #031a0e;
-  box-shadow: 0 5px 15px rgba(0,255,157,0.3); margin-top: 10px;
-}
-.btn:active { transform: scale(0.98); }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--green); box-shadow: none; }
-.nav {
-  position: fixed; bottom: 0; left: 0; right: 0; background: rgba(3, 13, 8, 0.95);
-  border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr);
-  padding: 10px; z-index: 100; backdrop-filter: blur(15px);
-}
-.nav-btn {
-  background: none; border: none; color: var(--muted); font-family: inherit;
-  font-size: 11px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;
-}
-.nav-btn.active { color: var(--green); }
-.nav-btn span { font-size: 18px; }
-.section { display: none; }
-.section.active { display: block; animation: fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-.item-row {
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-  padding: 12px; border-radius: 14px; margin-bottom: 8px;
-}
-.toast {
-  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px);
-  background: #003820; border: 1px solid var(--green); color: white; padding: 10px 20px;
-  border-radius: 12px; font-size: 12px; font-weight: 800; opacity: 0; transition: 0.3s; z-index: 1000;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  body {
+    background: #04100b;
+    color: #ffffff;
+    font-family: Tahoma, sans-serif;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+  }
+  .card {
+    background: #0b2214;
+    border: 1px solid #00e58b;
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .balance {
+    font-size: 36px;
+    font-weight: bold;
+    color: #00e58b;
+    margin: 15px 0;
+  }
+  .btn {
+    background: linear-gradient(135deg, #00ff9d, #00a968);
+    color: #031a0e;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+  }
+  .btn:active {
+    transform: scale(0.96);
+  }
 </style>
 </head>
 <body>
 
-<div class="app">
-  <header class="header">
-    <div class="logo-box">
-      <div class="logo">◆</div>
-      <div>
-        <div style="font-size: 15px; font-weight: 900;">EMERALD COIN</div>
-        <div style="font-size: 10px; color: var(--muted);">OFFICIAL MINI APP</div>
-      </div>
-    </div>
-    <div style="font-size: 12px; font-weight: 800; color: var(--gold);">⚡ سطح <span id="userLevel">1</span></div>
-  </header>
-
-  <!-- HOME SECTION -->
-  <section id="home" class="section active">
-    <div class="panel hero">
-      <div style="font-size: 11px; color: var(--muted); letter-spacing: 1px;">موجودی کل EMC</div>
-      <div class="balance" id="balanceVal">0</div>
-      
-      <button class="crystal-btn" onclick="tapCrystal(event)">
-        <svg class="crystal-svg" viewBox="0 0 180 180">
-          <polygon points="45,15 135,15 170,58 90,170 10,58" fill="#00ff9d" stroke="#baffdf" stroke-width="2"/>
-          <polygon points="45,15 90,55 10,58" fill="#ffffff" fill-opacity="0.3"/>
-          <polygon points="135,15 90,55 170,58" fill="#00b36b" fill-opacity="0.5"/>
-          <polygon points="10,58 90,55 90,170" fill="#007a4d" fill-opacity="0.6"/>
-          <polygon points="170,58 90,55 90,170" fill="#004d30" fill-opacity="0.7"/>
-        </svg>
-      </button>
-
-      <div style="text-align: right; margin-top: 15px;">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 5px;">
-          <span>انرژی: <span id="energyVal">1000</span>/<span id="maxEnergyVal">1000</span></span>
-          <span style="color: var(--muted);">شارژ سریع</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" id="energyBar"></div></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div style="font-size: 13px; font-weight: 800; margin-bottom: 8px;">⛏️ استخراج خودکار ساعتی</div>
-      <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--muted);">
-        <span>سود در ساعت: <b style="color: var(--green);">+<span id="pphVal">0</span> EMC</b></span>
-        <button class="btn-outline" style="padding: 4px 10px; font-size: 11px; margin:0;" onclick="claimPph()">برداشت سود</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- UPGRADE SECTION -->
-  <section id="upgrade" class="section">
-    <div style="font-size: 16px; font-weight: 900; margin-bottom: 12px;">🚀 ارتقا و تجهیزات</div>
-    <div class="item-row">
-      <div>
-        <div style="font-size: 13px; font-weight: 800;">مولتی‌تپ (قدرت ضربه)</div>
-        <div style="font-size: 11px; color: var(--muted);">سطح فعلی: <span id="lvlTap">1</span> (+1 EMC)</div>
-      </div>
-      <button class="btn" style="width: auto; padding: 8px 14px; margin:0;" onclick="upgradeItem('tap')">100 EMC</button>
-    </div>
-    <div class="item-row">
-      <div>
-        <div style="font-size: 13px; font-weight: 800;">مایتر ابری ساعتی</div>
-        <div style="font-size: 11px; color: var(--muted);">سود: +50 EMC/h</div>
-      </div>
-      <button class="btn" style="width: auto; padding: 8px 14px; margin:0;" onclick="upgradeItem('miner')">500 EMC</button>
-    </div>
-  </section>
-
-  <!-- TASKS SECTION -->
-  <section id="tasks" class="section">
-    <div style="font-size: 16px; font-weight: 900; margin-bottom: 12px;">🎯 مأموریت‌ها و پاداش</div>
-    <div class="item-row">
-      <div>
-        <div style="font-size: 13px; font-weight: 800;">عضویت در کانال رسمی</div>
-        <div style="font-size: 11px; color: var(--green);">+1,000 EMC</div>
-      </div>
-      <button class="btn" style="width: auto; padding: 8px 14px; margin:0;" onclick="doTask(1000, this)">انجام شد</button>
-    </div>
-  </section>
-
-  <!-- WALLET SECTION -->
-  <section id="wallet" class="section">
-    <div class="panel" style="text-align: center;">
-      <div style="font-size: 12px; color: var(--muted);">موجودی قابل برداشت</div>
-      <div class="balance" id="walletBal">0</div>
-      <button class="btn" onclick="showToast('به زودی در شبکه TON فعال می‌شود')">اتصال کیف پول</button>
-    </div>
-  </section>
-</div>
-
-<!-- NAVIGATION -->
-<nav class="nav">
-  <button class="nav-btn active" onclick="switchTab('home', this)"><span>💎</span>استخراج</button>
-  <button class="nav-btn" onclick="switchTab('upgrade', this)"><span>🚀</span>ارتقا</button>
-  <button class="nav-btn" onclick="switchTab('tasks', this)"><span>🎯</span>مأموریت</button>
-  <button class="nav-btn" onclick="switchTab('wallet', this)"><span>💳</span>کیف پول</button>
-</nav>
-
-<div id="toast" class="toast">پیام</div>
+  <h1>EMERALD COIN</h1>
+  
+  <div class="card">
+    <p>موجودی شما:</p>
+    <div class="balance" id="score">0</div>
+    <button class="btn" onclick="addCoin()">💎 ضربه بزن و بگیر!</button>
+  </div>
 
 <script>
-let state = JSON.parse(localStorage.getItem("EMC_SAFE_STATE")) || {
-  balance: 0,
-  energy: 1000,
-  maxEnergy: 1000,
-  tapPower: 1,
-  pph: 0,
-  level: 1
-};
+  let score = localStorage.getItem('emc_score') ? parseInt(localStorage.getItem('emc_score')) : 0;
+  document.getElementById('score').textContent = score;
 
-function save() {
-  localStorage.setItem("EMC_SAFE_STATE", JSON.stringify(state));
-}
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2000);
-}
-
-function tapCrystal(e) {
-  if (state.energy < state.tapPower) {
-    showToast("انرژی تمام شده است!");
-    return;
+  function addCoin() {
+    score += 1;
+    document.getElementById('score').textContent = score;
+    localStorage.setItem('emc_score', score);
   }
-  state.energy -= state.tapPower;
-  state.balance += state.tapPower;
-  save();
-  updateUI();
-}
-
-function upgradeItem(type) {
-  if (type === 'tap') {
-    let cost = state.tapPower * 100;
-    if (state.balance < cost) { showToast("موجودی کافی نیست!"); return; }
-    state.balance -= cost;
-    state.tapPower += 1;
-    showToast("قدرت ضربه افزایش یافت!");
-  } else if (type === 'miner') {
-    let cost = 500;
-    if (state.balance < cost) { showToast("موجودی کافی نیست!"); return; }
-    state.balance -= cost;
-    state.pph += 50;
-    showToast("ماینر ابری فعال شد!");
-  }
-  save();
-  updateUI();
-}
-
-function doTask(reward, btn) {
-  state.balance += reward;
-  btn.textContent = "دریافت شد ✓";
-  btn.disabled = true;
-  showToast(`+${reward} EMC پاداش مأموریت دریافت شد!`);
-  save();
-  updateUI();
-}
-
-function claimPph() {
-  showToast("سود ساعتی به موجودی اضافه شد");
-}
-
-function switchTab(id, btn) {
-  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-}
-
-function updateUI() {
-  document.getElementById("balanceVal").textContent = Math.floor(state.balance).toLocaleString();
-  document.getElementById("walletBal").textContent = Math.floor(state.balance).toLocaleString();
-  document.getElementById("energyVal").textContent = Math.floor(state.energy);
-  document.getElementById("maxEnergyVal").textContent = state.maxEnergy;
-  document.getElementById("energyBar").style.width = (state.energy / state.maxEnergy) * 100 + "%";
-  document.getElementById("userLevel").textContent = state.level;
-  document.getElementById("pphVal").textContent = state.pph;
-  document.getElementById("lvlTap").textContent = state.tapPower;
-}
-
-// 1-second loop for energy regen and passive PPH
-setInterval(() => {
-  if (state.energy < state.maxEnergy) {
-    state.energy = Math.min(state.maxEnergy, state.energy + 5);
-  }
-  if (state.pph > 0) {
-    state.balance += state.pph / 3600;
-  }
-  save();
-  updateUI();
-}, 1000);
-
-updateUI();
 </script>
+
 </body>
 </html>
