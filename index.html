@@ -2,299 +2,279 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#030d08">
-<title>EMERALD COIN PRO | 3D Digital Mini App</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>EMERALD COIN PRO | Native</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap');
 :root {
-  --bg-deep: #020906;
-  --emerald-neon: #00ffa3;
-  --emerald-mid: #00b874;
-  --emerald-dark: #042417;
-  --gold-neon: #ffd470;
-  --danger-neon: #ff4d6d;
-  --text-main: #f3fff9;
-  --text-muted: #8cb39e;
-  --glass-bg: linear-gradient(145deg, rgba(20, 62, 41, 0.42), rgba(5, 22, 14, 0.72));
-  --glass-border: rgba(0, 255, 163, 0.25);
-  --glass-highlight: rgba(255, 255, 255, 0.14);
+  --bg: #030d08;
+  --panel: rgba(12, 38, 24, 0.85);
+  --green: #00ff9d;
+  --green-dark: #00b36b;
+  --gold: #ffcc00;
+  --text: #ffffff;
+  --muted: #8ca395;
+  --border: rgba(0, 255, 157, 0.2);
 }
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
 body {
-  margin: 0;
-  background-color: var(--bg-deep);
-  background-image: 
-    radial-gradient(circle at 20% 0%, rgba(0, 255, 163, 0.16) 0%, transparent 40%),
-    radial-gradient(circle at 85% 25%, rgba(0, 184, 116, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 50% 95%, rgba(0, 255, 163, 0.1) 0%, transparent 50%);
-  color: var(--text-main);
-  font-family: 'Vazirmatn', sans-serif;
-  min-height: 100vh;
-  padding-bottom: 105px;
-  overflow-x: hidden;
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Vazirmatn', sans-serif; min-height: 100vh;
+  padding: 15px 15px 90px 15px; overflow-x: hidden;
+}
+.app { max-width: 480px; margin: 0 auto; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.logo-box { display: flex; align-items: center; gap: 10px; }
+.logo {
+  width: 42px; height: 42px; background: linear-gradient(135deg, #00ff9d, #007a4d);
+  border-radius: 12px; display: grid; place-items: center; font-size: 20px; font-weight: 900; color: #02140b;
+  box-shadow: 0 0 15px rgba(0,255,157,0.4);
+}
+.panel {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 20px; padding: 18px; margin-bottom: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+}
+.hero { text-align: center; }
+.balance { font-size: 38px; font-weight: 900; color: var(--green); margin: 5px 0; }
+.crystal-btn {
+  width: 160px; height: 160px; margin: 20px auto; background: none; border: none; cursor: pointer;
+  filter: drop-shadow(0 0 20px rgba(0,255,157,0.5)); transition: transform 0.1s;
+}
+.crystal-btn:active { transform: scale(0.92); }
+.crystal-svg { width: 100%; height: 100%; }
+.progress-bar {
+  width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 10px;
+}
+.progress-fill { height: 100%; background: var(--green); width: 100%; transition: width 0.2s; }
+.btn {
+  width: 100%; border: none; border-radius: 14px; padding: 14px;
+  font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer;
+  background: linear-gradient(135deg, #00ff9d, #00b36b); color: #031a0e;
+  box-shadow: 0 5px 15px rgba(0,255,157,0.3); margin-top: 10px;
+}
+.btn:active { transform: scale(0.98); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--green); box-shadow: none; }
+.nav {
+  position: fixed; bottom: 0; left: 0; right: 0; background: rgba(3, 13, 8, 0.95);
+  border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr);
+  padding: 10px; z-index: 100; backdrop-filter: blur(15px);
+}
+.nav-btn {
+  background: none; border: none; color: var(--muted); font-family: inherit;
+  font-size: 11px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;
+}
+.nav-btn.active { color: var(--green); }
+.nav-btn span { font-size: 18px; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+.item-row {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  padding: 12px; border-radius: 14px; margin-bottom: 8px;
+}
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px);
+  background: #003820; border: 1px solid var(--green); color: white; padding: 10px 20px;
+  border-radius: 12px; font-size: 12px; font-weight: 800; opacity: 0; transition: 0.3s; z-index: 1000;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="header">
+    <div class="logo-box">
+      <div class="logo">◆</div>
+      <div>
+        <div style="font-size: 15px; font-weight: 900;">EMERALD COIN</div>
+        <div style="font-size: 10px; color: var(--muted);">OFFICIAL MINI APP</div>
+      </div>
+    </div>
+    <div style="font-size: 12px; font-weight: 800; color: var(--gold);">⚡ سطح <span id="userLevel">1</span></div>
+  </header>
+
+  <!-- HOME SECTION -->
+  <section id="home" class="section active">
+    <div class="panel hero">
+      <div style="font-size: 11px; color: var(--muted); letter-spacing: 1px;">موجودی کل EMC</div>
+      <div class="balance" id="balanceVal">0</div>
+      
+      <button class="crystal-btn" onclick="tapCrystal(event)">
+        <svg class="crystal-svg" viewBox="0 0 180 180">
+          <polygon points="45,15 135,15 170,58 90,170 10,58" fill="#00ff9d" stroke="#baffdf" stroke-width="2"/>
+          <polygon points="45,15 90,55 10,58" fill="#ffffff" fill-opacity="0.3"/>
+          <polygon points="135,15 90,55 170,58" fill="#00b36b" fill-opacity="0.5"/>
+          <polygon points="10,58 90,55 90,170" fill="#007a4d" fill-opacity="0.6"/>
+          <polygon points="170,58 90,55 90,170" fill="#004d30" fill-opacity="0.7"/>
+        </svg>
+      </button>
+
+      <div style="text-align: right; margin-top: 15px;">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 5px;">
+          <span>انرژی: <span id="energyVal">1000</span>/<span id="maxEnergyVal">1000</span></span>
+          <span style="color: var(--muted);">شارژ سریع</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="energyBar"></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="font-size: 13px; font-weight: 800; margin-bottom: 8px;">⛏️ استخراج خودکار ساعتی</div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--muted);">
+        <span>سود در ساعت: <b style="color: var(--green);">+<span id="pphVal">0</span> EMC</b></span>
+        <button class="btn-outline" style="padding: 4px 10px; font-size: 11px; margin:0;" onclick="claimPph()">برداشت سود</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPGRADE SECTION -->
+  <section id="upgrade" class="section">
+    <div style="font-size: 16px; font-weight: 900; margin-bottom: 12px;">🚀 ارتقا و تجهیزات</div>
+    <div class="item-row">
+      <div>
+        <div style="font-size: 13px; font-weight: 800;">مولتی‌تپ (قدرت ضربه)</div>
+        <div style="font-size: 11px; color: var(--muted);">سطح فعلی: <span id="lvlTap">1</span> (+1 EMC)</div>
+      </div>
+      <button class="btn" style="width: auto; padding: 8px 14px; margin:0;" onclick="upgradeItem('tap')">100 EMC</button>
+    </div>
+    <div class="item-row">
+      <div>
+        <div style="font-size: 13px; font-weight: 800;">مایتر ابری ساعتی</div>
+        <div style="font-size: 11px; color: var(--muted);">سود: +50 EMC/h</div>
+      </div>
+      <button class="btn" style="width: auto; padding: 8px 14px; margin:0;" onclick="upgradeItem('miner')">500 EMC</button>
+    </div>
+  </section>
+
+  <!-- TASKS SECTION -->
+  <section id="tasks" class="section">
+    <div style="font-size: 16px; font-weight: 900; margin-bottom: 12px;">🎯 مأموریت‌ها و پاداش</div>
+    <div class="item-row">
+      <div>
+        <div style="font-size: 13px; font-weight: 800;">عضویت در کانال رسمی</div>
+        <div style="font-size: 11px; color: var(--green);">+1,000 EMC</div>
+      </div>
+      <button class="btn" style="width: auto; padding: 8px 14px; margin:0;" onclick="doTask(1000, this)">انجام شد</button>
+    </div>
+  </section>
+
+  <!-- WALLET SECTION -->
+  <section id="wallet" class="section">
+    <div class="panel" style="text-align: center;">
+      <div style="font-size: 12px; color: var(--muted);">موجودی قابل برداشت</div>
+      <div class="balance" id="walletBal">0</div>
+      <button class="btn" onclick="showToast('به زودی در شبکه TON فعال می‌شود')">اتصال کیف پول</button>
+    </div>
+  </section>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="switchTab('home', this)"><span>💎</span>استخراج</button>
+  <button class="nav-btn" onclick="switchTab('upgrade', this)"><span>🚀</span>ارتقا</button>
+  <button class="nav-btn" onclick="switchTab('tasks', this)"><span>🎯</span>مأموریت</button>
+  <button class="nav-btn" onclick="switchTab('wallet', this)"><span>💳</span>کیف پول</button>
+</nav>
+
+<div id="toast" class="toast">پیام</div>
+
+<script>
+let state = JSON.parse(localStorage.getItem("EMC_SAFE_STATE")) || {
+  balance: 0,
+  energy: 1000,
+  maxEnergy: 1000,
+  tapPower: 1,
+  pph: 0,
+  level: 1
+};
+
+function save() {
+  localStorage.setItem("EMC_SAFE_STATE", JSON.stringify(state));
 }
 
-/* 3D GLASSMORPHIC PANEL */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid var(--glass-border);
-  border-top: 1px solid var(--glass-highlight);
-  border-left: 1px solid var(--glass-highlight);
-  border-radius: 26px;
-  padding: 18px;
-  margin-bottom: 15px;
-  box-shadow: 
-    0 18px 40px rgba(0, 0, 0, 0.65),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15),
-    inset 0 -3px 10px rgba(0, 0, 0, 0.45);
-  position: relative;
-  overflow: hidden;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
 }
 
-/* 3D DIGITAL GLASS BUTTONS */
-.glass-btn-3d {
-  position: relative;
-  border: 1px solid rgba(0, 255, 163, 0.45);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.5);
-  border-radius: 16px;
-  padding: 13px 18px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 900;
-  color: #021a0f;
-  background: linear-gradient(135deg, rgba(72, 255, 188, 0.92), rgba(0, 194, 120, 0.85));
-  backdrop-filter: blur(12px);
-  box-shadow: 
-    0 6px 0 #006b42,
-    0 14px 26px rgba(0, 255, 163, 0.35),
-    inset 0 2px 3px rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+function tapCrystal(e) {
+  if (state.energy < state.tapPower) {
+    showToast("انرژی تمام شده است!");
+    return;
+  }
+  state.energy -= state.tapPower;
+  state.balance += state.tapPower;
+  save();
+  updateUI();
 }
 
-.glass-btn-3d:hover {
-  filter: brightness(1.06);
+function upgradeItem(type) {
+  if (type === 'tap') {
+    let cost = state.tapPower * 100;
+    if (state.balance < cost) { showToast("موجودی کافی نیست!"); return; }
+    state.balance -= cost;
+    state.tapPower += 1;
+    showToast("قدرت ضربه افزایش یافت!");
+  } else if (type === 'miner') {
+    let cost = 500;
+    if (state.balance < cost) { showToast("موجودی کافی نیست!"); return; }
+    state.balance -= cost;
+    state.pph += 50;
+    showToast("ماینر ابری فعال شد!");
+  }
+  save();
+  updateUI();
 }
 
-.glass-btn-3d:active {
-  transform: translateY(5px);
-  box-shadow: 
-    0 1px 0 #006b42,
-    0 4px 12px rgba(0, 255, 163, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+function doTask(reward, btn) {
+  state.balance += reward;
+  btn.textContent = "دریافت شد ✓";
+  btn.disabled = true;
+  showToast(`+${reward} EMC پاداش مأموریت دریافت شد!`);
+  save();
+  updateUI();
 }
 
-.glass-btn-3d:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  transform: none;
+function claimPph() {
+  showToast("سود ساعتی به موجودی اضافه شد");
 }
 
-/* Secondary Translucent 3D Glass Button */
-.glass-btn-dark {
-  position: relative;
-  border: 1px solid rgba(0, 255, 163, 0.28);
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 16px;
-  padding: 12px 16px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--emerald-neon);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(0, 35, 20, 0.55));
-  backdrop-filter: blur(16px);
-  box-shadow: 
-    0 5px 0 rgba(1, 14, 8, 0.9),
-    0 10px 20px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
+function switchTab(id, btn) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
 }
 
-.glass-btn-dark:active {
-  transform: translateY(4px);
-  box-shadow: 
-    0 1px 0 rgba(1, 14, 8, 0.9),
-    0 3px 8px rgba(0, 0, 0, 0.5);
+function updateUI() {
+  document.getElementById("balanceVal").textContent = Math.floor(state.balance).toLocaleString();
+  document.getElementById("walletBal").textContent = Math.floor(state.balance).toLocaleString();
+  document.getElementById("energyVal").textContent = Math.floor(state.energy);
+  document.getElementById("maxEnergyVal").textContent = state.maxEnergy;
+  document.getElementById("energyBar").style.width = (state.energy / state.maxEnergy) * 100 + "%";
+  document.getElementById("userLevel").textContent = state.level;
+  document.getElementById("pphVal").textContent = state.pph;
+  document.getElementById("lvlTap").textContent = state.tapPower;
 }
 
-/* Gold 3D Glass Button */
-.glass-btn-gold {
-  border: 1px solid rgba(255, 212, 112, 0.55);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.65);
-  border-radius: 16px;
-  padding: 13px 18px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 900;
-  color: #241600;
-  background: linear-gradient(135deg, rgba(255, 232, 163, 0.95), rgba(217, 155, 38, 0.88));
-  box-shadow: 
-    0 6px 0 #7a5209,
-    0 14px 25px rgba(255, 212, 112, 0.28),
-    inset 0 2px 3px rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
-}
+// 1-second loop for energy regen and passive PPH
+setInterval(() => {
+  if (state.energy < state.maxEnergy) {
+    state.energy = Math.min(state.maxEnergy, state.energy + 5);
+  }
+  if (state.pph > 0) {
+    state.balance += state.pph / 3600;
+  }
+  save();
+  updateUI();
+}, 1000);
 
-.glass-btn-gold:active {
-  transform: translateY(5px);
-  box-shadow: 0 1px 0 #7a5209, 0 4px 10px rgba(255, 212, 112, 0.2);
-}
-
-/* Danger 3D Glass Button */
-.glass-btn-danger {
-  border: 1px solid rgba(255, 77, 109, 0.5);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.45);
-  border-radius: 16px;
-  padding: 13px 18px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 900;
-  color: #fff;
-  background: linear-gradient(135deg, rgba(255, 92, 122, 0.9), rgba(190, 24, 55, 0.85));
-  box-shadow: 
-    0 6px 0 #6e0b1e,
-    0 12px 22px rgba(255, 77, 109, 0.3),
-    inset 0 2px 2px rgba(255, 255, 255, 0.45);
-  cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
-}
-
-.glass-btn-danger:active {
-  transform: translateY(5px);
-  box-shadow: 0 1px 0 #6e0b1e;
-}
-
-.btn-block { width: 100%; display: block; margin-top: 12px; }
-.btn-sm { padding: 8px 13px; font-size: 11px; border-radius: 12px; }
-
-.app { max-width: 500px; margin: auto; padding: 14px; }
-
-/* TOP HEADER */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-.brand { display: flex; align-items: center; gap: 10px; }
-.logo-3d {
-  width: 46px; height: 46px; border-radius: 15px;
-  background: linear-gradient(145deg, rgba(0, 255, 163, 0.35), rgba(0, 90, 55, 0.7));
-  border: 1px solid rgba(0, 255, 163, 0.5);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.5);
-  display: grid; place-items: center;
-  font-size: 22px; color: var(--emerald-neon);
-  box-shadow: 0 8px 20px rgba(0, 255, 163, 0.25), inset 0 1px 4px rgba(255, 255, 255, 0.4);
-}
-.brand-title { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; }
-.live-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 10px; font-weight: 700; color: var(--emerald-neon);
-}
-.pulse-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--emerald-neon);
-  box-shadow: 0 0 10px var(--emerald-neon);
-  animation: pulse 1.4s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.3)} }
-
-.ticker-pill {
-  background: rgba(10, 35, 23, 0.65);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--glass-border);
-  border-top: 1px solid var(--glass-highlight);
-  padding: 7px 12px;
-  border-radius: 14px;
-  text-align: left;
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-}
-.ticker-pill span { display: block; font-size: 9px; color: var(--text-muted); }
-.ticker-pill b { font-size: 13px; color: var(--emerald-neon); font-variant-numeric: tabular-nums; }
-
-/* HERO 3D CRYSTAL STAGE */
-.hero-card { text-align: center; padding: 20px 16px; }
-.balance-big {
-  font-size: 40px; font-weight: 900;
-  background: linear-gradient(180deg, #ffffff 20%, #8effd4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 15px rgba(0, 255, 163, 0.3));
-  font-variant-numeric: tabular-nums;
-}
-.usd-equiv {
-  font-size: 12px; color: var(--gold-neon); font-weight: 700; margin-top: 2px;
-}
-
-.crystal-arena {
-  position: relative;
-  width: 220px; height: 220px;
-  margin: 14px auto;
-  display: grid; place-items: center;
-  cursor: pointer;
-  perspective: 800px;
-}
-.orbit-ring {
-  position: absolute; inset: 6px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(0, 255, 163, 0.3);
-  animation: spinSlow 24s linear infinite;
-  pointer-events: none;
-}
-.orbit-ring-inner {
-  position: absolute; inset: 22px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: radial-gradient(circle, rgba(0, 255, 163, 0.22) 0%, transparent 68%);
-  box-shadow: inset 0 0 25px rgba(0, 255, 163, 0.25);
-  pointer-events: none;
-}
-@keyframes spinSlow { to { transform: rotate(360deg); } }
-
-.crystal-3d {
-  width: 156px; height: 156px;
-  filter: drop-shadow(0 15px 28px rgba(0, 255, 163, 0.55));
-  animation: hoverFloat 3.2s ease-in-out infinite;
-  transition: transform 0.08s cubic-bezier(0.2, 1.6, 0.4, 1);
-  z-index: 3;
-}
-.crystal-arena:active .crystal-3d {
-  transform: scale(0.89) rotateX(12deg);
-}
-@keyframes hoverFloat {
-  0%, 100% { transform: translateY(0px) rotate(-2deg); }
-  50% { transform: translateY(-9px) rotate(2deg); }
-}
-
-.shockwave {
-  position: absolute;
-  width: 140px; height: 140px;
-  border-radius: 50%;
-  border: 2px solid var(--emerald-neon);
-  pointer-events: none;
-  animation: waveOut 0.6s ease-out forwards;
-}
-@keyframes waveOut {
-  0% { transform: scale(0.6); opacity: 0.9; }
-  100% { transform: scale(1.65); opacity: 0; }
-}
-
-.float-tap {
+updateUI();
+</script>
+</body>
+</html>
