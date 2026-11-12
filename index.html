@@ -1,711 +1,593 @@
 
-require("dotenv").config();
-
-const express = require("express");
-const crypto = require("crypto");
-const { Pool } = require("pg");
-const rateLimit = require("express-rate-limit");
-const helmet = require("helmet");
-
-const app = express();
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_SSL === "true"
-    ? { rejectUnauthorized: false }
-    : false
-});
-
-const PORT = process.env.PORT || 3000;
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const BOT_USERNAME = process.env.BOT_USERNAME || "";
-const DURATION = Math.max(60, Number(process.env.MINING_DURATION_SECONDS || 3600));
-const REWARD = Math.max(0, Number(process.env.MINING_REWARD || 40));
-const REFERRAL_REWARD = 10;
-
-app.use(helmet({ contentSecurityPolicy: false }));
-app.use(express.json({ limit: "20kb" }));
-app.use("/api", rateLimit({
-  windowMs: 60000,
-  limit: 100
-}));
-
-// DATABASE
-async function initDB() {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id BIGSERIAL PRIMARY KEY,
-      telegram_id BIGINT UNIQUE NOT NULL,
-      username TEXT,
-      first_name TEXT,
-      balance NUMERIC(20,4) DEFAULT 0,
-      total_mined NUMERIC(20,4) DEFAULT 0,
-      level INTEGER DEFAULT 1,
-      referral_code TEXT UNIQUE NOT NULL,
-      referred_by BIGINT REFERENCES users(telegram_id),
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    );
-
-    CREATE TABLE IF NOT EXISTS mining_sessions (
-      id BIGSERIAL PRIMARY KEY,
-      telegram_id BIGINT REFERENCES users(telegram_id),
-      started_at TIMESTAMPTZ NOT NULL,
-      ends_at TIMESTAMPTZ NOT NULL,
-      claimed BOOLEAN DEFAULT FALSE
-    );
-
-    CREATE TABLE IF NOT EXISTS referrals (
-      id BIGSERIAL PRIMARY KEY,
-      inviter_id BIGINT REFERENCES users(telegram_id),
-      invited_id BIGINT UNIQUE REFERENCES users(telegram_id),
-      reward NUMERIC(20,4) DEFAULT 10,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    );
-
-    CREATE TABLE IF NOT EXISTS missions (
-      id SERIAL PRIMARY KEY,
-      title TEXT NOT NULL,
-      reward NUMERIC(20,4) NOT NULL,
-      active BOOLEAN DEFAULT TRUE
-    );
-
-    CREATE TABLE IF NOT EXISTS user_missions (
-      id BIGSERIAL PRIMARY KEY,
-      telegram_id BIGINT REFERENCES users(telegram_id),
-      mission_id INTEGER REFERENCES missions(id),
-      completed BOOLEAN DEFAULT FALSE,
-      UNIQUE(telegram_id, mission_id)
-    );
-
-    CREATE TABLE IF NOT EXISTS ledger (
-      id BIGSERIAL PRIMARY KEY,
-      telegram_id BIGINT REFERENCES users(telegram_id),
-      type TEXT NOT NULL,
-      amount NUMERIC(20,4) NOT NULL,
-      description TEXT,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    );
-  `);
-
-  await pool.query(`
-    INSERT INTO missions(title, reward)
-    SELECT 'Welcome to Emerald', 20
-    WHERE NOT EXISTS (
-      SELECT 1 FROM missions WHERE title = 'Welcome to Emerald'
-    );
-
-    INSERT INTO missions(title, reward)
-    SELECT 'Explore Emerald', 10
-    WHERE NOT EXISTS (
-      SELECT 1 FROM missions WHERE title = 'Explore Emerald'
-    );
-  `);
-}
-
-// TELEGRAM AUTH
-function verifyTelegram(initData) {
-  if (!BOT_TOKEN || !initData) return null;
-
-  const params = new URLSearchParams(initData);
-  const hash = params.get("hash");
-  if (!hash) return null;
-
-  params.delete("hash");
-
-  const check = [...params.entries()]
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}=${v}`)
-    .join("\n");
-
-  const secret = crypto
-    .createHmac("sha256", "WebAppData")
-    .update(BOT_TOKEN)
-    .digest();
-
-  const calculated = crypto
-    .createHmac("sha256", secret)
-    .update(check)
-    .digest("hex");
-
-  const a = Buffer.from(calculated, "hex");
-  const b = Buffer.from(hash, "hex");
-
-  if (a.length !== b.length || !crypto.timingSafeEqual(a, b))
-    return null;
-
-  const authDate = Number(params.get("auth_date"));
-  if (!authDate || Date.now() / 1000 - authDate > 86400)
-    return null;
-
-  try {
-    return JSON.parse(params.get("user"));
-  } catch {
-    return null;
-  }
-}
-
-async function auth(req, res, next) {
-  try {
-    const tg = verifyTelegram(
-      req.headers["x-telegram-init-data"]
-    );
-
-    if (!tg || !tg.id)
-      return res.status(401).json({
-        error: "Invalid Telegram authentication"
-      });
-
-    const referral = String(req.headers["x-referral-code"] || "")
-      .slice(0, 40);
-
-    const code = crypto.randomBytes(8).toString("hex");
-
-    const result = await pool.query(`
-      INSERT INTO users
-      (telegram_id, username, first_name, referral_code)
-      VALUES ($1, $2, $3, $4)
-      ON CONFLICT (telegram_id)
-      DO UPDATE SET
-        username = EXCLUDED.username,
-        first_name = EXCLUDED.first_name
-      RETURNING *
-    `, [
-      tg.id,
-      tg.username || null,
-      tg.first_name || "Player",
-      code
-    ]);
-
-    req.user = result.rows[0];
-
-    // Apply a referral only once, to a genuinely new account.
-    if (referral && referral !== req.user.referral_code) {
-      const inviter = await pool.query(
-        "SELECT telegram_id FROM users WHERE referral_code=$1",
-        [referral]
-      );
-
-      if (inviter.rowCount &&
-          String(inviter.rows[0].telegram_id) !== String(tg.id)) {
-        const client = await pool.connect();
-        try {
-          await client.query("BEGIN");
-          const changed = await client.query(`
-            UPDATE users SET referred_by=$1
-            WHERE telegram_id=$2 AND referred_by IS NULL
-            RETURNING telegram_id
-          `, [inviter.rows[0].telegram_id, tg.id]);
-
-          if (changed.rowCount) {
-            await client.query(`
-              INSERT INTO referrals(inviter_id, invited_id, reward)
-              VALUES ($1, $2, $3)
-              ON CONFLICT (invited_id) DO NOTHING
-            `, [inviter.rows[0].telegram_id, tg.id, REFERRAL_REWARD]);
-
-            await client.query(`
-              UPDATE users SET balance=balance+$1
-              WHERE telegram_id=$2
-            `, [REFERRAL_REWARD, inviter.rows[0].telegram_id]);
-
-            await client.query(`
-              INSERT INTO ledger(telegram_id,type,amount,description)
-              VALUES ($1,'referral',$2,'Referral reward')
-            `, [inviter.rows[0].telegram_id, REFERRAL_REWARD]);
-          }
-          await client.query("COMMIT");
-        } catch (e) {
-          await client.query("ROLLBACK");
-          throw e;
-        } finally {
-          client.release();
-        }
-      }
-    }
-
-    next();
-  } catch (e) {
-    next(e);
-  }
-}
-
-// USER
-app.get("/api/me", auth, async (req, res, next) => {
-  try {
-    const r = await pool.query(`
-      SELECT telegram_id, username, first_name, balance,
-      total_mined, level, referral_code, created_at
-      FROM users WHERE telegram_id=$1
-    `, [req.user.telegram_id]);
-
-    res.json(r.rows[0]);
-  } catch (e) { next(e); }
-});
-
-// MINING STATUS
-app.get("/api/mining", auth, async (req, res, next) => {
-  try {
-    const r = await pool.query(`
-      SELECT * FROM mining_sessions
-      WHERE telegram_id=$1 AND claimed=FALSE
-      ORDER BY id DESC LIMIT 1
-    `, [req.user.telegram_id]);
-
-    res.json({
-      session: r.rows[0] || null,
-      duration: DURATION,
-      reward: REWARD
-    });
-  } catch (e) { next(e); }
-});
-
-// START MINING
-app.post("/api/mining/start", auth, async (req, res, next) => {
-  const c = await pool.connect();
-  try {
-    await c.query("BEGIN");
-
-    const active = await c.query(`
-      SELECT id FROM mining_sessions
-      WHERE telegram_id=$1 AND claimed=FALSE
-      AND ends_at>NOW()
-      FOR UPDATE
-    `, [req.user.telegram_id]);
-
-    if (active.rowCount) {
-      await c.query("ROLLBACK");
-      return res.status(409).json({ error: "Mining already active" });
-    }
-
-    const r = await c.query(`
-      INSERT INTO mining_sessions
-      (telegram_id,started_at,ends_at)
-      VALUES ($1,NOW(),NOW()+($2 * INTERVAL '1 second'))
-      RETURNING *
-    `, [req.user.telegram_id, DURATION]);
-
-    await c.query("COMMIT");
-    res.json({ session: r.rows[0] });
-  } catch (e) {
-    await c.query("ROLLBACK");
-    next(e);
-  } finally { c.release(); }
-});
-
-// CLAIM MINING
-app.post("/api/mining/claim", auth, async (req, res, next) => {
-  const c = await pool.connect();
-  try {
-    await c.query("BEGIN");
-
-    const r = await c.query(`
-      SELECT * FROM mining_sessions
-      WHERE telegram_id=$1 AND claimed=FALSE
-      ORDER BY id DESC LIMIT 1 FOR UPDATE
-    `, [req.user.telegram_id]);
-
-    const session = r.rows[0];
-
-    if (!session) {
-      await c.query("ROLLBACK");
-      return res.status(404).json({ error: "No session" });
-    }
-
-    if (new Date(session.ends_at) > new Date()) {
-      await c.query("ROLLBACK");
-      return res.status(400).json({ error: "Mining not finished" });
-    }
-
-    await c.query(
-      "UPDATE mining_sessions SET claimed=TRUE WHERE id=$1",
-      [session.id]
-    );
-
-    await c.query(`
-      UPDATE users
-      SET balance=balance+$1,total_mined=total_mined+$1
-      WHERE telegram_id=$2
-    `, [REWARD, req.user.telegram_id]);
-
-    await c.query(`
-      INSERT INTO ledger(telegram_id,type,amount,description)
-      VALUES ($1,'mining',$2,'Mining reward')
-    `, [req.user.telegram_id, REWARD]);
-
-    await c.query("COMMIT");
-    res.json({ success: true, reward: REWARD });
-  } catch (e) {
-    await c.query("ROLLBACK");
-    next(e);
-  } finally { c.release(); }
-});
-
-// REFERRALS
-app.get("/api/referrals", auth, async (req, res, next) => {
-  try {
-    const r = await pool.query(`
-      SELECT COUNT(*) AS total,
-      COALESCE(SUM(reward),0) AS rewards
-      FROM referrals WHERE inviter_id=$1
-    `, [req.user.telegram_id]);
-
-    res.json({
-      ...r.rows[0],
-      code: req.user.referral_code,
-      link: BOT_USERNAME
-        ? `https://t.me/${BOT_USERNAME}?startapp=${req.user.referral_code}`
-        : null
-    });
-  } catch (e) { next(e); }
-});
-
-// MISSIONS
-app.get("/api/missions", auth, async (req, res, next) => {
-  try {
-    const r = await pool.query(`
-      SELECT m.id,m.title,m.reward,
-      COALESCE(um.completed,FALSE) AS completed
-      FROM missions m
-      LEFT JOIN user_missions um
-      ON um.mission_id=m.id AND um.telegram_id=$1
-      WHERE m.active=TRUE ORDER BY m.id
-    `, [req.user.telegram_id]);
-
-    res.json(r.rows);
-  } catch (e) { next(e); }
-});
-
-app.post("/api/missions/:id/claim", auth, async (req, res, next) => {
-  const c = await pool.connect();
-  try {
-    await c.query("BEGIN");
-
-    const m = await c.query(
-      "SELECT * FROM missions WHERE id=$1 AND active=TRUE",
-      [req.params.id]
-    );
-
-    if (!m.rowCount) {
-      await c.query("ROLLBACK");
-      return res.status(404).json({ error: "Mission not found" });
-    }
-
-    const done = await c.query(`
-      INSERT INTO user_missions(telegram_id,mission_id,completed)
-      VALUES ($1,$2,TRUE)
-      ON CONFLICT (telegram_id,mission_id) DO NOTHING
-      RETURNING id
-    `, [req.user.telegram_id, m.rows[0].id]);
-
-    if (!done.rowCount) {
-      await c.query("ROLLBACK");
-      return res.status(409).json({ error: "Already claimed" });
-    }
-
-    const reward = Number(m.rows[0].reward);
-
-    await c.query(
-      "UPDATE users SET balance=balance+$1 WHERE telegram_id=$2",
-      [reward, req.user.telegram_id]
-    );
-
-    await c.query(`
-      INSERT INTO ledger(telegram_id,type,amount,description)
-      VALUES ($1,'mission',$2,$3)
-    `, [req.user.telegram_id, reward, m.rows[0].title]);
-
-    await c.query("COMMIT");
-    res.json({ success: true, reward });
-  } catch (e) {
-    await c.query("ROLLBACK");
-    next(e);
-  } finally { c.release(); }
-});
-
-// LEADERBOARD
-app.get("/api/leaderboard", auth, async (req, res, next) => {
-  try {
-    const r = await pool.query(`
-      SELECT first_name,username,total_mined,level
-      FROM users ORDER BY total_mined DESC LIMIT 50
-    `);
-    res.json(r.rows);
-  } catch (e) { next(e); }
-});
-
-// HISTORY
-app.get("/api/history", auth, async (req, res, next) => {
-  try {
-    const r = await pool.query(`
-      SELECT type,amount,description,created_at
-      FROM ledger WHERE telegram_id=$1
-      ORDER BY id DESC LIMIT 30
-    `, [req.user.telegram_id]);
-    res.json(r.rows);
-  } catch (e) { next(e); }
-});
-
-// FRONTEND: SINGLE HTML PAGE
-app.get("/", (req, res) => {
-  res.type("html").send(`<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#06140d">
 <title>EMERALD COIN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+--bg:#041009;
+--glass:rgba(18,49,30,.67);
+--line:rgba(130,239,166,.22);
+--green:#57ef91;
+--mint:#c8ffda;
+--gold:#e6c77d;
+--muted:#92ae9c;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#03140e;color:#effff5;font-family:Arial,sans-serif;min-height:100vh}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 5%,#087c4c66,transparent 55%),radial-gradient(ellipse at 90% 90%,#00a87822,transparent 50%)}
-.app{max-width:480px;margin:auto;padding:20px 16px 100px;position:relative}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}
-.brand{font-weight:900;letter-spacing:2px;color:#9fffc6}
-.logo{width:43px;height:43px;border-radius:15px;background:linear-gradient(145deg,#8bffc0,#087b4a);display:grid;place-items:center;color:#063c26;font-size:25px;box-shadow:0 0 28px #12ce8055}
-.glass{background:linear-gradient(145deg,#ffffff12,#ffffff04);border:1px solid #b2ffce25;border-radius:23px;padding:19px;box-shadow:0 15px 40px #0005,inset 0 1px #ffffff14;backdrop-filter:blur(18px);margin-bottom:15px}
-.eyebrow{font-size:11px;letter-spacing:2px;color:#83cda6}
-.balance{text-align:center;padding:27px 15px}
-.balance h1{font-size:37px;margin:12px 0;color:#b1ffd0;text-shadow:0 0 25px #35e88b55}
-.coin{width:155px;height:155px;margin:22px auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#c6ffdc,#17a96c 40%,#075336 72%,#022b1c);box-shadow:0 0 0 9px #19b76b12,0 0 45px #12c87855,inset 0 5px 12px #fff8,inset 0 -10px 18px #001e13;font-size:75px;color:#d5ffe4;transform:perspective(300px) rotateX(7deg)}
-button{border:0;border-radius:15px;padding:15px 18px;font-size:14px;font-weight:800;color:#eafff2;background:linear-gradient(135deg,#11985d,#075235);box-shadow:0 7px 20px #008b4c33;cursor:pointer}
-button:disabled{opacity:.45;cursor:not-allowed}
-.primary{width:100%;background:linear-gradient(135deg,#7dffb1,#0a9857);color:#03351f}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat strong{display:block;font-size:21px;color:#aaffcb;margin-top:9px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#041c13ed;border-top:1px solid #aaffcb20;display:flex;justify-content:center;gap:4px;padding:10px 5px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(18px);z-index:5}
-.nav button{flex:1;max-width:110px;padding:11px 3px;font-size:11px;background:transparent;box-shadow:none;color:#8cb9a0}
-.nav button.active{background:#0c633c;color:#b5ffce}
-.page{display:none}.page.active{display:block}
-.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #ffffff12}
-.item:last-child{border:0}
-input,select{width:100%;padding:13px;border-radius:12px;background:#052619;color:white;border:1px solid #6bdb9b55;margin:8px 0}
-.small{font-size:12px;color:#9bbbaa}
-#message{color:#aaffcb;min-height:20px;text-align:center;font-size:13px}
+body{
+margin:0;
+background:
+radial-gradient(ellipse at 50% 0%,#24683d 0%,transparent 45%),
+linear-gradient(180deg,#071b10,#030b06);
+color:#effff3;
+font-family:Vazirmatn,Arial,sans-serif;
+min-height:100vh;
+padding-bottom:100px;
+}
+button{font:inherit;cursor:pointer}
+.app{max-width:520px;margin:auto;padding:12px}
+header{
+height:65px;display:flex;align-items:center;
+justify-content:space-between;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+width:45px;height:45px;border-radius:15px;
+background:linear-gradient(145deg,#c5f8a9,#15713b);
+display:grid;place-items:center;
+box-shadow:0 0 22px #4de58b55;
+}
+.logo span{font-size:27px}
+.brand b{font-size:15px;letter-spacing:1px}
+.brand small{display:block;color:var(--gold);font-size:9px}
+
+.glass{
+background:linear-gradient(140deg,rgba(37,94,55,.55),rgba(7,29,17,.78));
+border:1px solid var(--line);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+border-radius:23px;
+padding:16px;
+margin:13px 0;
+box-shadow:0 12px 35px #0005;
+}
+.balance{text-align:center;padding:23px 10px}
+.balance small{color:var(--muted);font-size:11px}
+.balance h1{
+font-size:37px;margin:5px 0;
+color:var(--mint);direction:ltr;
+text-shadow:0 0 25px #62ef9b66;
+}
+.balance span{color:var(--gold);font-size:13px}
+
+.gem-area{
+height:255px;display:grid;place-items:center;
+position:relative;
+}
+.gem-button{
+background:none;border:0;
+width:225px;height:230px;
+filter:drop-shadow(0 0 25px #4bfa8a88);
+animation:float 4s ease-in-out infinite;
+}
+.gem-button:active{transform:scale(.91)}
+@keyframes float{
+50%{transform:translateY(-12px) rotate(2deg)}
+}
+.gem-button svg{width:100%;height:100%}
+
+.section-title{font-size:15px;font-weight:900}
+.muted{font-size:10px;color:var(--muted);line-height:2}
+.row{
+display:flex;justify-content:space-between;
+align-items:center;gap:10px;margin:12px 0;
+font-size:11px;
+}
+.green{color:var(--green)}
+.gold{color:var(--gold)}
+
+.stats{
+display:grid;grid-template-columns:repeat(2,1fr);
+gap:10px;margin:12px 0;
+}
+.stat{
+padding:13px;border-radius:17px;
+background:rgba(9,37,21,.75);
+border:1px solid var(--line);
+}
+.stat small{display:block;color:var(--muted);font-size:10px}
+.stat b{display:block;color:var(--mint);font-size:19px;margin-top:5px}
+
+.btn{
+border:1px solid #9df6b6;
+background:linear-gradient(120deg,#238c4d,#a5f2b5);
+color:#082414;
+padding:13px;
+border-radius:14px;
+font-weight:900;font-size:12px;
+width:100%;
+box-shadow:0 5px 20px #42d77c33;
+}
+.btn:disabled{opacity:.35}
+.btn.dark{
+background:rgba(28,75,45,.65);
+color:var(--mint);
+border-color:var(--line);
+}
+.btn.gold{
+background:linear-gradient(120deg,#94702e,#ead79c);
+color:#241c0b;
+border:0;
+}
+.progress{
+height:9px;background:#183c27;
+border-radius:20px;overflow:hidden;
+}
+.progress i{
+display:block;height:100%;width:0;
+background:linear-gradient(90deg,#25a85d,#bdffd0);
+transition:.3s;
+}
+.tabs{
+position:fixed;bottom:0;left:0;right:0;
+max-width:520px;margin:auto;
+display:flex;justify-content:space-around;
+background:rgba(4,18,10,.92);
+backdrop-filter:blur(20px);
+border-top:1px solid var(--line);
+padding:10px 0 calc(10px + env(safe-area-inset-bottom));
+z-index:10;
+}
+.tabs button{
+border:0;background:none;color:#86a18f;
+font-size:9px;min-width:55px;
+}
+.tabs button span{display:block;font-size:21px}
+.tabs button.active{color:var(--mint)}
+.page{display:none}
+.page.active{display:block;animation:appear .25s}
+@keyframes appear{
+from{opacity:0;transform:translateY(8px)}
+to{opacity:1;transform:none}
+}
+.card{
+padding:14px;border-radius:17px;
+background:#0a2114;border:1px solid var(--line);
+margin:10px 0;
+}
+input{
+width:100%;padding:12px;
+background:#06170d;color:white;
+border:1px solid var(--line);
+border-radius:12px;margin:8px 0;
+direction:ltr;
+}
+.task{
+padding:13px;border-radius:13px;
+background:#102c1b;border:1px solid var(--line);
+margin:9px 0;
+}
+.toast{
+position:fixed;top:15px;left:50%;
+transform:translate(-50%,-100px);
+background:#17452a;border:1px solid #6bed94;
+padding:12px 18px;border-radius:12px;
+z-index:99;font-size:11px;
+transition:.3s;
+}
+.toast.show{transform:translate(-50%,0)}
 </style>
 </head>
 <body>
 <div class="app">
-<header><div><div class="brand">EMERALD COIN</div><div class="small">Digital mining experience</div></div><div class="logo">◆</div></header>
 
-<section id="home" class="page active">
-<div class="glass balance">
-<div class="eyebrow">YOUR EMC BALANCE</div>
-<h1 id="balance">0.0000</h1>
-<div class="small">EMERALD COIN</div>
-<div class="coin">◆</div>
-<div id="timer" class="small">Ready to start mining</div>
-<button id="mineBtn" class="primary" onclick="miningAction()">START MINING</button>
-<div id="message"></div>
+<header>
+ <div class="brand">
+  <div class="logo"><span>💎</span></div>
+  <div>
+   <b>EMERALD COIN</b>
+   <small>THE DIGITAL GEM</small>
+  </div>
+ </div>
+ <div class="gold">EMC ◆</div>
+</header>
+
+<!-- HOME -->
+<section class="page active" id="home">
+
+ <div class="glass balance">
+  <small>موجودی کل دارایی</small>
+  <h1 id="balance">0.00</h1>
+  <span>EMERALD COIN · EMC</span>
+  <div class="row">
+   <span>کل درآمد</span>
+   <b id="earned">0 EMC</b>
+  </div>
+ </div>
+
+ <div class="gem-area">
+  <button class="gem-button" id="gemButton">
+   <svg viewBox="0 0 220 240">
+    <defs>
+     <linearGradient id="g1" x2="1" y2="1">
+      <stop stop-color="#d9ffcf"/>
+      <stop offset=".45" stop-color="#43e88a"/>
+      <stop offset="1" stop-color="#07502b"/>
+     </linearGradient>
+    </defs>
+    <path d="M110 5 207 75 170 205 110 235 50 205 13 75Z"
+    fill="#07502b" stroke="#e8d18d" stroke-width="6"/>
+    <path d="M110 5 207 75 110 105Z" fill="#c5ffd0"/>
+    <path d="M13 75 110 5 110 105Z" fill="#4ce995"/>
+    <path d="M13 75 110 105 50 205Z" fill="#20a75d"/>
+    <path d="M207 75 110 105 170 205Z" fill="#08673b"/>
+    <path d="M110 105 50 205 110 235Z" fill="#46dc83"/>
+    <path d="M110 105 170 205 110 235Z" fill="#0a542e"/>
+   </svg>
+  </button>
+ </div>
+
+ <div class="muted" style="text-align:center">
+  به دنیای استخراج زمرد خوش آمدی
+ </div>
+
+ <div class="glass">
+  <div class="row">
+   <b>استخراج روزانه</b>
+   <b class="gold">+200 EMC</b>
+  </div>
+  <button class="btn" id="mineBtn">دریافت ۲۰۰ EMC</button>
+  <div class="muted" id="timer"></div>
+ </div>
+
+ <div class="stats">
+  <div class="stat"><small>لول حساب</small><b id="level">1</b></div>
+  <div class="stat"><small>قدرت استخراج</small><b id="power">1</b></div>
+  <div class="stat"><small>امتیاز XP</small><b id="xp">0</b></div>
+  <div class="stat"><small>تعداد استخراج</small><b id="mines">0</b></div>
+ </div>
+
+ <div class="glass">
+  <div class="row">
+   <b>پیشرفت سطح</b>
+   <b id="xpText">0 / 250 XP</b>
+  </div>
+  <div class="progress"><i id="xpBar"></i></div>
+ </div>
+</section>
+
+<!-- UPGRADES -->
+<section class="page" id="upgrade">
+ <div class="section-title">مرکز ارتقا</div>
+ <div class="glass">
+  <div class="row">
+   <b>ارتقای سطح</b>
+   <b class="gold">500 EMC</b>
+  </div>
+  <div class="stats">
+   <div class="stat"><small>سطح فعلی</small><b id="upLevel">1</b></div>
+   <div class="stat"><small>سطح بعدی</small><b id="nextLevel">2</b></div>
+  </div>
+  <button class="btn gold" id="upgradeBtn">ارتقا با ۵۰۰ EMC</button>
+ </div>
+
+ <div class="section-title">کارت‌های تقویت</div>
+
+ <div class="card">
+  <div class="row">
+   <b>⚡ افزایش قدرت استخراج</b>
+   <b class="gold">500 EMC</b>
+  </div>
+  <p class="muted">افزایش قدرت حساب برای استخراج‌های بعدی.</p>
+  <button class="btn dark" id="powerBtn">خرید تقویت</button>
+ </div>
+
+ <div class="card">
+  <div class="row">
+   <b>🔋 افزایش ظرفیت انرژی</b>
+   <b class="gold">500 EMC</b>
+  </div>
+  <p class="muted">افزایش ظرفیت انرژی بازی.</p>
+  <button class="btn dark" id="energyBtn">خرید تقویت</button>
+ </div>
+</section>
+
+<!-- MISSIONS -->
+<section class="page" id="tasks">
+ <div class="section-title">مأموریت‌ها</div>
+ <div class="card">
+  <div class="row">
+   <b>استخراج روزانه</b>
+   <b class="gold">+10 EMC</b>
+  </div>
+  <button class="btn dark" id="mineMission">دریافت پاداش</button>
+ </div>
+
+ <div class="card">
+  <div class="row">
+   <b>ورود روزانه</b>
+   <b class="gold">+5 EMC</b>
+  </div>
+  <button class="btn dark" id="loginMission">دریافت پاداش</button>
+ </div>
+
+ <div class="card">
+  <b>دعوت دوستان</b>
+  <p class="muted">دوستان خود را به EMERALD COIN دعوت کن.</p>
+  <input id="refLink" readonly>
+  <button class="btn" id="copyRef">کپی لینک دعوت</button>
+  <p class="muted">پاداش دعوت فقط پس از تأیید ثبت‌نام واقعی توسط سرور پرداخت می‌شود.</p>
+ </div>
+</section>
+
+<!-- WALLET -->
+<section class="page" id="wallet">
+ <div class="section-title">کیف پول TON</div>
+ <div class="glass">
+  <b>💎 TON CONNECT</b>
+  <p class="muted">اتصال رسمی کیف پول در مرحله بعد با TON Connect پیاده‌سازی می‌شود.</p>
+  <button class="btn" id="connectWallet">اتصال کیف پول</button>
+  <p class="muted" id="walletStatus">وضعیت: متصل نشده</p>
+ </div>
+</section>
+
+<!-- PROFILE -->
+<section class="page" id="profile">
+ <div class="section-title">پروفایل کاربری</div>
+ <div class="glass">
+  <div class="row">
+   <b id="username">Emerald Member</b>
+   <span class="gold">EMC MEMBER</span>
+  </div>
+  <div class="stats">
+   <div class="stat"><small>موجودی</small><b id="pBalance">0</b></div>
+   <div class="stat"><small>لول</small><b id="pLevel">1</b></div>
+  </div>
+ </div>
+ <div class="glass">
+  <b>تاریخچه فعالیت</b>
+  <div id="history" class="muted">هنوز فعالیتی ثبت نشده است.</div>
+ </div>
+</section>
+
 </div>
-<div class="grid">
-<div class="glass stat"><span class="small">TOTAL MINED</span><strong id="total">0</strong></div>
-<div class="glass stat"><span class="small">LEVEL</span><strong id="level">1</strong></div>
-</div>
-</section>
 
-<section id="missions" class="page">
-<div class="glass"><h3>MISSIONS</h3><div id="missionList">Loading...</div></div>
-</section>
-
-<section id="referrals" class="page">
-<div class="glass"><h3>INVITE FRIENDS</h3><p class="small">Share your personal invitation link.</p><h2 id="refCount">0</h2><div class="small">Successful invitations</div><input id="refLink" readonly><button class="primary" onclick="copyLink()">COPY INVITATION LINK</button><p class="small">Referral rewards are in-app demo points.</p></div>
-</section>
-
-<section id="ranking" class="page">
-<div class="glass"><h3>LEADERBOARD</h3><div id="rankingList">Loading...</div></div>
-</section>
-
-<section id="profile" class="page">
-<div class="glass"><h3>PROFILE</h3><div id="profileName">Player</div><p class="small">Your Telegram mining profile</p><div class="item"><span>Balance</span><strong id="profileBalance">0</strong></div><div class="item"><span>Total mined</span><strong id="profileTotal">0</strong></div><div class="item"><span>Level</span><strong id="profileLevel">1</strong></div><label class="small">LANGUAGE</label><select id="language" onchange="setLanguage(this.value)"><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="zh">中文</option></select></div>
-<div class="glass"><h3>RECENT ACTIVITY</h3><div id="history">Loading...</div></div>
-</section>
-</div>
-
-<nav class="nav">
-<button class="active" onclick="showPage('home',this)">◆ Home</button>
-<button onclick="showPage('missions',this)">✦ Missions</button>
-<button onclick="showPage('referrals',this)">♧ Invite</button>
-<button onclick="showPage('ranking',this)">♛ Ranking</button>
-<button onclick="showPage('profile',this)">● Profile</button>
+<nav class="tabs">
+ <button class="active" data-page="home"><span>⌂</span>خانه</button>
+ <button data-page="upgrade"><span>◆</span>ارتقا</button>
+ <button data-page="tasks"><span>✧</span>مأموریت</button>
+ <button data-page="wallet"><span>◇</span>کیف پول</button>
+ <button data-page="profile"><span>◎</span>پروفایل</button>
 </nav>
 
+<div class="toast" id="toast"></div>
+
 <script>
-const tg = window.Telegram?.WebApp;
-tg?.ready();
-tg?.expand();
+(()=>{
+"use strict";
 
-const initData = tg?.initData || "";
-const params = new URLSearchParams(location.search);
-const referral = params.get("tgWebAppStartParam") || "";
+const $=id=>document.getElementById(id);
+const tg=window.Telegram?.WebApp;
 
-const translations = {
- en:{home:"Home",missions:"Missions",invite:"Invite",ranking:"Ranking",profile:"Profile",start:"START MINING",claim:"CLAIM REWARD",active:"MINING IN PROGRESS",ready:"Ready to start mining"},
- fa:{home:"خانه",missions:"ماموریت‌ها",invite:"دعوت",ranking:"رتبه‌بندی",profile:"پروفایل",start:"شروع استخراج",claim:"دریافت پاداش",active:"استخراج فعال است",ready:"آماده شروع استخراج"},
- ar:{home:"الرئيسية",missions:"المهام",invite:"دعوة",ranking:"التصنيف",profile:"الملف",start:"بدء التعدين",claim:"استلام المكافأة",active:"التعدين جارٍ",ready:"جاهز للبدء"},
- zh:{home:"首页",missions:"任务",invite:"邀请",ranking:"排名",profile:"个人资料",start:"开始挖矿",claim:"领取奖励",active:"正在挖矿",ready:"准备开始"}
+if(tg){
+ tg.ready();
+ tg.expand();
+}
+
+const user=tg?.initDataUnsafe?.user;
+const uid=String(user?.id||"local");
+const KEY="EMERALD_COIN_V1_"+uid;
+
+const today=()=>new Date().toISOString().slice(0,10);
+const now=()=>Date.now();
+
+function fresh(){
+ return {
+  balance:0,
+  earned:0,
+  level:1,
+  power:1,
+  energy:1000,
+  xp:0,
+  mines:0,
+  lastMine:0,
+  mineMission:"",
+  loginMission:"",
+  powerCard:0,
+  energyCard:0,
+  wallet:"",
+  history:[],
+  created:now()
+ };
+}
+
+let data;
+try{
+ data={...fresh(),...JSON.parse(localStorage.getItem(KEY)||"{}")};
+}catch{
+ data=fresh();
+}
+
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(data));
+}
+
+function toast(message){
+ $("toast").textContent=message;
+ $("toast").classList.add("show");
+ setTimeout(()=>$("toast").classList.remove("show"),2200);
+}
+
+function fmt(n){
+ return Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
+}
+
+function remaining(){
+ return Math.max(0,86400000-(now()-data.lastMine));
+}
+
+function addHistory(text,amount){
+ data.history.unshift({text,amount,time:now()});
+ data.history=data.history.slice(0,30);
+}
+
+function award(amount,title){
+ data.balance+=amount;
+ data.earned+=amount;
+ data.xp+=amount;
+ addHistory(title,amount);
+}
+
+function render(){
+ $("balance").textContent=fmt(data.balance);
+ $("earned").textContent=fmt(data.earned)+" EMC";
+ $("level").textContent=data.level;
+ $("power").textContent=data.power;
+ $("xp").textContent=fmt(data.xp);
+ $("mines").textContent=data.mines;
+
+ $("upLevel").textContent=data.level;
+ $("nextLevel").textContent=data.level+1;
+
+ $("pBalance").textContent=fmt(data.balance);
+ $("pLevel").textContent=data.level;
+
+ $("username").textContent=user?.first_name||"Emerald Member";
+
+ const left=remaining();
+ $("mineBtn").disabled=left>0;
+ $("mineBtn").textContent=left>0?clock(left):"دریافت ۲۰۰ EMC";
+ $("timer").textContent=left>0?"زمان باقی‌مانده: "+clock(left):"استخراج آماده است";
+
+ $("xpText").textContent=(data.xp%250)+" / 250 XP";
+ $("xpBar").style.width=(data.xp%250)/250*100+"%";
+
+ $("mineMission").disabled=!data.mines||data.mineMission===today();
+ $("loginMission").disabled=data.loginMission===today();
+
+ $("refLink").value="https://t.me/YOUR_BOT_USERNAME?start="+uid;
+
+ $("history").innerHTML="";
+ if(!data.history.length){
+  $("history").textContent="هنوز فعالیتی ثبت نشده است.";
+ }else{
+  data.history.slice(0,12).forEach(item=>{
+   const div=document.createElement("div");
+   div.className="row";
+   const a=document.createElement("span");
+   const b=document.createElement("b");
+   a.textContent=item.text;
+   b.textContent=(item.amount>0?"+":"")+fmt(item.amount)+" EMC";
+   b.className=item.amount>=0?"green":"gold";
+   div.append(a,b);
+   $("history").append(div);
+  });
+ }
+ save();
+}
+
+function clock(ms){
+ const s=Math.ceil(ms/1000);
+ return Math.floor(s/3600)+":"+String(Math.floor(s%3600/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+}
+
+$("mineBtn").onclick=()=>{
+ if(remaining()>0)return;
+ data.lastMine=now();
+ data.mines++;
+ award(200,"Daily mining");
+ render();
+ toast("۲۰۰ EMC دریافت کردی 💎");
+ tg?.HapticFeedback?.notificationOccurred("success");
 };
 
-let lang="en", user=null, session=null, timerHandle=null;
-
-async function api(path,method="GET",body) {
- const r=await fetch("/api"+path,{
-  method,
-  headers:{
-   "Content-Type":"application/json",
-   "X-Telegram-Init-Data":initData,
-   "X-Referral-Code":referral
-  },
-  body:body?JSON.stringify(body):undefined
- });
- const data=await r.json();
- if(!r.ok) throw new Error(data.error||"Request failed");
- return data;
-}
-
-function msg(t){document.getElementById("message").textContent=t;}
-
-function showPage(id,button){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
- button.classList.add("active");
- if(id==="missions")loadMissions();
- if(id==="ranking")loadRanking();
- if(id==="referrals")loadReferrals();
- if(id==="profile")loadHistory();
-}
-
-function setLanguage(value){
- lang=value;
- document.documentElement.lang=value;
- document.documentElement.dir=value==="fa"||value==="ar"?"rtl":"ltr";
- document.querySelectorAll(".nav button").forEach((b,i)=>{
-  b.textContent=["◆ "+translations[lang].home,"✦ "+translations[lang].missions,"♧ "+translations[lang].invite,"♛ "+translations[lang].ranking,"● "+translations[lang].profile][i];
- });
- updateMiningButton();
-}
-
-function updateMiningButton(){
- const b=document.getElementById("mineBtn");
- if(!session){b.textContent=translations[lang].start;b.disabled=false;return;}
- const remaining=Math.max(0,Math.floor((new Date(session.ends_at)-Date.now())/1000));
- if(remaining>0){b.textContent=translations[lang].active;b.disabled=true;}
- else{b.textContent=translations[lang].claim;b.disabled=false;}
-}
-
-function startClock(){
- clearInterval(timerHandle);
- timerHandle=setInterval(()=>{
-  if(!session)return;
-  const remaining=Math.max(0,Math.floor((new Date(session.ends_at)-Date.now())/1000));
-  document.getElementById("timer").textContent=remaining>0
-   ? Math.floor(remaining/3600)+"h "+Math.floor(remaining%3600/60)+"m "+remaining%60+"s"
-   : "Mining completed";
-  updateMiningButton();
- },1000);
-}
-
-async function miningAction(){
- try{
-  if(!session){
-   const r=await api("/mining/start","POST");
-   session=r.session;
-   msg("Mining started!");
-  }else{
-   if(new Date(session.ends_at)>Date.now())return;
-   const r=await api("/mining/claim","POST");
-   msg("You received "+r.reward+" EMC demo points!");
-   session=null;
-   await loadUser();
-  }
-  updateMiningButton();
-  startClock();
- }catch(e){msg(e.message);}
-}
-
-async function loadUser(){
- user=await api("/me");
- document.getElementById("balance").textContent=Number(user.balance).toFixed(4);
- document.getElementById("total").textContent=Number(user.total_mined).toFixed(4);
- document.getElementById("level").textContent=user.level;
- document.getElementById("profileName").textContent=user.first_name||"Player";
- document.getElementById("profileBalance").textContent=user.balance;
- document.getElementById("profileTotal").textContent=user.total_mined;
- document.getElementById("profileLevel").textContent=user.level;
-}
-
-async function loadMining(){
- const r=await api("/mining");
- session=r.session;
- updateMiningButton();
- startClock();
-}
-
-async function loadMissions(){
- const list=await api("/missions");
- document.getElementById("missionList").innerHTML=list.map(m=>\`
- <div class="item"><div><strong>\${escapeHTML(m.title)}</strong><div class="small">Reward: \${m.reward} EMC</div></div>
- <button \${m.completed?"disabled":""} onclick="claimMission(\${m.id})">\${m.completed?"DONE":"CLAIM"}</button></div>\`).join("");
-}
-
-async function claimMission(id){
- try{const r=await api("/missions/"+id+"/claim","POST");msg("Mission reward: "+r.reward+" EMC");await loadUser();await loadMissions();}
- catch(e){msg(e.message);}
-}
-
-async function loadReferrals(){
- const r=await api("/referrals");
- document.getElementById("refCount").textContent=r.total;
- document.getElementById("refLink").value=r.link||"Bot username not configured";
-}
-
-async function copyLink(){
- const value=document.getElementById("refLink").value;
- try{await navigator.clipboard.writeText(value);msg("Link copied");}
- catch(e){msg("Could not copy link");}
-}
-
-async function loadRanking(){
- const rows=await api("/leaderboard");
- document.getElementById("rankingList").innerHTML=rows.map((u,i)=>\`
- <div class="item"><span>#\${i+1} \${escapeHTML(u.first_name||"Player")}</span><strong>\${Number(u.total_mined).toFixed(2)}</strong></div>\`).join("");
-}
-
-async function loadHistory(){
- const rows=await api("/history");
- document.getElementById("history").innerHTML=rows.map(x=>\`
- <div class="item"><span>\${escapeHTML(x.description||x.type)}</span><strong>+\${x.amount}</strong></div>\`).join("")||"No activity yet";
-}
-
-function escapeHTML(v){
- return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-
-async function boot(){
- try{
-  if(!initData)throw new Error("Open this Mini App through Telegram.");
-  await loadUser();
-  await loadMining();
- }catch(e){
-  msg(e.message);
-  document.getElementById("mineBtn").disabled=true;
+$("upgradeBtn").onclick=()=>{
+ if(data.balance<500){
+  toast("موجودی کافی نیست");
+  return;
  }
+ data.balance-=500;
+ data.level++;
+ addHistory("Level upgrade",-500);
+ render();
+ toast("سطح با موفقیت ارتقا یافت");
+};
+
+function buyCard(type){
+ if(data.balance<500){
+  toast("موجودی کافی نیست");
+  return;
+ }
+ data.balance-=500;
+ if(type==="power"){
+  data.power++;
+  data.powerCard++;
+ }else{
+  data.energy+=250;
+  data.energyCard++;
+ }
+ addHistory("Upgrade card",-500);
+ render();
+ toast("کارت با موفقیت خریداری شد");
 }
-boot();
+
+$("powerBtn").onclick=()=>buyCard("power");
+$("energyBtn").onclick=()=>buyCard("energy");
+
+$("mineMission").onclick=()=>{
+ if(!data.mines||data.mineMission===today())return;
+ data.mineMission=today();
+ award(10,"Mining mission");
+ render();
+ toast("۱۰ EMC دریافت کردی");
+};
+
+$("loginMission").onclick=()=>{
+ if(data.loginMission===today())return;
+ data.loginMission=today();
+ award(5,"Daily login");
+ render();
+ toast("۵ EMC دریافت کردی");
+};
+
+$("copyRef").onclick=async()=>{
+ try{
+  await navigator.clipboard.writeText($("refLink").value);
+  toast("لینک کپی شد");
+ }catch{
+  $("refLink").select();
+  toast("لینک را کپی کن");
+ }
+};
+
+$("gemButton").onclick=()=>{
+ toast("برای استخراج از دکمه دریافت استفاده کن");
+};
+
+$("connectWallet").onclick=()=>{
+ toast("اتصال رسمی TON در مرحله بعد فعال می‌شود");
+};
+
+document.querySelectorAll(".tabs button").forEach(button=>{
+ button.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  button.classList.add("active");
+  $(button.dataset.page).classList.add("active");
+ };
+});
+
+render();
+setInterval(render,1000);
+
+})();
 </script>
 </body>
-</html>`);
-});
-
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: "Server error" });
-});
-
-initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log("EMERALD COIN running on port " + PORT);
-  });
-}).catch(err => {
-  console.error("Database initialization failed:", err);
-  process.exit(1);
-});
+</html>
