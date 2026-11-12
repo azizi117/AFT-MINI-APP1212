@@ -3,816 +3,574 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#050b08">
-<title>EMERALD COIN | EMC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EMERALD COIN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
-
 :root{
- --bg:#050b08;
- --panel:#0c1711;
- --green:#20e58b;
- --mint:#8affc1;
- --gold:#e8c879;
- --muted:#81968a;
- --line:rgba(119,255,178,.13);
+--bg:#050b08;--panel:#0c1711;--panel2:#102219;
+--green:#20e58b;--mint:#8affc1;--gold:#e8c879;
+--red:#ff586b;--muted:#81968a;--line:rgba(119,255,178,.13);
 }
 *{box-sizing:border-box}
 body{
- margin:0;
- background:
- radial-gradient(ellipse at 50% -10%,#123a25 0%,transparent 42%),
- var(--bg);
- color:#f1fff6;
- font-family:Vazirmatn,sans-serif;
- min-height:100vh;
- padding-bottom:100px;
+margin:0;background:radial-gradient(circle at top,#123322 0,#07110b 35%,#050b08 75%);
+color:#f2fff7;font-family:Arial,Tahoma,sans-serif;
+min-height:100vh;padding-bottom:90px
 }
-button{font:inherit;cursor:pointer}
-.app{max-width:490px;margin:auto;padding:17px}
-.top{display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:11px}
-.brand-icon{
- width:46px;height:46px;border-radius:50%;
- display:grid;place-items:center;
- font-size:23px;font-weight:900;color:#d5ffe8;
- border:2px solid #79f7b1;
- background:radial-gradient(circle at 30% 25%,#8affbd,#15975b 48%,#043c26 80%);
- box-shadow:0 0 15px #1de98780,inset 0 0 0 4px #07552f;
- text-shadow:0 2px 5px #003b21;
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+.container{max-width:520px;margin:auto;padding:15px}
+.top{
+display:flex;align-items:center;justify-content:space-between;
+padding:10px 2px 18px
 }
-.brand-name{font-size:16px;font-weight:900;letter-spacing:1px}
-.brand-sub{font-size:9px;color:#8ca998;letter-spacing:2px}
-.user{
- display:flex;align-items:center;gap:7px;
- padding:7px 11px;border:1px solid var(--line);
- background:#ffffff08;border-radius:30px;
- font-size:10px;color:#d6f8e3;
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+width:45px;height:45px;border-radius:15px;
+display:grid;place-items:center;font-size:25px;font-weight:900;
+background:linear-gradient(145deg,#b4ffcf,#07894f 55%,#034b2b);
+color:#042314;box-shadow:0 0 22px #20e58b44
 }
-.avatar{
- width:27px;height:27px;border-radius:50%;
- background:#17452c;display:grid;place-items:center;
+.brand h2{font-size:17px;margin:0;letter-spacing:1px}
+.brand small{color:var(--mint);font-size:10px}
+.status{
+border:1px solid var(--line);background:#102219;
+padding:8px 11px;border-radius:20px;font-size:10px;color:var(--mint)
 }
-.live{
- display:flex;align-items:center;gap:7px;
- color:var(--green);font-size:10px;margin-top:21px;
+.card{
+background:linear-gradient(145deg,rgba(18,39,27,.97),rgba(9,20,14,.97));
+border:1px solid var(--line);border-radius:20px;
+padding:17px;margin-bottom:14px;
+box-shadow:0 10px 30px #0003
 }
-.dot{
- width:7px;height:7px;background:var(--green);
- border-radius:50%;box-shadow:0 0 10px var(--green);
+.label{font-size:12px;color:var(--muted)}
+.balance{
+font-size:34px;font-weight:900;margin:9px 0;color:white;
+direction:ltr;text-align:right
 }
-.balance-card{
- margin-top:12px;padding:19px;
- border:1px solid var(--line);border-radius:22px;
- background:linear-gradient(130deg,#11271b,#09130e);
- position:relative;overflow:hidden;
+.coin{color:var(--mint);font-size:13px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-size:23px;font-weight:900;direction:ltr}
+.up{color:var(--green)}.down{color:var(--red)}
+.small{font-size:11px;color:var(--muted)}
+.token-info{
+display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px
 }
-.balance-card:after{
- content:"";position:absolute;width:190px;height:190px;
- border-radius:50%;background:#16d87812;
- filter:blur(35px);right:-50px;top:-90px;
+.info{
+background:#07130c;border:1px solid var(--line);
+border-radius:12px;padding:10px 5px;text-align:center
 }
-.balance-label{font-size:11px;color:#a5b9ac}
-.balance-number{font-size:34px;font-weight:900;margin-top:5px}
-.balance-number span{font-size:14px;color:var(--green)}
-.balance-bottom{
- display:flex;justify-content:space-between;
- align-items:center;margin-top:12px;
-}
-.balance-usd{font-size:10px;color:var(--muted)}
-.change{
- font-size:9px;color:var(--green);
- background:#20e58b13;padding:5px 9px;border-radius:20px;
-}
-
-/* TOKEN IDENTITY */
-.token-identity{
- margin-top:14px;padding:16px;
- border-radius:21px;border:1px solid #39e58a38;
- background:linear-gradient(145deg,#153c27,#07140d);
- position:relative;overflow:hidden;
-}
-.token-identity:after{
- content:"";position:absolute;width:130px;height:130px;
- border-radius:50%;background:#20e58b12;
- filter:blur(30px);left:-35px;top:-40px;
-}
-.token-head{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
-.token-symbol{
- width:67px;height:67px;flex-shrink:0;
- border-radius:50%;display:grid;place-items:center;
- font-size:26px;font-weight:900;color:#e1ffed;
- border:2px solid #a2ffca;
- background:
- radial-gradient(circle at 30% 20%,#c5ffdc,#29cf7c 40%,#08713e 75%,#033b25);
- box-shadow:0 0 23px #20e58b55,inset 0 0 0 4px #07552f;
- text-shadow:0 2px 7px #004527;
-}
-.token-name{font-size:16px;font-weight:900;color:#a2ffc8}
-.token-description{font-size:9px;color:#8ca998;margin-top:4px;letter-spacing:1px}
-.token-network{
- display:inline-flex;align-items:center;gap:6px;
- padding:5px 9px;margin-top:8px;
- background:#20e58b16;border:1px solid #20e58b40;
- color:#8affbd;border-radius:20px;font-size:9px;
-}
-.token-details{
- display:grid;grid-template-columns:1fr 1fr;
- gap:9px;margin-top:15px;position:relative;z-index:1;
-}
-.token-detail{
- background:#ffffff08;border:1px solid #ffffff0c;
- border-radius:12px;padding:10px;
-}
-.token-detail small{display:block;color:#82998b;font-size:9px}
-.token-detail b{display:block;color:#d9ffea;font-size:11px;margin-top:5px}
-.token-address{
- margin-top:12px;padding:11px;background:#00000030;
- border-radius:11px;direction:ltr;text-align:left;
- overflow-wrap:anywhere;color:#a9c6b4;font-size:10px;
- position:relative;z-index:1;
-}
-.token-note{
- color:#7f9c8a;font-size:9px;line-height:1.9;
- margin-top:10px;position:relative;z-index:1;
-}
-
-.section-head{
- display:flex;justify-content:space-between;
- align-items:center;margin:24px 2px 9px;
-}
-.section-head h3{font-size:14px;margin:0;font-weight:800}
-.section-head small{font-size:9px;color:var(--muted)}
-
-.mine-card{
- margin-top:14px;padding:19px 15px 17px;
- border-radius:25px;border:1px solid var(--line);
- background:linear-gradient(180deg,#10271a,#09140e);
- text-align:center;overflow:hidden;position:relative;
-}
-.mine-card:before{
- content:"";position:absolute;width:250px;height:250px;
- left:50%;top:40px;transform:translateX(-50%);
- border-radius:50%;background:radial-gradient(circle,#1bba6b20,transparent 68%);
- pointer-events:none;
-}
-.mine-title{font-size:13px;font-weight:800;position:relative}
-.mine-sub{font-size:10px;color:var(--muted);margin-top:4px;position:relative}
-.gem-stage{height:240px;display:grid;place-items:center;position:relative}
-.gem-glow{
- position:absolute;width:190px;height:190px;
- border-radius:50%;background:#20e58b22;filter:blur(35px);
-}
-.ring{
- position:absolute;width:215px;height:215px;
- border-radius:50%;border:1px solid #35e99130;
- transform:rotateX(68deg);
-}
-.ring:after{
- content:"";position:absolute;inset:12px;
- border:1px dashed #62ffa044;border-radius:50%;
+.info b{display:block;font-size:12px;margin-top:6px}
+.info span{font-size:10px;color:var(--muted)}
+.gem-wrap{
+height:190px;display:grid;place-items:center;
+background:radial-gradient(circle,#145b37 0%,#0b2115 45%,transparent 72%);
+margin:5px 0
 }
 .gem{
- width:155px;height:180px;position:relative;z-index:1;
- cursor:pointer;filter:drop-shadow(0 15px 22px #00e77a38);
- animation:float 4s ease-in-out infinite;
- transition:transform .12s;
+width:125px;height:125px;filter:drop-shadow(0 0 24px #20e58b88);
+animation:float 3s ease-in-out infinite
 }
-.gem:active{transform:scale(.91)}
-.gem svg{width:100%;height:100%}
-@keyframes float{
- 0%,100%{translate:0 0}
- 50%{translate:0 -9px}
+@keyframes float{50%{transform:translateY(-9px) rotate(3deg)}}
+.primary{
+width:100%;border:0;border-radius:14px;padding:15px;
+background:linear-gradient(100deg,#0ba65d,#39f5a0);
+color:#032515;font-weight:900;font-size:15px;
+box-shadow:0 7px 22px #20e58b30
 }
-.tap-hint{font-size:10px;color:#9db8a7;position:relative}
-.mine-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.secondary{
+border:1px solid var(--line);background:#14291d;color:var(--mint);
+border-radius:12px;padding:12px;font-weight:bold
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat{
- padding:12px 8px;background:#ffffff06;
- border:1px solid var(--line);border-radius:15px;text-align:center;
+padding:13px;background:#07130c;border-radius:13px;border:1px solid var(--line)
 }
-.stat small{display:block;font-size:9px;color:var(--muted)}
-.stat strong{display:block;font-size:15px;margin-top:4px}
-.stat strong em{font-style:normal;color:var(--green);font-size:10px}
-.mining-button{
- width:100%;border:0;border-radius:15px;padding:14px;
- margin-top:13px;color:#032415;font-weight:900;font-size:13px;
- background:linear-gradient(100deg,#8affc1,#20dc80);
- box-shadow:0 7px 24px #14d97820;
-}
-.mining-button:disabled{opacity:.45;box-shadow:none}
-.progress-wrap{margin-top:15px;text-align:right}
-.progress-label{
- display:flex;justify-content:space-between;
- font-size:9px;color:var(--muted);margin-bottom:7px;
-}
-.progress{height:6px;border-radius:10px;background:#ffffff12;overflow:hidden}
-.progress>div{
- height:100%;width:0;
- background:linear-gradient(90deg,#14ad61,#8affc1);
- border-radius:10px;transition:width .3s;
-}
-.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}
-.quick{
- padding:14px 5px;background:var(--panel);
- border:1px solid var(--line);border-radius:17px;text-align:center;
-}
-.quick-icon{font-size:22px}
-.quick strong{display:block;font-size:10px;margin-top:7px}
-.quick small{font-size:9px;color:var(--muted)}
-
-.page{display:none}
-.page.active{display:block;animation:appear .25s ease}
-@keyframes appear{
- from{opacity:0;transform:translateY(7px)}
- to{opacity:1;transform:translateY(0)}
-}
-.panel{
- background:linear-gradient(145deg,#102219,#0a140e);
- border:1px solid var(--line);border-radius:19px;
- padding:16px;margin-top:12px;
-}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.muted{color:var(--muted);font-size:10px}
-.big{font-size:23px;font-weight:900}
-.action{
- border:1px solid #26d98050;color:var(--green);
- background:#20e58b12;border-radius:11px;
- padding:9px 13px;font-size:10px;font-weight:800;
-}
-.action.primary{background:linear-gradient(100deg,#8affc1,#20dc80);color:#032415;border:0}
-.item{
- display:flex;align-items:center;gap:12px;
- padding:13px 0;border-bottom:1px solid var(--line);
-}
-.item:last-child{border:0}
-.item-icon{
- width:42px;height:42px;border-radius:13px;
- background:#1b3b29;display:grid;place-items:center;
- font-size:20px;flex-shrink:0;
-}
-.item-info{flex:1}
-.item-info b{display:block;font-size:11px}
-.item-info small{font-size:9px;color:var(--muted)}
-.reward{font-size:10px;color:var(--green);font-weight:800}
-.invite-code{
- text-align:center;font-size:19px;letter-spacing:2px;
- font-weight:900;color:var(--mint);padding:18px;
- background:#ffffff08;border-radius:14px;margin:15px 0;
-}
-.wallet-address{font-size:10px;color:#a5b9ac;direction:ltr;overflow-wrap:anywhere}
+.stat b{display:block;margin-top:7px;font-size:17px}
+.section-title{font-size:16px;font-weight:900;margin:20px 2px 12px}
+.page{display:none}.page.active{display:block}
 .nav{
- position:fixed;z-index:10;bottom:0;left:0;right:0;
- background:#07110cf2;backdrop-filter:blur(18px);
- border-top:1px solid var(--line);
- padding:9px 7px calc(9px + env(safe-area-inset-bottom));
- display:flex;justify-content:center;
-}
-.nav-inner{
- width:100%;max-width:490px;
- display:grid;grid-template-columns:repeat(5,1fr);gap:3px;
+position:fixed;bottom:0;left:0;right:0;z-index:10;
+background:#07110cf5;border-top:1px solid var(--line);
+display:flex;justify-content:space-around;padding:10px 4px 14px;
+backdrop-filter:blur(15px)
 }
 .nav button{
- border:0;background:none;color:#71877a;font-size:9px;
- display:flex;flex-direction:column;align-items:center;
- gap:4px;padding:5px 0;
+border:0;background:none;color:#82988b;font-size:10px;
+display:flex;flex-direction:column;align-items:center;gap:5px
 }
-.nav button span{font-size:19px}
+.nav button span{font-size:20px}
 .nav button.active{color:var(--green)}
+input,select{
+width:100%;background:#07130c;color:white;border:1px solid var(--line);
+border-radius:12px;padding:13px;margin:7px 0 12px;outline:none
+}
+input:focus,select:focus{border-color:var(--green)}
+.tabs{display:flex;gap:7px;margin:12px 0}
+.tabs button{
+flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);
+background:#0b1a11;color:var(--muted)
+}
+.tabs button.active{background:#17452c;color:var(--mint);border-color:#20e58b}
+.chart-box{height:220px;position:relative;margin-top:12px}
+.coin-row{
+display:flex;align-items:center;justify-content:space-between;
+padding:13px 0;border-bottom:1px solid var(--line)
+}
+.coin-icon{
+width:35px;height:35px;border-radius:50%;display:grid;place-items:center;
+font-weight:bold;background:#192d21
+}
+.notice{
+padding:10px;border-radius:10px;background:#332a12;
+color:#f4d98a;font-size:10px;line-height:1.8;margin-top:12px
+}
+.badge{
+font-size:10px;border-radius:20px;padding:5px 9px;
+background:#183a27;color:var(--mint)
+}
 .toast{
- position:fixed;z-index:30;top:18px;left:50%;
- transform:translate(-50%,-20px);opacity:0;
- pointer-events:none;background:#163c28;color:#caffdf;
- border:1px solid #39e58a55;padding:10px 17px;
- border-radius:30px;font-size:11px;transition:.25s;white-space:nowrap;
+position:fixed;top:18px;left:50%;transform:translateX(-50%);
+background:#173a27;border:1px solid var(--green);color:white;
+padding:12px 18px;border-radius:12px;z-index:50;
+display:none;font-size:12px;max-width:90%;text-align:center
 }
-.toast.show{opacity:1;transform:translate(-50%,0)}
-.spark{
- position:absolute;z-index:5;pointer-events:none;
- color:#8affc1;font-weight:900;animation:rise .8s forwards;
+.history-item{
+display:flex;justify-content:space-between;padding:12px 0;
+border-bottom:1px solid var(--line);font-size:12px
 }
-@keyframes rise{
- to{transform:translateY(-85px) scale(1.4);opacity:0}
-}
-.footer{text-align:center;color:#536b5c;font-size:9px;margin:25px 0 5px}
+.footer{text-align:center;color:#60776a;font-size:10px;padding:20px}
 </style>
 </head>
-
 <body>
 <div class="toast" id="toast"></div>
 
-<div class="app">
-
+<div class="container">
 <header class="top">
  <div class="brand">
-  <div class="brand-icon">E</div>
+  <div class="logo">E</div>
   <div>
-   <div class="brand-name">EMERALD COIN</div>
-   <div class="brand-sub">THE GREEN ASSET</div>
+   <h2>EMERALD COIN</h2>
+   <small>EMC DIGITAL ECOSYSTEM</small>
   </div>
  </div>
- <div class="user">
-  <div class="avatar">♙</div>
-  <span id="username">MINER</span>
- </div>
+ <div class="status">● TON NETWORK</div>
 </header>
-
-<main>
 
 <!-- HOME -->
 <section class="page active" id="home">
-
- <div class="live">
-  <i class="dot"></i>
-  EMERALD NETWORK
-  <span style="color:#82998b">/ MINING HUB</span>
- </div>
-
- <div class="balance-card">
-  <div class="balance-label">موجودی کل دارایی شما</div>
-  <div class="balance-number">
-   <span id="balance">0.00</span>
-   <span>EMC</span>
+ <div class="card">
+  <div class="row">
+   <span class="label">موجودی حساب شما</span>
+   <span class="badge">EMC WALLET</span>
   </div>
-  <div class="balance-bottom">
-   <div class="balance-usd">
-    مجموع استخراج: <b id="earned">0.00</b> EMC
-   </div>
-   <div class="change">◆ EMC ASSET</div>
+  <div class="balance" id="balance">0.00</div>
+  <div class="coin">EMERALD COIN · EMC</div>
+  <div class="token-info">
+   <div class="info"><span>قیمت هر EMC</span><b id="homePrice">$0.007000</b></div>
+   <div class="info"><span>ارزش موجودی</span><b id="portfolio">$0.00</b></div>
+   <div class="info"><span>سطح کاربر</span><b id="homeLevel">1</b></div>
   </div>
  </div>
 
- <!-- TOKEN INFORMATION -->
- <div class="token-identity">
-  <div class="token-head">
-   <div class="token-symbol">E</div>
+ <div class="card">
+  <div class="row">
    <div>
-    <div class="token-name">EMERALD COIN</div>
-    <div class="token-description">THE GREEN DIGITAL ASSET</div>
-    <div class="token-network">
-     <i class="dot"></i> TON MAINNET
-    </div>
+    <div class="label">قیمت EMC</div>
+    <div class="price" id="mainPrice">$0.007000</div>
+   </div>
+   <div style="text-align:left">
+    <div class="label">تغییرات بازار</div>
+    <b class="up" id="priceChange">+0.00%</b>
    </div>
   </div>
+  <div class="small" style="margin-top:7px">نمودار شبیه‌سازی قیمت EMC</div>
+  <div class="chart-box"><canvas id="priceChart"></canvas></div>
+  <div class="notice">قیمت و نمودار این نسخه شبیه‌سازی‌شده هستند و به بازار یا صرافی واقعی متصل نیستند.</div>
+ </div>
 
-  <div class="token-details">
-   <div class="token-detail">
-    <small>نام توکن</small>
-    <b>EMERALD COIN</b>
-   </div>
-   <div class="token-detail">
-    <small>نماد توکن</small>
-    <b>EMC</b>
-   </div>
-   <div class="token-detail">
-    <small>شبکه هدف</small>
-    <b>TON</b>
-   </div>
-   <div class="token-detail">
-    <small>استاندارد</small>
-    <b>JETTON</b>
-   </div>
+ <div class="card">
+  <div class="row">
+   <div><div class="label">استخراج روزانه</div><b style="font-size:21px;color:var(--mint)">200 EMC</b></div>
+   <span class="badge">هر ۲۴ ساعت</span>
   </div>
-
-  <div class="token-address">
-   Contract: NOT DEPLOYED YET
+  <div class="gem-wrap">
+   <svg class="gem" viewBox="0 0 200 200">
+    <defs>
+     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#c0ffd7"/><stop offset=".45" stop-color="#21e88d"/><stop offset="1" stop-color="#056337"/>
+     </linearGradient>
+     <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#72ffc0"/><stop offset="1" stop-color="#087443"/>
+     </linearGradient>
+    </defs>
+    <path d="M42 25 L158 25 L190 72 L100 185 L10 72Z" fill="url(#g1)" stroke="#a7ffd0" stroke-width="3"/>
+    <path d="M42 25 L72 72 L10 72Z" fill="#b8ffda"/>
+    <path d="M42 25 L100 25 L72 72Z" fill="#45ed9a"/>
+    <path d="M100 25 L158 25 L128 72 L72 72Z" fill="#13bd70"/>
+    <path d="M158 25 L190 72 L128 72Z" fill="#79ffc0"/>
+    <path d="M10 72 L72 72 L100 185Z" fill="#087a45"/>
+    <path d="M72 72 L128 72 L100 185Z" fill="url(#g2)"/>
+    <path d="M128 72 L190 72 L100 185Z" fill="#034d2c"/>
+   </svg>
   </div>
-
-  <div class="token-note">
-   آدرس قرارداد پس از انتشار واقعی توکن در شبکه اصلی TON در این بخش قرار می‌گیرد.
+  <button class="primary" id="mineBtn" onclick="claimMining()">شروع استخراج 200 EMC</button>
+  <div class="row" style="margin-top:13px">
+   <span class="small">زمان باقی‌مانده</span>
+   <b id="timer">آماده استخراج</b>
   </div>
  </div>
 
- <div class="mine-card">
-  <div class="mine-title">مرکز استخراج زمرد</div>
-  <div class="mine-sub">برای دریافت پاداش روزانه روی زمرد بزن</div>
-
-  <div class="gem-stage" id="gemStage">
-   <div class="gem-glow"></div>
-   <div class="ring"></div>
-
-   <div class="gem" id="gem" onclick="tapGem()">
-    <svg viewBox="0 0 180 205" xmlns="http://www.w3.org/2000/svg">
-     <defs>
-      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-       <stop stop-color="#d5ffe5"/>
-       <stop offset=".25" stop-color="#39f69a"/>
-       <stop offset=".65" stop-color="#079452"/>
-       <stop offset="1" stop-color="#003e2b"/>
-      </linearGradient>
-     </defs>
-     <path d="M90 5 L155 48 L169 111 L90 198 L11 111 L25 48 Z"
-      fill="url(#g1)" stroke="#a4ffd0" stroke-width="2"/>
-     <path d="M25 48 L90 5 L90 93 L11 111 Z" fill="#baffd9" opacity=".45"/>
-     <path d="M90 5 L155 48 L90 93 Z" fill="#e0ffed" opacity=".7"/>
-     <path d="M155 48 L169 111 L90 198 L90 93 Z" fill="#00683c" opacity=".7"/>
-     <path d="M11 111 L90 93 L90 198 Z" fill="#19c979" opacity=".75"/>
-     <path d="M25 48 L90 93 L155 48" fill="none" stroke="#d0ffe2" stroke-width="2" opacity=".6"/>
-     <path d="M11 111 L90 93 L169 111" fill="none" stroke="#d0ffe2" stroke-width="1.5" opacity=".5"/>
-     <path d="M90 5 L90 198" stroke="#d0ffe2" stroke-width="1" opacity=".35"/>
-     <path d="M43 53 L74 28" stroke="white" stroke-width="5" stroke-linecap="round" opacity=".55"/>
-    </svg>
-   </div>
-  </div>
-
-  <div class="tap-hint">✦ لمس زمرد برای تعامل ✦</div>
-
-  <div class="mine-stats">
-   <div class="stat">
-    <small>پاداش هر دوره</small>
-    <strong>200 <em>EMC</em></strong>
-   </div>
-   <div class="stat">
-    <small>مدت استخراج</small>
-    <strong>24:00:00</strong>
-   </div>
-  </div>
-
-  <button class="mining-button" id="mineButton" onclick="claimMining()">
-   شروع استخراج روزانه
-  </button>
-
-  <div class="progress-wrap">
-   <div class="progress-label">
-    <span>پیشرفت دوره استخراج</span>
-    <span id="progressText">0%</span>
-   </div>
-   <div class="progress">
-    <div id="progressBar"></div>
-   </div>
-  </div>
+ <div class="grid2">
+  <div class="stat"><span class="label">مجموع درآمد</span><b id="totalEarned">0 EMC</b></div>
+  <div class="stat"><span class="label">زیرمجموعه‌ها</span><b id="referrals">0</b></div>
  </div>
 
- <div class="section-head">
-  <h3>دسترسی سریع</h3>
-  <small>EMERALD ECOSYSTEM</small>
+ <div class="section-title">دسترسی سریع</div>
+ <div class="grid2">
+  <button class="secondary" onclick="showPage('swap')">⇄ تبدیل توکن</button>
+  <button class="secondary" onclick="showPage('market')">▥ بازار EMC</button>
  </div>
+</section>
 
- <div class="quick-grid">
-  <div class="quick" onclick="showPage('tasks')">
-   <div class="quick-icon">🎯</div>
-   <strong>ماموریت‌ها</strong>
-   <small>پاداش‌ها</small>
+<!-- MARKET -->
+<section class="page" id="market">
+ <div class="section-title">بازار EMERALD COIN</div>
+ <div class="card">
+  <div class="row">
+   <div><div class="label">EMC / USD</div><div class="price" id="marketPrice">$0.007000</div></div>
+   <span class="badge">PRICE SIMULATOR</span>
   </div>
-  <div class="quick" onclick="showPage('friends')">
-   <div class="quick-icon">👥</div>
-   <strong>دوستان</strong>
-   <small>دعوت دوستان</small>
+  <div class="chart-box"><canvas id="marketChart"></canvas></div>
+  <div class="grid2" style="margin-top:15px">
+   <div class="stat"><span class="label">قیمت شروع</span><b>$0.007000</b></div>
+   <div class="stat"><span class="label">تغییرات</span><b id="marketChange" class="up">0.00%</b></div>
   </div>
-  <div class="quick" onclick="showPage('upgrade')">
-   <div class="quick-icon">⚡</div>
-   <strong>ارتقا</strong>
-   <small>سطح ماینر</small>
-  </div>
+  <div class="notice">این بازار آزمایشی است. قیمت‌ها، حجم معاملات و نمودار داده واقعی بازار نیستند.</div>
  </div>
+ <div class="section-title">جفت‌های معاملاتی</div>
+ <div class="card">
+  <div class="coin-row"><div class="row"><div class="coin-icon">E</div><b>EMC / USDT</b></div><b id="pairUsdt">$0.007000</b></div>
+  <div class="coin-row"><div class="row"><div class="coin-icon">Ξ</div><b>EMC / ETH</b></div><b id="pairEth">—</b></div>
+  <div class="coin-row"><div class="row"><div class="coin-icon">₿</div><b>EMC / BTC</b></div><b id="pairBtc">—</b></div>
+ </div>
+</section>
+
+<!-- SWAP -->
+<section class="page" id="swap">
+ <div class="section-title">EMC SWAP</div>
+ <div class="card">
+  <div class="row">
+   <b>تبدیل دارایی</b><span class="badge">SIMULATED SWAP</span>
+  </div>
+  <div class="label" style="margin-top:18px">پرداخت می‌کنید</div>
+  <div class="row">
+   <input id="swapAmount" type="number" min="0" placeholder="مقدار را وارد کنید" value="1000" oninput="calculateSwap()">
+   <select id="fromCoin" onchange="calculateSwap()">
+    <option value="EMC">EMC</option>
+    <option value="USDT">USDT</option>
+    <option value="ETH">ETH</option>
+    <option value="BTC">BTC</option>
+   </select>
+  </div>
+  <div style="text-align:center;color:var(--green);font-size:24px">⇅</div>
+  <div class="label">دریافت می‌کنید</div>
+  <div class="row">
+   <input id="swapOutput" readonly placeholder="مقدار دریافتی">
+   <select id="toCoin" onchange="calculateSwap()">
+    <option value="USDT">USDT</option>
+    <option value="EMC">EMC</option>
+    <option value="ETH">ETH</option>
+    <option value="BTC">BTC</option>
+   </select>
+  </div>
+  <div class="grid2">
+   <div class="stat"><span class="label">قیمت EMC</span><b id="swapPrice">$0.007</b></div>
+   <div class="stat"><span class="label">کارمزد شبیه‌سازی</span><b>0.3%</b></div>
+  </div>
+  <button class="primary" style="margin-top:15px" onclick="executeSwap()">تأیید تبدیل</button>
+  <div class="notice">این بخش فقط محاسبه و ثبت محلی انجام می‌دهد. هیچ رمزارزی منتقل یا مبادله نمی‌شود.</div>
+ </div>
+ <div class="section-title">آخرین تبدیل‌ها</div>
+ <div class="card" id="swapHistory"><div class="small">هنوز تبدیلی ثبت نشده است.</div></div>
 </section>
 
 <!-- TASKS -->
 <section class="page" id="tasks">
- <div class="section-head">
-  <h3>ماموریت‌های زمردی</h3>
-  <small>REWARDS CENTER</small>
+ <div class="section-title">ماموریت‌ها</div>
+ <div class="card">
+  <div class="coin-row"><div><b>ورود روزانه</b><div class="small">هر روز وارد برنامه شو</div></div><b class="up">+50 EMC</b></div>
+  <div class="coin-row"><div><b>دعوت دوستان</b><div class="small">دوستان خود را دعوت کن</div></div><b class="up">+25 EMC</b></div>
+  <div class="coin-row"><div><b>عضویت در کانال</b><div class="small">کانال پروژه را دنبال کن</div></div><b class="up">+10 EMC</b></div>
+  <div class="notice">پاداش‌های این بخش در نسخه محلی شبیه‌سازی‌شده‌اند و تأیید سرور ندارند.</div>
  </div>
-
- <div class="panel">
-  <div class="row">
-   <b>ماموریت‌ها</b>
-   <span class="reward">EMC REWARDS</span>
-  </div>
-
-  <div class="item">
-   <div class="item-icon">📣</div>
-   <div class="item-info">
-    <b>عضویت در کانال رسمی</b>
-    <small>کانال اخبار EMERALD</small>
-   </div>
-   <span class="reward">+50 EMC</span>
-  </div>
-
-  <div class="item">
-   <div class="item-icon">🚀</div>
-   <div class="item-info">
-    <b>معرفی پروژه</b>
-    <small>آشنایی با اکوسیستم زمرد</small>
-   </div>
-   <span class="reward">+25 EMC</span>
-  </div>
-
-  <div class="item">
-   <div class="item-icon">💎</div>
-   <div class="item-info">
-    <b>بازدید از مینی‌اپ</b>
-    <small>فعالیت در مرکز استخراج</small>
-   </div>
-   <span class="reward">+10 EMC</span>
-  </div>
- </div>
-
- <p class="muted" style="line-height:2;margin:14px 5px">
-  برای پرداخت واقعی پاداش مأموریت‌ها، تأیید سمت سرور لازم است.
- </p>
 </section>
 
 <!-- FRIENDS -->
 <section class="page" id="friends">
- <div class="section-head">
-  <h3>دعوت دوستان</h3>
-  <small>REFERRAL PROGRAM</small>
- </div>
-
- <div class="panel">
-  <div class="muted">با دعوت دوستان، جامعه EMERALD را گسترش بده.</div>
-  <div class="big" style="margin-top:12px">دعوت کن، رشد کن 💚</div>
-  <div class="invite-code" id="inviteCode">EMERALD-0000</div>
-  <button class="mining-button" onclick="copyInvite()">کپی کد دعوت</button>
- </div>
-
- <div class="panel">
-  <div class="row">
-   <span class="muted">تعداد دوستان دعوت‌شده</span>
-   <b id="refCount">0</b>
+ <div class="section-title">دعوت دوستان</div>
+ <div class="card">
+  <div style="font-size:35px;text-align:center">👥</div>
+  <h3 style="text-align:center">دوستانت را دعوت کن</h3>
+  <p class="small" style="text-align:center">کد دعوت خود را با دوستان به اشتراک بگذار.</p>
+  <div class="stat" style="text-align:center">
+   <span class="label">کد دعوت</span>
+   <b id="inviteCode">EMERALD-0000</b>
   </div>
-  <div class="row" style="margin-top:17px">
-   <span class="muted">پاداش دعوت</span>
-   <b style="color:var(--green)">طبق قوانین کمپین</b>
-  </div>
+  <button class="primary" style="margin-top:15px" onclick="copyInvite()">کپی کد دعوت</button>
  </div>
 </section>
 
 <!-- UPGRADE -->
 <section class="page" id="upgrade">
- <div class="section-head">
-  <h3>ارتقای قدرت استخراج</h3>
-  <small>MINER UPGRADES</small>
- </div>
-
- <div class="panel" style="text-align:center;padding:24px">
-  <div style="font-size:45px">⚡</div>
-  <div class="muted">سطح فعلی ماینر</div>
-  <div class="big" style="font-size:38px;color:var(--mint)" id="level">1</div>
-  <div class="muted">هزینه ارتقای هر سطح</div>
-  <div class="big" style="margin:10px 0">
-   500 <span style="font-size:13px;color:var(--green)">EMC</span>
+ <div class="section-title">ارتقای سطح</div>
+ <div class="card">
+  <div class="gem-wrap" style="height:120px">
+   <div style="font-size:65px;filter:drop-shadow(0 0 20px #20e58b)">💎</div>
   </div>
-  <button class="mining-button" onclick="upgradeLevel()">ارتقای سطح ماینر</button>
- </div>
-
- <div class="panel">
-  <div class="row">
-   <span class="muted">موجودی فعلی</span>
-   <b id="upgradeBalance">0 EMC</b>
-  </div>
-  <div class="row" style="margin-top:14px">
-   <span class="muted">هزینه ارتقا</span>
-   <b>500 EMC</b>
-  </div>
+  <div class="row"><span class="label">سطح فعلی</span><b id="level">1</b></div>
+  <div class="row" style="margin-top:15px"><span class="label">هزینه ارتقا</span><b class="coin">500 EMC</b></div>
+  <button class="primary" style="margin-top:18px" onclick="upgradeLevel()">ارتقای سطح</button>
  </div>
 </section>
 
 <!-- WALLET -->
 <section class="page" id="wallet">
- <div class="section-head">
-  <h3>کیف پول زمرد</h3>
-  <small>EMERALD WALLET</small>
- </div>
-
- <div class="panel">
-  <div class="token-head">
-   <div class="token-symbol" style="width:55px;height:55px;font-size:21px">E</div>
-   <div>
-    <div class="token-name">EMERALD COIN</div>
-    <div class="token-description">EMC DIGITAL ASSET</div>
-   </div>
+ <div class="section-title">کیف پول</div>
+ <div class="card">
+  <div style="font-size:35px;text-align:center">👛</div>
+  <h3 style="text-align:center">EMC WALLET</h3>
+  <div class="stat">
+   <span class="label">موجودی EMC</span>
+   <b id="walletBalance">0 EMC</b>
   </div>
-
-  <div class="muted" style="margin-top:17px">موجودی حساب</div>
-  <div class="big" style="font-size:32px;margin:7px 0">
-   <span id="walletBalance">0.00</span>
-   <span style="font-size:14px;color:var(--green)">EMC</span>
-  </div>
-  <div class="muted">شبکه هدف: TON Mainnet</div>
- </div>
-
- <div class="panel">
-  <div class="item">
-   <div class="item-icon">🔗</div>
-   <div class="item-info">
-    <b>اتصال کیف پول TON</b>
-    <small>برای دریافت و انتقال دارایی</small>
-   </div>
-   <button class="action" onclick="toast('اتصال کیف پول در نسخه سروری فعال می‌شود')">اتصال</button>
-  </div>
-
-  <div class="item">
-   <div class="item-icon">↗</div>
-   <div class="item-info">
-    <b>برداشت EMC</b>
-    <small>نیازمند قرارداد و سرور فعال</small>
-   </div>
-   <button class="action" onclick="toast('برداشت هنوز فعال نشده است')">برداشت</button>
-  </div>
-
-  <div class="item">
-   <div class="item-icon">💎</div>
-   <div class="item-info">
-    <b>اطلاعات قرارداد</b>
-    <small>Jetton در شبکه TON</small>
-   </div>
-   <span class="reward">در انتظار انتشار</span>
-  </div>
+  <button class="primary" style="margin-top:15px" onclick="toast('اتصال واقعی کیف پول هنوز فعال نشده است.')">اتصال TON Wallet</button>
+  <button class="secondary" style="width:100%;margin-top:10px" onclick="toast('برداشت واقعی هنوز فعال نشده است.')">درخواست برداشت</button>
+  <div class="notice">برای انتقال واقعی توکن، قرارداد Jetton روی TON و اتصال کیف پول و سرور لازم است.</div>
  </div>
 </section>
 
-</main>
-
-<div class="footer">EMERALD COIN · THE GREEN DIGITAL ASSET</div>
+<div class="footer">EMERALD COIN · EMC · TON ECOSYSTEM</div>
 </div>
 
 <nav class="nav">
- <div class="nav-inner">
-  <button class="active" data-page="home" onclick="showPage('home')">
-   <span>⌂</span>خانه
-  </button>
-  <button data-page="tasks" onclick="showPage('tasks')">
-   <span>◎</span>ماموریت
-  </button>
-  <button data-page="friends" onclick="showPage('friends')">
-   <span>♧</span>دوستان
-  </button>
-  <button data-page="upgrade" onclick="showPage('upgrade')">
-   <span>⚡</span>ارتقا
-  </button>
-  <button data-page="wallet" onclick="showPage('wallet')">
-   <span>▣</span>کیف پول
-  </button>
- </div>
+ <button class="active" data-page="home" onclick="showPage('home',this)"><span>⌂</span>خانه</button>
+ <button data-page="market" onclick="showPage('market',this)"><span>▥</span>بازار</button>
+ <button data-page="swap" onclick="showPage('swap',this)"><span>⇄</span>Swap</button>
+ <button data-page="tasks" onclick="showPage('tasks',this)"><span>☑</span>ماموریت</button>
+ <button data-page="friends" onclick="showPage('friends',this)"><span>♧</span>دعوت</button>
+ <button data-page="upgrade" onclick="showPage('upgrade',this)"><span>⬆</span>ارتقا</button>
+ <button data-page="wallet" onclick="showPage('wallet',this)"><span>◉</span>کیف پول</button>
 </nav>
 
 <script>
 const tg=window.Telegram?.WebApp;
-if(tg){
- tg.ready();
- tg.expand();
-}
+if(tg){tg.ready();tg.expand();}
 
 const KEY='emerald_coin_ui_v4';
+const DAY=24*60*60*1000;
 
-let data;
+let data={balance:0,earned:0,level:1,lastMine:0,referrals:0};
 try{
- data=JSON.parse(localStorage.getItem(KEY)||'null');
-}catch(e){
- data=null;
-}
+ const saved=JSON.parse(localStorage.getItem(KEY));
+ if(saved)data={...data,...saved};
+}catch(e){}
 
-if(!data){
- data={
-  balance:0,
-  earned:0,
-  level:1,
-  lastMine:0,
-  referrals:0
- };
-}
-
-function save(){
- localStorage.setItem(KEY,JSON.stringify(data));
- render();
-}
-
-function fmt(n){
- return Number(n).toFixed(2);
-}
-
-function render(){
- document.getElementById('balance').textContent=fmt(data.balance);
- document.getElementById('earned').textContent=fmt(data.earned);
- document.getElementById('level').textContent=data.level;
- document.getElementById('walletBalance').textContent=fmt(data.balance);
- document.getElementById('upgradeBalance').textContent=fmt(data.balance)+' EMC';
-
- document.getElementById('refCount').textContent=data.referrals;
-
- const user=tg?.initDataUnsafe?.user;
- document.getElementById('username').textContent=user?.first_name||'MINER';
-
- document.getElementById('inviteCode').textContent=
- 'EMERALD-'+(user?.id||'0000');
-
- updateMining();
-}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));}
 
 function toast(message){
  const el=document.getElementById('toast');
- el.textContent=message;
- el.classList.add('show');
+ el.textContent=message;el.style.display='block';
  clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>{
-  el.classList.remove('show');
- },2300);
+ window.toastTimer=setTimeout(()=>el.style.display='none',2600);
 }
 
-function showPage(page){
- document.querySelectorAll('.page').forEach(p=>{
-  p.classList.remove('active');
- });
- document.getElementById(page).classList.add('active');
-
- document.querySelectorAll('.nav button').forEach(b=>{
-  b.classList.toggle('active',b.dataset.page===page);
- });
-
- window.scrollTo({top:0,behavior:'smooth'});
+function showPage(page,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(page)?.classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ const target=btn||document.querySelector('[data-page="'+page+'"]');
+ if(target)target.classList.add('active');
+ if(page==='swap')calculateSwap();
 }
 
-function tapGem(){
- const stage=document.getElementById('gemStage');
- const s=document.createElement('span');
-
- s.className='spark';
- s.textContent='✦ EMC';
- s.style.left=(35+Math.random()*30)+'%';
- s.style.top=(35+Math.random()*25)+'%';
-
- stage.appendChild(s);
- setTimeout(()=>s.remove(),850);
-
- if(navigator.vibrate)navigator.vibrate(25);
+function updateUserName(){
+ const name=tg?.initDataUnsafe?.user?.first_name||'کاربر';
+ const invite='EMERALD-'+(tg?.initDataUnsafe?.user?.id||'0000');
+ document.getElementById('inviteCode').textContent=invite;
 }
 
-const DAY=24*60*60*1000;
-
-function updateMining(){
- const now=Date.now();
- const elapsed=data.lastMine?now-data.lastMine:DAY;
- const remaining=Math.max(0,DAY-elapsed);
- const ready=remaining===0;
-
- const btn=document.getElementById('mineButton');
- btn.disabled=!ready;
-
- btn.textContent=ready?
- 'دریافت 200 EMC و شروع دوره جدید':
- 'استخراج در حال انجام · '+formatTime(remaining);
-
- const progress=Math.min(100,elapsed/DAY*100);
-
- document.getElementById('progressBar').style.width=progress+'%';
- document.getElementById('progressText').textContent=Math.floor(progress)+'%';
-}
-
-function formatTime(ms){
- const s=Math.floor(ms/1000);
- const h=Math.floor(s/3600);
- const m=Math.floor(s%3600/60);
- const sec=s%60;
-
- return [h,m,sec].map(v=>String(v).padStart(2,'0')).join(':');
+function render(){
+ document.getElementById('balance').textContent=Number(data.balance).toFixed(2);
+ document.getElementById('totalEarned').textContent=Number(data.earned).toFixed(2)+' EMC';
+ document.getElementById('referrals').textContent=data.referrals;
+ document.getElementById('level').textContent=data.level;
+ document.getElementById('homeLevel').textContent=data.level;
+ document.getElementById('walletBalance').textContent=Number(data.balance).toFixed(2)+' EMC';
+ document.getElementById('portfolio').textContent='$'+(data.balance*price).toFixed(2);
+ updateMiningTimer();
 }
 
 function claimMining(){
- if(data.lastMine && Date.now()-data.lastMine<DAY){
-  toast('زمان دوره استخراج هنوز تمام نشده');
-  return;
+ const now=Date.now();
+ if(data.lastMine&&now-data.lastMine<DAY){
+  toast('هنوز زمان استخراج بعدی نرسیده است.');return;
  }
+ data.balance+=200;data.earned+=200;data.lastMine=now;
+ save();render();toast('200 EMC به موجودی محلی اضافه شد!');
+}
 
- data.balance+=200;
- data.earned+=200;
- data.lastMine=Date.now();
-
- save();
- toast('200 EMC به موجودی محلی اضافه شد');
+function updateMiningTimer(){
+ const btn=document.getElementById('mineBtn');
+ const timer=document.getElementById('timer');
+ const remaining=DAY-(Date.now()-data.lastMine);
+ if(!data.lastMine||remaining<=0){
+  timer.textContent='آماده استخراج';
+  btn.disabled=false;btn.textContent='شروع استخراج 200 EMC';
+  btn.style.opacity='1';return;
+ }
+ const h=Math.floor(remaining/3600000);
+ const m=Math.floor((remaining%3600000)/60000);
+ const s=Math.floor((remaining%60000)/1000);
+ timer.textContent=[h,m,s].map(v=>String(v).padStart(2,'0')).join(':');
+ btn.disabled=true;btn.textContent='استخراج انجام شد';
+ btn.style.opacity='.55';
 }
 
 function upgradeLevel(){
- if(data.balance<500){
-  toast('برای ارتقا به 500 EMC نیاز داری');
-  return;
- }
-
- data.balance-=500;
- data.level++;
-
- save();
- toast('سطح ماینر افزایش یافت');
+ if(data.balance<500){toast('موجودی کافی نیست؛ برای ارتقا 500 EMC لازم است.');return;}
+ data.balance-=500;data.level++;
+ save();render();toast('سطح شما ارتقا یافت!');
 }
 
 function copyInvite(){
  const code=document.getElementById('inviteCode').textContent;
-
  if(navigator.clipboard?.writeText){
-  navigator.clipboard.writeText(code)
-   .then(()=>toast('کد دعوت کپی شد'))
-   .catch(()=>toast(code));
- }else{
-  toast(code);
- }
+  navigator.clipboard.writeText(code).then(()=>toast('کد دعوت کپی شد!')).catch(()=>toast(code));
+ }else toast(code);
 }
 
-render();
-setInterval(updateMining,1000);
-</script>
+/* شبیه‌ساز قیمت EMC */
+let price=0.007;
+let startPrice=0.007;
+let priceHistory=[];
+let labels=[];
+for(let i=0;i<30;i++){
+ labels.push(String(i+1));
+ priceHistory.push(0.007+(Math.random()-.5)*0.00025);
+}
+priceHistory[29]=price;
 
+function formatPrice(v){return '$'+Number(v).toFixed(6);}
+
+function makeChart(id){
+ const canvas=document.getElementById(id);
+ if(!canvas||!window.Chart)return null;
+ return new Chart(canvas,{
+  type:'line',
+  data:{
+   labels:labels,
+   datasets:[{
+    data:priceHistory,
+    borderColor:'#20e58b',
+    backgroundColor:'rgba(32,229,139,.10)',
+    borderWidth:2,fill:true,tension:.35,
+    pointRadius:0,pointHoverRadius:4
+   }]
+  },
+  options:{
+   responsive:true,maintainAspectRatio:false,
+   plugins:{legend:{display:false}},
+   scales:{
+    x:{display:false,grid:{display:false}},
+    y:{ticks:{color:'#81968a',font:{size:9},callback:v=>'$'+Number(v).toFixed(4)},grid:{color:'rgba(255,255,255,.06)'}}
+   }
+  }
+ });
+}
+let chart1=null,chart2=null;
+
+function updatePriceUI(){
+ const change=((price-startPrice)/startPrice)*100;
+ const changeText=(change>=0?'+':'')+change.toFixed(2)+'%';
+ ['mainPrice','marketPrice','homePrice','swapPrice'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.textContent=formatPrice(price);
+ });
+ ['priceChange','marketChange'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){el.textContent=changeText;el.className=change>=0?'up':'down';}
+ });
+ document.getElementById('portfolio').textContent='$'+(data.balance*price).toFixed(2);
+ document.getElementById('pairUsdt').textContent=formatPrice(price);
+ // نرخ‌های نمونه صرفاً برای محاسبه نمایشی هستند.
+ const ethUsd=3000,bTCUsd=90000;
+ document.getElementById('pairEth').textContent=(price/ethUsd).toFixed(9)+' ETH';
+ document.getElementById('pairBtc').textContent=(price/bTCUsd).toFixed(10)+' BTC';
+ calculateSwap();
+}
+
+function tickPrice(){
+ const old=price;
+ const movement=(Math.random()-.48)*0.000055;
+ price=Math.max(0.0001,price+movement);
+ labels.push(new Date().toLocaleTimeString('fa-IR'));
+ priceHistory.push(price);
+ if(labels.length>30){labels.shift();priceHistory.shift();}
+ const color=price>=old?'#20e58b':'#ff586b';
+ [chart1,chart2].forEach(chart=>{
+  if(chart){
+   chart.data.labels=labels;
+   chart.data.datasets[0].data=priceHistory;
+   chart.data.datasets[0].borderColor=color;
+   chart.update('none');
+  }
+ });
+ updatePriceUI();
+}
+
+function calculateSwap(){
+ const amount=Number(document.getElementById('swapAmount')?.value||0);
+ const from=document.getElementById('fromCoin')?.value||'EMC';
+ const to=document.getElementById('toCoin')?.value||'USDT';
+ const rates={EMC:price,USDT:1,ETH:3000,BTC:90000};
+ let result=0;
+ if(rates[from]&&rates[to]&&from!==to)result=amount*rates[from]/rates[to]*0.997;
+ else if(from===to)result=amount;
+ const output=document.getElementById('swapOutput');
+ if(output)output.value=Number(result).toFixed(to==='BTC'?10:to==='ETH'?8:4);
+}
+
+function executeSwap(){
+ const amount=Number(document.getElementById('swapAmount').value);
+ const from=document.getElementById('fromCoin').value;
+ const to=document.getElementById('toCoin').value;
+ const result=document.getElementById('swapOutput').value;
+ if(!amount||amount<=0){toast('مقدار معتبر وارد کنید.');return;}
+ if(from===to){toast('دو ارز متفاوت انتخاب کنید.');return;}
+ const box=document.getElementById('swapHistory');
+ const empty=box.querySelector('.small');
+ if(empty)box.innerHTML='';
+ const item=document.createElement('div');
+ item.className='history-item';
+ const left=document.createElement('span');
+ const right=document.createElement('b');
+ left.textContent=amount+' '+from+' ← تبدیل به '+to;
+ right.textContent=result+' '+to;
+ item.append(left,right);
+ box.prepend(item);
+ toast('تبدیل شبیه‌سازی‌شده ثبت شد.');
+}
+
+updateUserName();
+render();
+chart1=makeChart('priceChart');
+chart2=makeChart('marketChart');
+updatePriceUI();
+setInterval(updateMiningTimer,1000);
+setInterval(tickPrice,5000);
+</script>
 </body>
 </html>
