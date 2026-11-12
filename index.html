@@ -1,0 +1,547 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#06130d">
+<title>EMERALD COIN | EMC</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+ --bg:#04100b;
+ --panel:#0b1c13;
+ --panel2:#10271a;
+ --green:#00e58b;
+ --green2:#00a968;
+ --gold:#e9c56a;
+ --white:#f2fff8;
+ --muted:#91a99b;
+ --border:rgba(0,229,139,.15);
+ --danger:#ff6262;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:
+ radial-gradient(circle at 50% -10%,#16452b 0,transparent 38%),
+ linear-gradient(180deg,#06140c,#020805);
+ color:var(--white);
+ font-family:'Vazirmatn',sans-serif;
+ min-height:100vh;
+ padding-bottom:95px;
+}
+button{font-family:inherit;cursor:pointer}
+.app{max-width:520px;margin:auto;padding:15px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin:8px 0 20px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+ width:45px;height:45px;border-radius:15px;
+ background:linear-gradient(145deg,#38ffae,#006d40);
+ display:grid;place-items:center;
+ color:#032416;font-size:25px;
+ box-shadow:0 0 25px #00d78055,inset 0 2px 5px #ffffff80;
+}
+.brand-name{font-size:16px;font-weight:900;letter-spacing:1px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:3px}
+.icon-btn{
+ border:1px solid var(--border);background:#10251a;color:white;
+ border-radius:13px;padding:10px 13px;font-size:17px;
+}
+.panel{
+ background:linear-gradient(145deg,rgba(19,48,31,.94),rgba(7,23,14,.96));
+ border:1px solid var(--border);
+ border-radius:23px;padding:17px;margin-bottom:14px;
+ box-shadow:0 12px 35px #0005,inset 0 1px 0 #ffffff0b;
+}
+.panel-title{font-size:14px;font-weight:800;margin-bottom:13px}
+.muted{color:var(--muted)}
+.small{font-size:11px}
+.hero{text-align:center;padding:23px 17px 20px;overflow:hidden;position:relative}
+.hero:before{
+ content:"";position:absolute;width:230px;height:230px;
+ background:#00e58b12;filter:blur(35px);border-radius:50%;
+ top:20px;left:calc(50% - 115px);
+}
+.gem-wrap{position:relative;margin:10px auto 15px;width:160px;height:160px}
+.gem{
+ width:145px;height:145px;object-fit:contain;
+ filter:drop-shadow(0 0 20px #00e58b88);
+ animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+.coin-label{font-size:12px;color:var(--muted);letter-spacing:3px}
+.balance{font-size:37px;font-weight:900;color:#fff;margin:3px 0}
+.balance span{font-size:14px;color:var(--green)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:19px}
+.stat{
+ background:#ffffff08;border:1px solid #ffffff0d;
+ border-radius:15px;padding:11px 5px;
+}
+.stat b{display:block;font-size:16px;color:var(--green)}
+.stat span{font-size:10px;color:var(--muted)}
+.btn{
+ border:0;border-radius:15px;padding:13px 16px;
+ font-size:13px;font-weight:900;
+ background:linear-gradient(135deg,#34ffad,#00a966);
+ color:#032315;box-shadow:0 6px 20px #00d78030;
+}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-outline{
+ background:#ffffff08;color:var(--green);
+ border:1px solid var(--border);box-shadow:none;
+}
+.btn-gold{background:linear-gradient(135deg,#ffe7a1,#c18b2d);color:#291b00}
+.btn-block{width:100%;margin-top:13px}
+.mining-info{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin-top:12px}
+.progress{height:7px;border-radius:20px;background:#ffffff12;overflow:hidden;margin-top:10px}
+.progress div{height:100%;background:linear-gradient(90deg,#00a968,#4affb3);width:0%;transition:width .4s}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feature{
+ border:1px solid var(--border);border-radius:17px;padding:14px;
+ background:#ffffff06;min-width:0;
+}
+.feature .emoji{font-size:23px}
+.feature b{display:block;font-size:13px;margin:5px 0}
+.feature span{font-size:10px;color:var(--muted)}
+.section{display:none}
+.section.active{display:block;animation:appear .25s ease}
+@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.section-head{font-size:20px;font-weight:900;margin:10px 2px 16px}
+.item{
+ display:flex;align-items:center;gap:11px;
+ background:#ffffff06;border:1px solid #ffffff0d;
+ padding:12px;border-radius:16px;margin-bottom:9px;
+}
+.item-icon{
+ width:43px;height:43px;flex-shrink:0;border-radius:13px;
+ display:grid;place-items:center;background:#00e58b18;font-size:21px;
+}
+.item-info{flex:1;min-width:0}
+.item-info b{font-size:12px;display:block}
+.item-info span{font-size:10px;color:var(--muted)}
+.item-action{font-size:11px;color:var(--green);font-weight:800}
+.price{font-size:13px;color:var(--gold);font-weight:900}
+.nav{
+ position:fixed;bottom:0;left:0;right:0;z-index:20;
+ background:rgba(4,16,10,.95);backdrop-filter:blur(18px);
+ border-top:1px solid var(--border);
+ display:flex;justify-content:center;padding:9px 5px calc(9px + env(safe-area-inset-bottom));
+}
+.nav-inner{width:100%;max-width:520px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.nav button{
+ border:0;background:transparent;color:#829b8b;
+ display:flex;flex-direction:column;align-items:center;gap:3px;
+ font-size:9px;padding:7px 2px;border-radius:12px;
+}
+.nav button strong{font-size:19px;font-weight:500}
+.nav button.active{color:var(--green);background:#00e58b12}
+input{
+ width:100%;padding:13px;border-radius:13px;
+ border:1px solid var(--border);background:#06140c;color:white;
+ font-family:inherit;outline:none;margin:8px 0;
+}
+.wallet-box{direction:ltr;text-align:left;overflow-wrap:anywhere;font-size:11px;color:var(--green)}
+.badge{font-size:9px;padding:4px 8px;border-radius:20px;background:#00e58b17;color:var(--green)}
+.league{display:flex;justify-content:space-between;align-items:center;padding:11px;border-bottom:1px solid #ffffff0d;font-size:12px}
+.league:last-child{border:0}
+.rank{color:var(--gold);font-weight:900}
+.chart-wrap{height:170px;position:relative}
+canvas{width:100%;height:100%}
+.notice{
+ padding:11px;border-radius:13px;background:#e9c56a12;
+ color:#e9c56a;font-size:10px;line-height:1.9;margin-top:10px;
+}
+.toast{
+ position:fixed;z-index:100;bottom:105px;left:50%;
+ transform:translate(-50%,20px);opacity:0;pointer-events:none;
+ background:#143522;border:1px solid var(--green);
+ color:white;padding:11px 18px;border-radius:14px;
+ font-size:12px;transition:.25s;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.footer{text-align:center;color:#587363;font-size:9px;padding:20px}
+.hidden{display:none!important}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header class="topbar">
+ <div class="brand">
+  <div class="logo">◆</div>
+  <div>
+   <div class="brand-name">EMERALD COIN</div>
+   <div class="brand-sub">THE POWER OF EMERALD</div>
+  </div>
+ </div>
+ <button class="icon-btn" onclick="showSection('profile')">👤</button>
+</header>
+
+<!-- HOME -->
+<section id="home" class="section active">
+ <div class="panel hero">
+  <div class="coin-label">YOUR EMC BALANCE</div>
+  <div class="gem-wrap">
+   <svg class="gem" viewBox="0 0 180 180" aria-label="Emerald">
+    <defs>
+     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#a6ffd8"/>
+      <stop offset=".4" stop-color="#00dc83"/>
+      <stop offset="1" stop-color="#00542e"/>
+     </linearGradient>
+     <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#e1fff0" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#00a45b" stop-opacity=".2"/>
+     </linearGradient>
+    </defs>
+    <path d="M45 15 L135 15 L170 58 L90 170 L10 58Z" fill="url(#g1)" stroke="#a4ffd2" stroke-width="2"/>
+    <path d="M45 15 L90 55 L135 15 L170 58 L90 170 L10 58Z" fill="none" stroke="#d4ffea" stroke-opacity=".6" stroke-width="2"/>
+    <path d="M45 15 L90 55 L10 58Z" fill="url(#g2)"/>
+    <path d="M135 15 L90 55 L170 58Z" fill="#baffdc" fill-opacity=".35"/>
+    <path d="M10 58 L90 55 L90 170Z" fill="#00a85f" fill-opacity=".45"/>
+    <path d="M170 58 L90 55 L90 170Z" fill="#003f26" fill-opacity=".55"/>
+    <path d="M45 15 L135 15 L90 55Z" fill="#d5ffea" fill-opacity=".28"/>
+   </svg>
+  </div>
+  <div class="balance"><span id="balance">0.00</span> <span>EMC</span></div>
+  <div class="small muted">موجودی حساب شما</div>
+
+  <div class="stats">
+   <div class="stat"><b id="totalEarned">0</b><span>کل درآمد</span></div>
+   <div class="stat"><b id="userLevel">1</b><span>سطح</span></div>
+   <div class="stat"><b id="refCount">0</b><span>دعوت‌ها</span></div>
+  </div>
+ </div>
+
+ <div class="panel">
+  <div class="panel-title">⛏️ استخراج زمرد</div>
+  <div style="display:flex;justify-content:space-between;align-items:center">
+   <div>
+    <b style="font-size:23px;color:var(--green)">+200 EMC</b>
+    <div class="small muted">پاداش هر ۲۴ ساعت</div>
+   </div>
+   <div style="font-size:30px">💎</div>
+  </div>
+  <div class="progress"><div id="mineProgress"></div></div>
+  <div class="mining-info">
+   <span id="mineStatus">آماده استخراج</span>
+   <span id="mineTimer">آماده شروع</span>
+  </div>
+  <button id="mineBtn" class="btn btn-block" onclick="claimMining()">شروع استخراج</button>
+ </div>
+
+ <div class="grid2">
+  <div class="feature"><div class="emoji">⚡</div><b>قدرت استخراج</b><span id="powerValue">سطح ۱</span></div>
+  <div class="feature"><div class="emoji">🏆</div><b>رتبه شما</b><span id="rankValue">تازه‌وارد</span></div>
+  <div class="feature"><div class="emoji">🎁</div><b>مأموریت‌ها</b><span>پاداش‌های ویژه</span></div>
+  <div class="feature"><div class="emoji">👥</div><b>دعوت دوستان</b><span>گسترش جامعه EMC</span></div>
+ </div>
+
+ <div class="panel" style="margin-top:14px">
+  <div class="panel-title">📊 بازار EMERALD COIN</div>
+  <div style="display:flex;justify-content:space-between">
+   <b>قیمت EMC</b><span id="marketPrice" class="price">منتظر ثبت بازار</span>
+  </div>
+  <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+  <div class="small muted" id="marketInfo">برای نمایش قیمت و نمودار بازار، آدرس قرارداد توکن لازم است.</div>
+ </div>
+</section>
+
+<!-- UPGRADES -->
+<section id="upgrade" class="section">
+ <div class="section-head">🚀 ارتقا و قدرت</div>
+ <div class="panel">
+  <div class="panel-title">سطح فعلی شما</div>
+  <div style="font-size:35px;color:var(--green);font-weight:900">LEVEL <span id="levelBig">1</span></div>
+  <div class="muted small">هزینه هر ارتقا: ۵۰۰ EMC</div>
+  <button class="btn btn-block" onclick="upgradeLevel()">ارتقای سطح · ۵۰۰ EMC</button>
+ </div>
+ <div class="item">
+  <div class="item-icon">⚡</div>
+  <div class="item-info"><b>کارت قدرت</b><span>افزایش قدرت حساب</span></div>
+  <div><div class="price">۵۰۰ EMC</div><button class="btn btn-outline" onclick="buyCard('power')">خرید</button></div>
+ </div>
+ <div class="item">
+  <div class="item-icon">🔋</div>
+  <div class="item-info"><b>کارت انرژی</b><span>افزایش ظرفیت انرژی</span></div>
+  <div><div class="price">۵۰۰ EMC</div><button class="btn btn-outline" onclick="buyCard('energy')">خرید</button></div>
+ </div>
+ <div class="item">
+  <div class="item-icon">💎</div>
+  <div class="item-info"><b>کارت زمرد ویژه</b><span>قابلیت ویژه حساب</span></div>
+  <div><div class="price">۵۰۰ EMC</div><button class="btn btn-outline" onclick="buyCard('emerald')">خرید</button></div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">وضعیت کارت‌ها</div>
+  <div class="league"><span>⚡ قدرت</span><b id="powerCard">۰</b></div>
+  <div class="league"><span>🔋 انرژی</span><b id="energyCard">۰</b></div>
+  <div class="league"><span>💎 زمرد ویژه</span><b id="emeraldCard">۰</b></div>
+ </div>
+</section>
+
+<!-- TASKS -->
+<section id="tasks" class="section">
+ <div class="section-head">🎯 مأموریت‌ها</div>
+ <div class="panel">
+  <div class="panel-title">مأموریت‌های روزانه</div>
+  <div class="item">
+   <div class="item-icon">📅</div>
+   <div class="item-info"><b>ورود روزانه</b><span>یک بار در روز وارد شو</span></div>
+   <button class="btn btn-outline" id="dailyBtn" onclick="dailyReward()">+۱۰ EMC</button>
+  </div>
+  <div class="item">
+   <div class="item-icon">💚</div>
+   <div class="item-info"><b>حضور در پروژه</b><span>پاداش ورود روزانه</span></div>
+   <button class="btn btn-outline" id="loginBtn" onclick="loginReward()">+۵ EMC</button>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">مأموریت‌های اجتماعی</div>
+  <div class="item">
+   <div class="item-icon">📢</div>
+   <div class="item-info"><b>عضویت در کانال</b><span>کانال رسمی EMERALD COIN</span></div>
+   <button class="btn btn-outline" onclick="openLink('https://t.me/')">مشاهده</button>
+  </div>
+  <div class="item">
+   <div class="item-icon">👥</div>
+   <div class="item-info"><b>دعوت دوستان</b><span>دوستان خود را دعوت کن</span></div>
+   <button class="btn btn-outline" onclick="showSection('friends')">ورود</button>
+  </div>
+ </div>
+ <div class="notice">پاداش مأموریت‌های اجتماعی تا زمان اتصال به سرور و تأیید عضویت، به‌صورت خودکار تأیید نمی‌شود.</div>
+</section>
+
+<!-- FRIENDS -->
+<section id="friends" class="section">
+ <div class="section-head">👥 دعوت دوستان</div>
+ <div class="panel hero">
+  <div style="font-size:43px">🤝</div>
+  <h3>دوستانت را دعوت کن</h3>
+  <div class="muted small">با گسترش جامعه زمردی، پاداش دعوت دریافت کن.</div>
+  <div class="stats">
+   <div class="stat"><b id="friendTotal">0</b><span>دعوت‌ها</span></div>
+   <div class="stat"><b>۱۰٪</b><span>پاداش پیشنهادی</span></div>
+   <div class="stat"><b id="friendEarn">0</b><span>درآمد دعوت</span></div>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">لینک دعوت اختصاصی</div>
+  <input id="refLink" readonly value="لینک دعوت پس از تنظیم ربات ساخته می‌شود">
+  <button class="btn btn-block" onclick="copyReferral()">کپی لینک دعوت</button>
+  <button class="btn btn-outline btn-block" onclick="shareReferral()">اشتراک‌گذاری</button>
+ </div>
+ <div class="notice">پاداش دعوت واقعی به تأیید ثبت‌نام دوستان در سرور نیاز دارد. شمارش محلی به‌تنهایی دعوت معتبر محسوب نمی‌شود.</div>
+</section>
+
+<!-- LEADERBOARD -->
+<section id="leaderboard" class="section">
+ <div class="section-head">🏆 جدول برترین‌ها</div>
+ <div class="panel">
+  <div class="panel-title">لیگ‌های زمردی</div>
+  <div class="league"><span>🥉 لیگ برنزی</span><b>سطح ۱ تا ۵</b></div>
+  <div class="league"><span>🥈 لیگ نقره‌ای</span><b>سطح ۶ تا ۱۵</b></div>
+  <div class="league"><span>🥇 لیگ طلایی</span><b>سطح ۱۶ تا ۳۰</b></div>
+  <div class="league"><span>💎 لیگ زمردی</span><b>سطح ۳۱ به بالا</b></div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">۱۰۰ کاربر برتر</div>
+  <div id="leaderList">
+   <div class="league"><span>🥇 رتبه اول</span><b>در انتظار اتصال سرور</b></div>
+   <div class="league"><span>🥈 رتبه دوم</span><b>در انتظار اتصال سرور</b></div>
+   <div class="league"><span>🥉 رتبه سوم</span><b>در انتظار اتصال سرور</b></div>
+  </div>
+  <div class="notice">جدول رتبه‌بندی سراسری پس از اتصال دیتابیس مشترک فعال می‌شود.</div>
+ </div>
+</section>
+
+<!-- WALLET -->
+<section id="wallet" class="section">
+ <div class="section-head">💰 کیف پول</div>
+ <div class="panel">
+  <div class="panel-title">موجودی EMC</div>
+  <div class="balance"><span id="walletBalance">0.00</span> <span>EMC</span></div>
+  <div class="small muted">موجودی حساب فعلی</div>
+ </div>
+ <div class="panel">
+  <div class="panel-title">کیف پول TON</div>
+  <div id="tonConnectArea">
+   <button class="btn btn-block" onclick="connectWallet()">اتصال کیف پول TON</button>
+  </div>
+  <div id="walletAddress" class="wallet-box"></div>
+  <button id="disconnectBtn" class="btn btn-outline btn-block hidden" onclick="disconnectWallet()">قطع اتصال</button>
+ </div>
+ <div class="panel">
+  <div class="panel-title">تاریخچه تراکنش‌ها</div>
+  <div id="transactions">
+   <div class="small muted">هنوز تراکنشی ثبت نشده است.</div>
+  </div>
+ </div>
+ <div class="notice">اتصال کیف پول به معنی فعال بودن برداشت نیست. برداشت EMC فقط پس از راه‌اندازی قرارداد هوشمند، سرور امن و سیستم پرداخت فعال می‌شود. عبارت بازیابی کیف پول را به هیچ‌کس نده.</div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="section">
+ <div class="section-head">👤 پروفایل من</div>
+ <div class="panel hero">
+  <div style="font-size:55px">👤</div>
+  <h3 id="profileName">کاربر زمردی</h3>
+  <div class="muted small" id="profileUsername">EMERALD MEMBER</div>
+  <div class="stats">
+   <div class="stat"><b id="profileBalance">0</b><span>موجودی</span></div>
+   <div class="stat"><b id="profileLevel">1</b><span>سطح</span></div>
+   <div class="stat"><b id="profileMined">0</b><span>استخراج</span></div>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="league"><span>شناسه تلگرام</span><b id="telegramId">-</b></div>
+  <div class="league"><span>تاریخ عضویت</span><b id="joinDate">-</b></div>
+  <div class="league"><span>رتبه</span><b id="profileRank">تازه‌وارد</b></div>
+ </div>
+ <button class="btn btn-outline btn-block" onclick="resetLocal()">پاک‌کردن اطلاعات این مرورگر</button>
+ <div class="notice">پاک‌کردن اطلاعات، موجودی ذخیره‌شده روی همین مرورگر را حذف می‌کند. این کار را با احتیاط انجام بده.</div>
+</section>
+
+<div class="footer">EMERALD COIN · EMC · POWERED BY EMERALD</div>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+ <div class="nav-inner">
+  <button class="active" data-page="home" onclick="showSection('home',this)"><strong>⌂</strong>خانه</button>
+  <button data-page="upgrade" onclick="showSection('upgrade',this)"><strong>⚡</strong>ارتقا</button>
+  <button data-page="tasks" onclick="showSection('tasks',this)"><strong>🎯</strong>مأموریت</button>
+  <button data-page="wallet" onclick="showSection('wallet',this)"><strong>◈</strong>کیف پول</button>
+  <button data-page="profile" onclick="showSection('profile',this)"><strong>♙</strong>پروفایل</button>
+ </div>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* ==============================
+   EMERALD COIN CONFIGURATION
+================================ */
+const CONFIG = {
+ tokenName: "EMERALD COIN",
+ symbol: "EMC",
+ miningReward: 200,
+ miningHours: 24,
+ upgradeCost: 500,
+ cardCost: 500,
+
+ // نام کاربری عمومی ربات را اینجا وارد کن
+ botUsername: "YOUR_BOT_USERNAME",
+
+ // آدرس قرارداد EMC را بعد از استقرار وارد کن
+ // بدون آدرس معتبر، قیمت بازار نمایش داده نمی‌شود
+ tokenContractAddress: "",
+
+ // آدرس manifest را بعداً برای TON Connect تنظیم کن
+ tonManifestUrl: ""
+};
+
+/* ==============================
+   TELEGRAM INITIALIZATION
+================================ */
+const tg = window.Telegram?.WebApp;
+if(tg){
+ tg.ready();
+ tg.expand();
+}
+
+/* ==============================
+   LOCAL USER DATA
+================================ */
+const defaultUser = {
+ balance:0,
+ totalEarned:0,
+ level:1,
+ lastMine:0,
+ lastDaily:"",
+ lastLogin:"",
+ power:0,
+ energy:0,
+ emerald:0,
+ referrals:0,
+ referralEarn:0,
+ transactions:[],
+ prices:[],
+ joined:Date.now()
+};
+
+let user = loadUser();
+
+function loadUser(){
+ try{
+  const saved=localStorage.getItem("EMC_USER_V2");
+  return saved ? {...defaultUser,...JSON.parse(saved)} : {...defaultUser};
+ }catch(e){
+  return {...defaultUser};
+ }
+}
+function saveUser(){
+ localStorage.setItem("EMC_USER_V2",JSON.stringify(user));
+}
+function fmt(n){
+ return Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
+}
+function toast(message){
+ const el=document.getElementById("toast");
+ el.textContent=message;
+ el.classList.add("show");
+ setTimeout(()=>el.classList.remove("show"),2600);
+}
+function addBalance(amount,reason){
+ user.balance+=amount;
+ user.totalEarned+=amount;
+ user.transactions.unshift({
+  amount:amount,
+  reason:reason,
+  date:Date.now()
+ });
+ user.transactions=user.transactions.slice(0,50);
+ saveUser();
+ updateUI();
+}
+
+/* ==============================
+   MINING SYSTEM
+================================ */
+const DAY=CONFIG.miningHours*60*60*1000;
+
+function miningRemaining(){
+ if(!user.lastMine)return 0;
+ return Math.max(0,DAY-(Date.now()-user.lastMine));
+}
+function claimMining(){
+ const remaining=miningRemaining();
+ if(remaining>0){
+  toast("زمان استخراج هنوز تمام نشده است");
+  return;
+ }
+ user.lastMine=Date.now();
+ addBalance(CONFIG.miningReward,"استخراج زمرد");
+ toast("۲۰۰ EMC به موجودی اضافه شد 💎");
+ updateMining();
+}
+function updateMining(){
+ const remaining=miningRemaining();
+ const btn=document.getElementById("mineBtn");
+ const timer=document.getElementById("mineTimer");
+ const status=document.getElementById("mineStatus");
+ const progress=document.getElementById("mineProgress");
+
+ if(remaining===0){
+  btn.disabled=false;
+  btn.textContent="شروع استخراج";
+  timer.textContent="آماده شروع";
+  status.textContent="استخراج آماده است";
+  progress.style.width="100%";
+ }
