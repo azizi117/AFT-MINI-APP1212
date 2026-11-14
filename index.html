@@ -4,222 +4,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090b16">
-<title>AI Studio</title>
+<title>MIFADO COIN</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#030609;
+ color:white;
+ font-family:Tahoma,Arial;
 }
-
-body {
-  margin: 0;
-  font-family: Tahoma, sans-serif;
-  background: #090b16;
-  color: white;
+.app{
+ max-width:520px;
+ min-height:100vh;
+ margin:auto;
+ background:radial-gradient(ellipse at center,#092333,#020509 70%);
+ padding-bottom:100px;
 }
-
-header {
-  padding: 22px;
-  background: #111529;
-  border-bottom: 1px solid #292e48;
+header{
+ background:#101014;
+ padding:20px;
+ text-align:center;
+ font-size:24px;
+ font-weight:bold;
 }
-
-.logo {
-  font-size: 25px;
-  font-weight: bold;
-  color: #a78bfa;
+.page{display:none;padding:20px}
+.page.active{display:block}
+.logo{
+ width:280px;
+ max-width:85%;
+ aspect-ratio:1;
+ object-fit:cover;
+ display:block;
+ margin:30px auto;
+ border-radius:50%;
+ border:5px solid #dca82b;
+ box-shadow:0 0 35px #087dff;
 }
-
-.subtitle {
-  color: #9ca3af;
-  font-size: 12px;
-  margin-top: 8px;
+.balance{
+ text-align:center;
+ font-size:38px;
+ font-weight:bold;
+ margin:25px 0;
 }
-
-.container {
-  padding: 18px;
-  max-width: 650px;
-  margin: auto;
+.blue{color:#22b9ff}
+.usd{color:#42d98b;font-size:20px}
+button{
+ cursor:pointer;
+ border:0;
+ font-family:inherit;
 }
-
-.hero {
-  background: linear-gradient(135deg,#30206c,#111c39);
-  padding: 22px;
-  border-radius: 18px;
-  margin-bottom: 22px;
+.primary{
+ width:100%;
+ padding:20px;
+ background:#25b9f2;
+ color:#00121c;
+ border-radius:18px;
+ font-size:21px;
+ font-weight:bold;
+ margin:12px 0;
 }
-
-.hero h2 {
-  margin-top: 0;
+.mine{
+ background:#292638;
+ color:white;
+ padding:18px;
+ border-radius:25px;
+ display:block;
+ margin:20px auto;
+ font-size:19px;
 }
-
-.card {
-  background: #151a2c;
-  border: 1px solid #292e48;
-  border-radius: 17px;
-  padding: 18px;
-  margin-bottom: 18px;
+.stats{
+ display:flex;
+ gap:12px;
 }
-
-label {
-  display: block;
-  margin: 16px 0 9px;
-  font-size: 14px;
+.stat{
+ flex:1;
+ border:1px solid #16485e;
+ border-radius:16px;
+ padding:20px 5px;
+ text-align:center;
 }
-
-textarea, select, input {
-  width: 100%;
-  background: #090e20;
-  border: 1px solid #343b5b;
-  color: white;
-  border-radius: 11px;
-  padding: 13px;
-  font-family: inherit;
-  outline: none;
+h1{text-align:center;font-size:32px}
+.panel{
+ border:2px solid #17617c;
+ border-radius:22px;
+ padding:22px;
+ margin:18px 0;
+ box-shadow:0 0 20px #087ca422;
 }
-
-textarea {
-  min-height: 110px;
-  resize: vertical;
+.reward{
+ font-size:32px;
+ font-weight:bold;
+ margin-top:15px;
 }
-
-button {
-  width: 100%;
-  padding: 15px;
-  border: 0;
-  border-radius: 12px;
-  background: linear-gradient(90deg,#7c3aed,#4f46e5);
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 18px;
-  cursor: pointer;
+.link{
+ background:#111;
+ padding:17px;
+ border-radius:14px;
+ direction:ltr;
+ overflow:hidden;
+ font-size:13px;
 }
-
-button:disabled {
-  opacity: .6;
+.task{
+ background:#07140e;
+ border:1px solid #16452c;
+ border-right:5px solid #20c56b;
+ border-radius:18px;
+ padding:18px 12px;
+ margin:15px 0;
+ display:flex;
+ align-items:center;
+ gap:10px;
 }
-
-.result {
-  display: none;
-  margin-top: 20px;
-  background: #101a30;
-  padding: 16px;
-  border-radius: 13px;
+.task-info{flex:1}
+.task a{color:#27b9f2;display:block;margin:8px 0}
+.task button{
+ background:#20c56b;
+ color:white;
+ padding:12px;
+ border-radius:25px;
 }
-
-small {
-  color: #9ca3af;
-  line-height: 2;
+.wallet{
+ border:2px solid #16485e;
+ padding:22px;
+ border-radius:18px;
+ margin:15px 0;
+ display:flex;
+ justify-content:space-between;
 }
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #777f99;
-  font-size: 12px;
+.wallet button{
+ background:transparent;
+ color:#25b9f2;
+}
+nav{
+ position:fixed;
+ bottom:0;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(520px,100%);
+ background:#050609;
+ border-top:1px solid #222;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ padding:10px 5px;
+}
+nav button{
+ background:transparent;
+ color:#999;
+ padding:10px 0;
+ font-size:14px;
+}
+nav button.active{
+ color:#25b9f2;
+ background:#071d29;
+ border-radius:15px;
+}
+nav span{
+ display:block;
+ font-size:24px;
+ margin-bottom:5px;
 }
 </style>
 </head>
 
 <body>
+<div class="app">
 
-<header>
-  <div class="logo">✦ AI STUDIO</div>
-  <div class="subtitle">استودیوی هوش مصنوعی شخصی من</div>
-</header>
+<header> MIFADO COIN 🚀 </header>
 
-<main class="container">
+<!-- صفحه استخراج -->
+<section id="mine" class="page active">
 
-  <section class="hero">
-    <h2>🎬 خلاقیتت رو زنده کن!</h2>
-    <p>ایده‌ات رو بنویس و برای ساخت ویدیوی هوش مصنوعی آماده شو.</p>
-  </section>
+<img class="logo" src="data:image/png;base64,LOGO_BASE64"
+alt="MIFADO COIN">
 
-  <section class="card">
-    <h3>ساخت ویدیو با هوش مصنوعی</h3>
+<div class="balance">
+<span id="balance">69.892</span>
+<span class="blue">MFD</span>
+<div class="usd">≈ $27.79 USD</div>
+</div>
 
-    <label>توضیحات ویدیوی موردنظر</label>
-    <textarea id="prompt"
-      placeholder="مثلاً: یک شهر آینده‌نگر در شب، با نورهای نئونی و حرکت دوربین سینمایی..."></textarea>
+<button class="mine" onclick="mine()">
+⛏ برای استخراج ضربه بزنید
+</button>
 
-    <label>سبک ویدیو</label>
-    <select id="style">
-      <option>واقع‌گرایانه</option>
-      <option>سینمایی</option>
-      <option>انیمه</option>
-      <option>فانتزی</option>
-      <option>سه‌بعدی</option>
-    </select>
+<div class="stats">
+<div class="stat">⚡ <span id="energy">1000</span>/1000</div>
+<div class="stat">⌛ آماده</div>
+</div>
 
-    <label>نسبت تصویر</label>
-    <select id="ratio">
-      <option value="9:16">عمودی - 9:16</option>
-      <option value="16:9">افقی - 16:9</option>
-      <option value="1:1">مربعی - 1:1</option>
-    </select>
+</section>
 
-    <label>مدت ویدیو</label>
-    <select id="duration">
-      <option value="5">۵ ثانیه</option>
-      <option value="10">۱۰ ثانیه</option>
-    </select>
+<!-- دعوت -->
+<section id="invite" class="page">
+<h1>دعوت کن و درآمد کسب کن</h1>
 
-    <button id="generate" onclick="generateVideo()">
-      ✨ آماده‌سازی درخواست ویدیو
-    </button>
+<div class="panel">
+به ازای هر دعوت
+<div class="reward">
+20 <span class="blue">MFD</span>
+</div>
+</div>
 
-    <div class="result" id="result">
-      <h3>درخواست شما آماده شد!</h3>
-      <p id="output"></p>
-      <small>
-        این نسخه رابط کاربری اولیه است؛ هنوز موتور تولید ویدیو به آن متصل نشده است.
-      </small>
-    </div>
-  </section>
+<div class="panel">
+<p>لینک دعوت شما</p>
 
-  <section class="card">
-    <h3>🚀 امکانات آینده</h3>
-    <p>🤖 دستیار هوشمند</p>
-    <p>🎨 تولید تصویر</p>
-    <p>🎬 تولید ویدیو از متن</p>
-    <p>📁 گالری و ذخیره ویدیوها</p>
-  </section>
+<div class="link" id="inviteLink">
+https://t.me/MifadoCoinBot
+</div>
 
-</main>
+<button class="primary" onclick="copyLink()">
+کپی لینک دعوت
+</button>
 
-<footer>
-  AI STUDIO © 2026
-  <br>
-  ساخته‌شده برای استفاده شخصی
-</footer>
+</div>
+</section>
+
+<!-- وظایف -->
+<section id="tasks" class="page">
+<h1>وظایف</h1>
+
+<div class="task">
+<div class="task-info">
+<b>عضویت در کانال تلگرام</b>
+<a href="https://t.me/Mantle_Mining" target="_blank">@Mantle_Mining</a>
+<span class="blue">+100 MFD</span>
+</div>
+<button onclick="done(this)">شروع</button>
+</div>
+
+<div class="task">
+<div class="task-info">
+<b>عضویت در کانال اسپانسر</b>
+<a href="https://t.me/Crypto365team" target="_blank">@Crypto365team</a>
+<span class="blue">+50 MFD</span>
+</div>
+<button onclick="done(this)">شروع</button>
+</div>
+
+<div class="task">
+<div class="task-info">
+<b>دنبال کردن توییتر</b>
+<a href="https://x.com/Mantle_Official" target="_blank">@Mantle_Official</a>
+<span class="blue">+20 MFD</span>
+</div>
+<button onclick="done(this)">شروع</button>
+</div>
+
+</section>
+
+<!-- کیف پول -->
+<section id="wallet" class="page">
+<h1>کیف پول</h1>
+
+<div class="panel" style="text-align:center">
+موجودی کل
+<div class="balance">
+<span id="walletBalance">69.892</span>
+<span class="blue">MFD</span>
+</div>
+</div>
+
+<button class="primary" onclick="alert('برداشت واقعی هنوز فعال نیست')">
+برداشت MFD ↑
+</button>
+
+<div class="wallet">
+<b>🛡 Trust Wallet</b>
+<button onclick="alert('اتصال در نسخه نمایشی فعال نیست')">اتصال ←</button>
+</div>
+
+<div class="wallet">
+<b>🔵 Coinbase</b>
+<button onclick="alert('اتصال در نسخه نمایشی فعال نیست')">اتصال ←</button>
+</div>
+
+<div class="wallet">
+<b>♦ TON Wallet</b>
+<button onclick="alert('اتصال در نسخه نمایشی فعال نیست')">اتصال ←</button>
+</div>
+
+</section>
+
+<nav>
+<button onclick="showPage('invite',this)">
+<span>👥</span>دعوت
+</button>
+
+<button onclick="showPage('tasks',this)">
+<span>☑</span>وظایف
+</button>
+
+<button class="active" onclick="showPage('mine',this)">
+<span>◉</span>استخراج
+</button>
+
+<button onclick="showPage('wallet',this)">
+<span>▣</span>کیف پول
+</button>
+</nav>
+
+</div>
 
 <script>
-function generateVideo() {
-  const prompt = document.getElementById("prompt").value.trim();
-  const style = document.getElementById("style").value;
-  const ratio = document.getElementById("ratio").value;
-  const duration = document.getElementById("duration").value;
+let balance=69.892;
+let energy=1000;
 
-  if (!prompt) {
-    alert("لطفاً توضیحات ویدیو را وارد کن!");
-    return;
-  }
+function showPage(id,btn){
+ document.querySelectorAll('.page')
+ .forEach(p=>p.classList.remove('active'));
 
-  const result = document.getElementById("result");
-  const output = document.getElementById("output");
+ document.getElementById(id)
+ .classList.add('active');
 
-  output.textContent =
-    "موضوع: " + prompt +
-    " | سبک: " + style +
-    " | نسبت تصویر: " + ratio +
-    " | مدت: " + duration + " ثانیه";
+ document.querySelectorAll('nav button')
+ .forEach(b=>b.classList.remove('active'));
 
-  result.style.display = "block";
+ btn.classList.add('active');
+}
+
+function mine(){
+ if(energy<=0){
+  alert('انرژی تمام شده است');
+  return;
+ }
+
+ balance+=0.001;
+ energy--;
+
+ document.getElementById('balance').innerText=
+ balance.toFixed(3);
+
+ document.getElementById('walletBalance').innerText=
+ balance.toFixed(3);
+
+ document.getElementById('energy').innerText=energy;
+}
+
+function copyLink(){
+ const link=document.getElementById('inviteLink').innerText;
+ navigator.clipboard.writeText(link)
+ .then(()=>alert('لینک کپی شد'))
+ .catch(()=>alert(link));
+}
+
+function done(btn){
+ btn.innerText='✓ انجام شد';
+ btn.disabled=true;
 }
 </script>
 
 </body>
-  </html>
-  
+</html>
