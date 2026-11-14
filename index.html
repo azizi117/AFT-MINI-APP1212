@@ -2,464 +2,240 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#090b12">
-  <title>MIFADO COIN</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    :root {
-      --bg:#090b12; --panel:#141824; --panel2:#1b2030;
-      --gold:#f5c451; --gold2:#ffe29a; --text:#f5f5f5;
-      --muted:#9299aa; --green:#48d597; --red:#ff7777;
-    }
-    * { box-sizing:border-box; }
-    body {
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:Arial,Tahoma,sans-serif; min-height:100vh;
-    }
-    button,input { font:inherit; }
-    button { cursor:pointer; }
-    .app { max-width:520px; margin:auto; padding:18px 16px 100px; }
-    header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
-    .brand { display:flex; align-items:center; gap:10px; }
-    .logo {
-      width:43px;height:43px;border-radius:14px;
-      display:grid;place-items:center;background:linear-gradient(145deg,#ffe29a,#b77b17);
-      color:#17120a;font-weight:900;font-size:21px;
-    }
-    .brand h1 { font-size:18px; margin:0; letter-spacing:1px; }
-    .brand small { color:var(--gold); font-size:11px; }
-    .lang {
-      background:var(--panel2);color:var(--gold);border:1px solid #34394a;
-      border-radius:10px;padding:9px 12px;
-    }
-    .card {
-      background:linear-gradient(145deg,#191e2c,#111521);
-      border:1px solid #292e3c;border-radius:20px;padding:20px;margin-bottom:15px;
-    }
-    .balance-card {
-      text-align:center; position:relative; overflow:hidden;
-      border-color:#5d4822;
-      background:radial-gradient(circle at 50% 0%,#403019 0%,#191b25 55%,#111521 100%);
-    }
-    .eyebrow { color:var(--muted);font-size:13px; }
-    .balance { color:var(--gold2);font-size:38px;font-weight:800;margin:12px 0 4px;direction:ltr; }
-    .coin { color:var(--gold);font-size:13px;letter-spacing:2px; }
-    .stats { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px; }
-    .stat { background:#ffffff09;border-radius:13px;padding:12px; }
-    .stat strong { display:block;font-size:18px;margin-top:6px;color:var(--gold2); }
-    .stat span { color:var(--muted);font-size:11px; }
-    .section-title { font-size:16px;margin:20px 2px 12px; }
-    .progress {height:9px;background:#303545;border-radius:20px;overflow:hidden;margin:12px 0 7px;}
-    .progress div {height:100%;width:100%;background:linear-gradient(90deg,#bd841e,#ffe29a);border-radius:20px;transition:width .3s;}
-    .muted {color:var(--muted);font-size:12px;}
-    .primary {
-      width:100%;border:0;border-radius:13px;padding:14px;
-      background:linear-gradient(100deg,#b77b17,#ffe29a);
-      color:#17120a;font-weight:800;margin-top:14px;
-    }
-    .secondary {
-      border:1px solid #45404a;background:#252333;color:var(--gold2);
-      border-radius:12px;padding:11px 14px;
-    }
-    .grid {display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .item {
-      background:var(--panel);border:1px solid #292e3c;border-radius:15px;padding:14px;
-    }
-    .item h3 {font-size:14px;margin:0 0 8px;}
-    .item p {font-size:12px;color:var(--muted);margin:5px 0;}
-    .item button {width:100%;margin-top:10px;}
-    .page {display:none;}
-    .page.active {display:block;}
-    .nav {
-      position:fixed;bottom:0;left:0;right:0;z-index:5;
-      background:#10131df2;border-top:1px solid #292e3c;
-      display:flex;justify-content:space-around;padding:10px 3px calc(10px + env(safe-area-inset-bottom));
-      backdrop-filter:blur(12px);
-    }
-    .nav button {
-      background:none;border:0;color:var(--muted);font-size:10px;
-      display:flex;flex-direction:column;align-items:center;gap:5px;min-width:55px;
-    }
-    .nav button span {font-size:20px;}
-    .nav button.active {color:var(--gold);}
-    .field {
-      width:100%;background:#0d111b;color:white;border:1px solid #34394a;
-      border-radius:12px;padding:13px;margin-top:9px;outline:none;
-    }
-    .row {display:flex;justify-content:space-between;align-items:center;gap:10px;}
-    .list-row {padding:13px 0;border-bottom:1px solid #292e3c;font-size:13px;}
-    .list-row:last-child {border:0;}
-    .notice {font-size:12px;color:var(--muted);line-height:1.8;margin-top:12px;}
-    .gold {color:var(--gold);}
-    .success {color:var(--green);}
-    .error {color:var(--red);}
-    #toast {
-      position:fixed;left:50%;bottom:90px;transform:translateX(-50%);
-      background:#252b39;color:white;padding:12px 18px;border-radius:12px;
-      z-index:20;display:none;font-size:13px;max-width:90%;text-align:center;
-    }
-    .loading {opacity:.6;pointer-events:none;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#070910">
+<title>MIFADO COIN | MFD NETWORK</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+:root{--bg:#070910;--panel:rgba(20,25,39,.78);--line:rgba(255,255,255,.09);--gold:#e9bd61;--gold2:#ffe6a6;--cyan:#55e6ed;--muted:#8992a8;--green:#54e2a5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f7f8fc;font-family:'Vazirmatn',Tahoma,Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 15% 5%,rgba(26,107,130,.16),transparent 35%),radial-gradient(ellipse at 90% 35%,rgba(180,127,40,.12),transparent 36%),linear-gradient(180deg,#090c15,#070910 65%);z-index:-2}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:35px 35px;mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:-1}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{max-width:520px;margin:auto;padding:18px 17px 110px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:46px;height:46px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#ffe6a6,#a66e1d);color:#17120a;font-size:25px;font-weight:900;box-shadow:0 0 28px #d9a84940;position:relative}
+.logo:after{content:"";position:absolute;inset:4px;border:1px solid #fff7;border-radius:11px}
+.brand h1{font-size:16px;letter-spacing:1.5px;margin:0;font-weight:900}
+.brand small{font-size:9px;letter-spacing:3px;color:var(--gold)}
+.lang{border:1px solid #ffffff20;background:#ffffff08;color:var(--gold2);border-radius:10px;padding:8px 12px}
+.eyebrow{color:var(--muted);font-size:11px;letter-spacing:1px}
+.hero{position:relative;overflow:hidden;padding:22px 19px 20px;border-radius:25px;border:1px solid #d8b56b42;background:linear-gradient(135deg,rgba(39,37,35,.91),rgba(14,19,31,.95) 55%,rgba(13,32,41,.86));box-shadow:0 18px 55px #0008,inset 0 1px #fff1}
+.hero:before{content:"";position:absolute;width:230px;height:230px;border-radius:50%;background:#d6a64a12;filter:blur(35px);top:-120px;left:-60px}
+.hero-top{display:flex;justify-content:space-between;align-items:center;position:relative}
+.live{font-size:10px;color:var(--green);border:1px solid #54e2a544;background:#54e2a511;padding:5px 9px;border-radius:20px}
+.balance{font-size:36px;font-weight:900;letter-spacing:-1px;color:var(--gold2);margin:15px 0 0;direction:ltr;text-align:right;text-shadow:0 0 25px #e9bd6140}
+.coin-label{font-size:11px;letter-spacing:4px;color:var(--gold)}
+.balance-foot{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--muted)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,#ffffff22,transparent);margin:18px 0}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{border:1px solid var(--line);border-radius:14px;background:#ffffff07;padding:12px}
+.metric label{display:block;color:var(--muted);font-size:10px}
+.metric strong{display:block;margin-top:5px;color:#f5d58d;font-size:16px;direction:ltr;text-align:right}
+.mining-card{margin-top:15px;padding:19px;border:1px solid var(--line);border-radius:23px;background:var(--panel);backdrop-filter:blur(18px);box-shadow:0 15px 35px #0004}
+.section-head{display:flex;justify-content:space-between;align-items:center}
+.section-head b{font-size:13px}
+.section-head span{font-size:10px;color:var(--cyan)}
+.core-wrap{display:grid;place-items:center;padding:15px 0 11px}
+.core{width:174px;height:174px;position:relative;display:grid;place-items:center}
+.ring{position:absolute;inset:7px;border:1px solid #eac56b70;border-radius:50%;box-shadow:0 0 25px #e9bd611a,inset 0 0 20px #e9bd6110}
+.ring.r2{inset:19px;border-color:#55e6ed66;border-style:dashed;animation:spin 18s linear infinite}
+.ring.r3{inset:31px;border-color:#e9bd6155;animation:spin 12s linear infinite reverse}
+.core-orb{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;font-size:34px;color:#fff0c4;background:radial-gradient(circle at 35% 25%,#fff0b8,#c28b32 35%,#2b2630 72%);box-shadow:0 0 35px #e9bd6166,0 0 80px #55e6ed18;animation:pulse 3s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 48px #e9bd6188,0 0 90px #55e6ed25}}
+.core-caption{text-align:center;font-size:10px;letter-spacing:2px;color:var(--cyan)}
+.progress{height:7px;background:#ffffff13;border-radius:20px;overflow:hidden;margin:13px 0 8px}
+.progress div{height:100%;width:100%;border-radius:20px;background:linear-gradient(90deg,#4edce6,#e9bd61);box-shadow:0 0 12px #55e6ed88;transition:width .4s}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.action{width:100%;border:1px solid #ffe6a6;background:linear-gradient(100deg,#a87322,#f5d58d 55%,#d39c43);color:#19140a;font-weight:900;padding:14px;border-radius:13px;margin-top:17px;box-shadow:0 7px 25px #d6a64a22}
+.action:active{transform:scale(.98)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:14px;backdrop-filter:blur(12px)}
+.panel .symbol{font-size:19px;color:var(--gold)}
+.panel h3{font-size:12px;margin:8px 0 5px}
+.panel p{font-size:10px;color:var(--muted);line-height:1.8;margin:0}
+.panel button{margin-top:12px}
+.section-title{font-size:15px;margin:21px 2px 12px}
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.glass{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:12px;backdrop-filter:blur(14px)}
+.field{width:100%;border:1px solid #ffffff20;background:#090e19;color:#fff;border-radius:11px;padding:13px;margin-top:10px;outline:none;direction:ltr;text-align:left}
+.field:focus{border-color:var(--gold)}
+.secondary{width:100%;padding:12px;border-radius:11px;border:1px solid #e9bd6150;background:#e9bd6110;color:var(--gold2);margin-top:10px}
+.item{border:1px solid var(--line);background:#ffffff06;border-radius:14px;padding:13px}
+.item h3{font-size:12px;margin:0 0 7px}
+.item p{font-size:10px;color:var(--muted);line-height:1.7}
+.item button{width:100%;margin-top:9px}
+.gold{color:var(--gold2)}
+.muted{color:var(--muted)}
+.notice{font-size:10px;line-height:1.9;color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:8;max-width:520px;margin:auto;display:flex;justify-content:space-around;background:rgba(9,13,23,.94);border:1px solid #ffffff12;border-bottom:0;border-radius:19px 19px 0 0;padding:10px 3px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(20px)}
+.nav button{border:0;background:none;color:#747e94;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;min-width:48px}
+.nav button span{font-size:19px}
+.nav button.active{color:var(--gold2);filter:drop-shadow(0 0 7px #e9bd6180)}
+.list-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:11px}
+.list-row:last-child{border:0}
+#toast{position:fixed;z-index:20;bottom:90px;left:50%;transform:translateX(-50%);display:none;background:#1b2635;border:1px solid #e9bd6160;color:white;padding:11px 17px;border-radius:12px;font-size:11px;max-width:90%;text-align:center;box-shadow:0 8px 30px #0008}
+.good{color:var(--green)}
+</style>
 </head>
 <body>
 <div class="app">
-  <header>
-    <div class="brand">
-      <div class="logo">M</div>
-      <div>
-        <h1>MIFADO COIN</h1>
-        <small>MFD MINING</small>
-      </div>
-    </div>
-    <button class="lang" onclick="toggleLanguage()">EN / فا</button>
-  </header>
+<header>
+ <div class="brand"><div class="logo">M</div><div><h1>MIFADO COIN</h1><small>MFD DIGITAL NETWORK</small></div></div>
+ <button class="lang" onclick="toggleLang()">FA / EN</button>
+</header>
 
-  <main>
-    <section class="page active" id="home">
-      <div class="card balance-card">
-        <div class="eyebrow" data-fa="موجودی کل شما" data-en="Your total balance">موجودی کل شما</div>
-        <div class="balance" id="balance">0.000000</div>
-        <div class="coin">MFD</div>
-        <div class="stats">
-          <div class="stat">
-            <span data-fa="سرعت استخراج ساعتی" data-en="Hourly mining rate">سرعت استخراج ساعتی</span>
-            <strong id="rate">0 MFD</strong>
-          </div>
-          <div class="stat">
-            <span data-fa="انرژی" data-en="Energy">انرژی</span>
-            <strong id="energy">0 / 0</strong>
-          </div>
-        </div>
-      </div>
+<section class="page active" id="home">
+ <div class="hero">
+  <div class="hero-top"><span class="eyebrow" data-t="total">TOTAL ASSETS</span><span class="live">● <span data-t="live">SYSTEM ACTIVE</span></span></div>
+  <div class="balance" id="balance">100.000000</div>
+  <div class="coin-label">MFD</div>
+  <div class="balance-foot"><span data-t="portfolio">MIFADO PORTFOLIO</span><span id="accountLabel">LOCAL ACCOUNT</span></div>
+  <div class="divider"></div>
+  <div class="metrics">
+   <div class="metric"><label data-t="rate">MINING RATE</label><strong id="rate">1.00 MFD/H</strong></div>
+   <div class="metric"><label data-t="level">MINER LEVEL</label><strong id="level">LVL 01</strong></div>
+  </div>
+ </div>
 
-      <div class="card">
-        <div class="row">
-          <strong data-fa="وضعیت استخراج" data-en="Mining status">وضعیت استخراج</strong>
-          <span class="success" data-fa="● فعال" data-en="● Active">● فعال</span>
-        </div>
-        <div class="progress"><div id="energyBar"></div></div>
-        <div class="row muted">
-          <span data-fa="استخراج خودکار" data-en="Automatic mining">استخراج خودکار</span>
-          <span data-fa="حداکثر آفلاین: ۲۴ ساعت" data-en="Offline limit: 24 hours">حداکثر آفلاین: ۲۴ ساعت</span>
-        </div>
-        <p class="notice" data-fa="با فعال بودن حساب، پاداش استخراج به‌صورت خودکار محاسبه می‌شود." data-en="Mining rewards are calculated automatically while your account is active.">با فعال بودن حساب، پاداش استخراج به‌صورت خودکار محاسبه می‌شود.</p>
-      </div>
+ <div class="mining-card">
+  <div class="section-head"><b data-t="coreTitle">MINING CORE</b><span>● AUTO MINING</span></div>
+  <div class="core-wrap"><div class="core"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core-orb">M</div></div></div>
+  <div class="core-caption">MFD · DIGITAL EXTRACTION</div>
+  <div class="progress"><div id="bar"></div></div>
+  <div class="progress-label"><span data-t="offline">24H OFFLINE CAP</span><span id="elapsed">0.0 / 24 H</span></div>
+  <button class="action" onclick="collect()" data-t="collect">COLLECT MINING REWARDS</button>
+  <p class="notice" data-t="miningNote">Mining accrues automatically. Collect to update your local balance.</p>
+ </div>
 
-      <div class="card">
-        <div class="row">
-          <strong data-fa="حساب کاربری" data-en="Account">حساب کاربری</strong>
-          <span class="muted" id="username">Telegram</span>
-        </div>
-        <p class="notice" id="userId">شناسه تلگرام: --</p>
-        <button class="secondary" style="width:100%" onclick="refreshData()" data-fa="به‌روزرسانی اطلاعات" data-en="Refresh account">به‌روزرسانی اطلاعات</button>
-      </div>
-    </section>
+ <h2 class="section-title" data-t="overview">NETWORK OVERVIEW</h2>
+ <div class="grid">
+  <div class="panel"><div class="symbol">◈</div><h3 data-t="energy">ENERGY STATUS</h3><p id="energy">100% · OPTIMAL</p></div>
+  <div class="panel"><div class="symbol">⌁</div><h3 data-t="offlineTime">OFFLINE TIME</h3><p id="offlineTime">24 HOURS</p></div>
+ </div>
+</section>
 
-    <section class="page" id="upgrades">
-      <h2 class="section-title" data-fa="ارتقای استخراج" data-en="Mining upgrades">ارتقای استخراج</h2>
-      <div id="upgradeList" class="grid">
-        <div class="item"><h3>Loading...</h3></div>
-      </div>
-    </section>
+<section class="page" id="upgrades">
+ <h2 class="section-title" data-t="boostTitle">MINING POWER / BOOST</h2>
+ <div class="glass"><div class="row"><b data-t="boostDesc">Enhance your mining capacity</b><span class="gold">MFD CORE</span></div><p class="notice" data-t="boostNote">Purchase upgrades using your available MFD balance.</p></div>
+ <div class="grid" id="upgradeList"></div>
+</section>
 
-    <section class="page" id="friends">
-      <h2 class="section-title" data-fa="دعوت از دوستان" data-en="Invite friends">دعوت از دوستان</h2>
-      <div class="card">
-        <h3 data-fa="دوستانت را دعوت کن و پاداش بگیر" data-en="Invite friends and earn rewards">دوستانت را دعوت کن و پاداش بگیر</h3>
-        <p class="notice" data-fa="لینک اختصاصی دعوت خود را برای دوستانت ارسال کن." data-en="Share your personal referral link with friends.">لینک اختصاصی دعوت خود را برای دوستانت ارسال کن.</p>
-        <input class="field" id="refLink" readonly value="Loading...">
-        <button class="primary" onclick="copyReferral()" data-fa="کپی لینک دعوت" data-en="Copy referral link">کپی لینک دعوت</button>
-        <div class="stat" style="margin-top:15px">
-          <span data-fa="تعداد دعوت‌ها" data-en="Total referrals">تعداد دعوت‌ها</span>
-          <strong id="refCount">0</strong>
-        </div>
-      </div>
-      <div class="card">
-        <strong data-fa="قوانین دعوت" data-en="Referral rules">قوانین دعوت</strong>
-        <p class="notice" data-fa="پاداش دعوت بر اساس قوانین ثبت‌شده در سرور محاسبه می‌شود." data-en="Referral rewards are calculated according to server rules.">پاداش دعوت بر اساس قوانین ثبت‌شده در سرور محاسبه می‌شود.</p>
-      </div>
-    </section>
+<section class="page" id="friends">
+ <h2 class="section-title" data-t="refTitle">REFERRAL NETWORK</h2>
+ <div class="glass">
+  <div class="symbol gold">⌘</div><h3 data-t="inviteTitle">EXPAND THE NETWORK</h3>
+  <p class="notice" data-t="inviteNote">Share your personal referral link.</p>
+  <input class="field" id="inviteLink" readonly>
+  <button class="action" onclick="copyInvite()" data-t="copy">COPY INVITATION LINK</button>
+  <div class="divider"></div><div class="row"><span class="muted" data-t="refCount">LOCAL REFERRAL COUNT</span><b class="gold" id="refs">0</b></div>
+  <p class="notice" data-t="refWarning">Referral count in this demo is not verified across users.</p>
+ </div>
+</section>
 
-    <section class="page" id="tasks">
-      <h2 class="section-title" data-fa="وظایف و پاداش‌ها" data-en="Tasks and rewards">وظایف و پاداش‌ها</h2>
-      <div id="taskList">
-        <div class="card muted">Loading tasks...</div>
-      </div>
-    </section>
+<section class="page" id="tasks">
+ <h2 class="section-title" data-t="taskTitle">MISSION CONTROL</h2>
+ <div id="taskList"></div>
+</section>
 
-    <section class="page" id="wallet">
-      <h2 class="section-title" data-fa="کیف پول TON" data-en="TON wallet">کیف پول TON</h2>
-      <div class="card">
-        <strong data-fa="آدرس کیف پول" data-en="Wallet address">آدرس کیف پول</strong>
-        <input class="field" id="walletAddress" placeholder="EQ... یا UQ...">
-        <button class="primary" onclick="saveWallet()" data-fa="ذخیره آدرس" data-en="Save wallet">ذخیره آدرس</button>
-        <p class="notice" data-fa="آدرس کیف پول TON خود را با دقت وارد کنید. آدرس اشتباه ممکن است باعث از دست رفتن دارایی شود." data-en="Enter your TON wallet address carefully. An incorrect address may result in lost funds.">آدرس کیف پول TON خود را با دقت وارد کنید. آدرس اشتباه ممکن است باعث از دست رفتن دارایی شود.</p>
-      </div>
-      <div class="card">
-        <strong data-fa="درخواست برداشت" data-en="Withdrawal request">درخواست برداشت</strong>
-        <input class="field" id="withdrawAmount" type="number" min="0" step="any" placeholder="Amount in MFD">
-        <button class="primary" onclick="requestWithdrawal()" data-fa="ثبت درخواست برداشت" data-en="Submit withdrawal">ثبت درخواست برداشت</button>
-        <p class="notice" data-fa="درخواست برداشت پس از ثبت، در انتظار بررسی قرار می‌گیرد. ثبت درخواست به معنی انتقال خودکار روی شبکه TON نیست." data-en="Withdrawal requests are submitted for review. A request does not mean an automatic on-chain TON transfer.">درخواست برداشت پس از ثبت، در انتظار بررسی قرار می‌گیرد. ثبت درخواست به معنی انتقال خودکار روی شبکه TON نیست.</p>
-      </div>
-      <div class="card">
-        <strong data-fa="تاریخچه برداشت" data-en="Withdrawal history">تاریخچه برداشت</strong>
-        <div id="withdrawalHistory" class="notice">--</div>
-      </div>
-    </section>
+<section class="page" id="wallet">
+ <h2 class="section-title" data-t="walletTitle">TON WALLET CENTER</h2>
+ <div class="glass">
+  <div class="row"><b data-t="walletAddress">WALLET ADDRESS</b><span class="gold">TON</span></div>
+  <input class="field" id="walletInput" placeholder="EQ... / UQ...">
+  <button class="action" onclick="saveWallet()" data-t="save">SAVE WALLET</button>
+  <p class="notice" data-t="walletNote">Address is stored locally. This demo does not connect to TON blockchain.</p>
+ </div>
+ <div class="glass">
+  <b data-t="withdrawTitle">WITHDRAWAL REQUEST</b>
+  <input class="field" id="withdrawInput" type="number" min="0" step="any" placeholder="Amount MFD">
+  <button class="secondary" onclick="withdraw()" data-t="submit">SUBMIT REQUEST</button>
+  <p class="notice" data-t="withdrawNote">Local demo request only. No on-chain transfer will occur.</p>
+  <div id="withdrawHistory"></div>
+ </div>
+</section>
 
-    <section class="page" id="history">
-      <h2 class="section-title" data-fa="تاریخچه تراکنش‌ها" data-en="Transaction history">تاریخچه تراکنش‌ها</h2>
-      <div class="card" id="historyList">Loading...</div>
-    </section>
-  </main>
+<section class="page" id="history">
+ <h2 class="section-title" data-t="historyTitle">ASSET ACTIVITY</h2>
+ <div class="glass" id="historyList"></div>
+</section>
 </div>
 
 <nav class="nav">
-  <button class="active" onclick="showPage('home',this)"><span>⌂</span><b data-fa="خانه" data-en="Home">خانه</b></button>
-  <button onclick="showPage('upgrades',this)"><span>⚡</span><b data-fa="ارتقا" data-en="Upgrade">ارتقا</b></button>
-  <button onclick="showPage('friends',this)"><span>♧</span><b data-fa="دعوت" data-en="Invite">دعوت</b></button>
-  <button onclick="showPage('tasks',this)"><span>✓</span><b data-fa="وظایف" data-en="Tasks">وظایف</b></button>
-  <button onclick="showPage('wallet',this)"><span>◈</span><b data-fa="کیف پول" data-en="Wallet">کیف پول</b></button>
-  <button onclick="showPage('history',this)"><span>▤</span><b data-fa="تاریخچه" data-en="History">تاریخچه</b></button>
+ <button class="active" onclick="go('home',this)"><span>⌂</span><b data-t="navHome">HOME</b></button>
+ <button onclick="go('upgrades',this)"><span>✧</span><b data-t="navBoost">BOOST</b></button>
+ <button onclick="go('friends',this)"><span>⌘</span><b data-t="navFriends">FRIENDS</b></button>
+ <button onclick="go('tasks',this)"><span>◉</span><b data-t="navTasks">MISSIONS</b></button>
+ <button onclick="go('wallet',this)"><span>◈</span><b data-t="navWallet">WALLET</b></button>
+ <button onclick="go('history',this)"><span>▤</span><b data-t="navHistory">ACTIVITY</b></button>
 </nav>
 <div id="toast"></div>
 
 <script>
-(() => {
-  const tg = window.Telegram?.WebApp;
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    try { tg.setHeaderColor("#090b12"); } catch(e) {}
-  }
-
-  const API = "";
-  let initData = tg?.initData || "";
-  let currentUser = null;
-  let language = localStorage.getItem("mfd_language") || "fa";
-
-  const $ = id => document.getElementById(id);
-  const number = value => {
-    const n = Number(value || 0);
-    return Number.isFinite(n) ? n.toLocaleString("en-US",{maximumFractionDigits:6}) : "0";
-  };
-
-  function toast(message) {
-    const el = $("toast");
-    el.textContent = message;
-    el.style.display = "block";
-    clearTimeout(toast.timer);
-    toast.timer = setTimeout(() => el.style.display="none",3000);
-  }
-
-  async function api(path, options={}) {
-    if (!initData) {
-      throw new Error("این برنامه باید از داخل ربات تلگرام باز شود.");
-    }
-    const response = await fetch(API + path, {
-      ...options,
-      headers: {
-        "Content-Type":"application/json",
-        "X-Telegram-Init-Data":initData,
-        ...(options.headers || {})
-      }
-    });
-    let data = {};
-    try { data = await response.json(); } catch(e) {}
-    if (!response.ok) throw new Error(data.error || data.message || "خطا در ارتباط با سرور");
-    return data;
-  }
-
-  function showPage(page,button) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-    $(page).classList.add("active");
-    if (button) button.classList.add("active");
-
-    if (page === "upgrades") loadUpgrades();
-    if (page === "friends") loadReferrals();
-    if (page === "tasks") loadTasks();
-    if (page === "history") loadHistory();
-    if (page === "wallet") loadWithdrawals();
-  }
-
-  function setLanguage(lang) {
-    language = lang;
-    localStorage.setItem("mfd_language",lang);
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-fa]").forEach(el => {
-      el.textContent = el.dataset[lang] || el.dataset.fa;
-    });
-  }
-
-  window.toggleLanguage = () => setLanguage(language === "fa" ? "en" : "fa");
-
-  async function refreshData() {
-    try {
-      const data = await api("/api/me");
-      currentUser = data.user || data;
-      const u = currentUser;
-
-      $("balance").textContent = number(u.balance);
-      $("rate").textContent = number(u.hourlyRate ?? u.hourly_rate) + " MFD";
-      const energy = Number(u.energy || 0);
-      const maxEnergy = Number(u.maxEnergy ?? u.max_energy ?? 0);
-      $("energy").textContent = number(energy) + " / " + number(maxEnergy);
-      $("energyBar").style.width = (maxEnergy > 0 ? Math.min(100,energy/maxEnergy*100) : 0) + "%";
-      $("username").textContent = u.firstName || u.first_name || u.username || "Telegram";
-      $("userId").textContent = "Telegram ID: " + (u.telegramId || u.telegram_id || u.id || "--");
-
-      const referral = data.referralLink || u.referralLink || u.referral_link || "";
-      if (referral) $("refLink").value = referral;
-
-      if (u.walletAddress || u.wallet_address) {
-        $("walletAddress").value = u.walletAddress || u.wallet_address;
-      }
-    } catch(error) {
-      toast(error.message);
-    }
-  }
-
-  async function loadUpgrades() {
-    const container = $("upgradeList");
-    try {
-      const data = await api("/api/upgrades");
-      const items = data.upgrades || data.items || [];
-      if (!items.length) {
-        container.innerHTML = '<div class="item">در حال حاضر ارتقایی موجود نیست.</div>';
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="item">
-          <h3>${escapeHTML(item.name || item.title || item.code)}</h3>
-          <p>${escapeHTML(item.description || "")}</p>
-          <p>قیمت: <b class="gold">${number(item.price)} MFD</b></p>
-          <p>نرخ: <b>${number(item.hourlyRate ?? item.hourly_rate)} MFD/h</b></p>
-          <button class="secondary" onclick="buyUpgrade('${escapeJS(item.code)}')">خرید ارتقا</button>
-        </div>
-      `).join("");
-    } catch(error) {
-      container.innerHTML = `<div class="item">${escapeHTML(error.message)}</div>`;
-    }
-  }
-
-  window.buyUpgrade = async code => {
-    try {
-      await api("/api/upgrades/" + encodeURIComponent(code) + "/buy",{method:"POST",body:"{}"});
-      toast("ارتقا با موفقیت خریداری شد.");
-      await refreshData();
-      loadUpgrades();
-    } catch(error) { toast(error.message); }
-  };
-
-  async function loadReferrals() {
-    try {
-      const data = await api("/api/referrals");
-      $("refCount").textContent = number(data.count ?? data.total ?? (data.referrals || []).length);
-      if (data.referralLink || data.referral_link) {
-        $("refLink").value = data.referralLink || data.referral_link;
-      }
-    } catch(error) { toast(error.message); }
-  }
-
-  window.copyReferral = async () => {
-    const value = $("refLink").value;
-    if (!value || value === "Loading...") return toast("لینک دعوت هنوز آماده نیست.");
-    try {
-      await navigator.clipboard.writeText(value);
-      toast("لینک دعوت کپی شد.");
-    } catch(e) {
-      $("refLink").select();
-      document.execCommand("copy");
-      toast("لینک کپی شد.");
-    }
-  };
-
-  async function loadTasks() {
-    const container = $("taskList");
-    try {
-      const data = await api("/api/tasks");
-      const tasks = data.tasks || [];
-      if (!tasks.length) {
-        container.innerHTML = '<div class="card">در حال حاضر وظیفه‌ای موجود نیست.</div>';
-        return;
-      }
-      container.innerHTML = tasks.map(task => `
-        <div class="card">
-          <div class="row">
-            <strong>${escapeHTML(task.title || task.name || task.code)}</strong>
-            <span class="gold">+${number(task.reward)} MFD</span>
-          </div>
-          <p class="notice">${escapeHTML(task.description || "")}</p>
-          <button class="secondary" style="width:100%" onclick="completeTask('${escapeJS(task.code)}')">
-            ${task.completed ? "تکمیل شده" : "انجام وظیفه"}
-          </button>
-        </div>
-      `).join("");
-    } catch(error) {
-      container.innerHTML = `<div class="card">${escapeHTML(error.message)}</div>`;
-    }
-  }
-
-  window.completeTask = async code => {
-    try {
-      await api("/api/tasks/" + encodeURIComponent(code) + "/complete",{method:"POST",body:"{}"});
-      toast("وظیفه ثبت شد.");
-      await refreshData();
-      loadTasks();
-    } catch(error) { toast(error.message); }
-  };
-
-  window.saveWallet = async () => {
-    const address = $("walletAddress").value.trim();
-    if (!address) return toast("آدرس کیف پول را وارد کنید.");
-    try {
-      await api("/api/wallet",{method:"POST",body:JSON.stringify({address})});
-      toast("آدرس کیف پول ذخیره شد.");
-    } catch(error) { toast(error.message); }
-  };
-
-  window.requestWithdrawal = async () => {
-    const amount = Number($("withdrawAmount").value);
-    if (!Number.isFinite(amount) || amount <= 0) return toast("مبلغ معتبر وارد کنید.");
-    if (!$("walletAddress").value.trim()) return toast("ابتدا آدرس کیف پول را ذخیره کنید.");
-    try {
-      await api("/api/withdrawals",{method:"POST",body:JSON.stringify({amount})});
-      toast("درخواست برداشت ثبت شد.");
-      $("withdrawAmount").value = "";
-      await refreshData();
-      loadWithdrawals();
-    } catch(error) { toast(error.message); }
-  };
-
-  async function loadWithdrawals() {
-    try {
-      const data = await api("/api/withdrawals");
-      const items = data.withdrawals || [];
-      $("withdrawalHistory").innerHTML = items.length ? items.map(w => `
-        <div class="list-row row">
-          <span>${number(w.amount)} MFD</span>
-          <span>${escapeHTML(w.status || "pending")}</span>
-        </div>`).join("") : "هنوز درخواستی ثبت نشده است.";
-    } catch(error) { $("withdrawalHistory").textContent = error.message; }
-  }
-
-  async function loadHistory() {
-    const container = $("historyList");
-    try {
-      const data = await api("/api/history");
-      const items = data.transactions || data.history || [];
-      container.innerHTML = items.length ? items.map(item => `
-        <div class="list-row row">
-          <span>${escapeHTML(item.type || "transaction")}</span>
-          <b class="gold">${number(item.amount)} MFD</b>
-        </div>
-      `).join("") : "تراکنشی ثبت نشده است.";
-    } catch(error) { container.textContent = error.message; }
-  }
-
-  function escapeHTML(value) {
-    return String(value ?? "
+const KEY="mifado_premium_v1";
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+const dict={
+fa:{
+total:"موجودی کل",live:"سیستم فعال",portfolio:"دارایی دیجیتال MIFADO",rate:"سرعت استخراج",level:"سطح ماینر",coreTitle:"هسته استخراج",offline:"سقف آفلاین ۲۴ ساعت",collect:"دریافت پاداش استخراج",miningNote:"استخراج به‌صورت خودکار محاسبه می‌شود. برای به‌روزرسانی موجودی، پاداش را دریافت کن.",overview:"نمای کلی شبکه",energy:"وضعیت انرژی",offlineTime:"زمان آفلاین",boostTitle:"قدرت استخراج و ارتقا",boostDesc:"ظرفیت استخراج خود را افزایش بده",boostNote:"ارتقاها با موجودی MFD خریداری می‌شوند.",refTitle:"شبکه دعوت دوستان",inviteTitle:"شبکه را گسترش بده",inviteNote:"لینک دعوت اختصاصی خود را به اشتراک بگذار.",copy:"کپی لینک دعوت",refCount:"تعداد دعوت محلی",refWarning:"دعوت‌ها در این نسخه آزمایشی بین کاربران تأیید نمی‌شوند.",taskTitle:"مرکز مأموریت‌ها",walletTitle:"مرکز کیف پول TON",walletAddress:"آدرس کیف پول",save:"ذخیره کیف پول",walletNote:"آدرس فقط روی این دستگاه ذخیره می‌شود؛ اتصال واقعی به شبکه TON برقرار نمی‌شود.",withdrawTitle:"درخواست برداشت",submit:"ثبت درخواست",withdrawNote:"این درخواست فقط در نسخه آزمایشی ثبت می‌شود و انتقال واقعی انجام نمی‌شود.",historyTitle:"فعالیت دارایی",navHome:"خانه",navBoost:"ارتقا",navFriends:"دعوت",navTasks:"وظایف",navWallet:"کیف پول",navHistory:"تاریخچه",active:"فعال",copied:"لینک کپی شد",saved:"ذخیره شد",invalidWallet:"آدرس TON معتبر وارد کن",noWallet:"اول آدرس کیف پول را ذخیره کن",invalidAmount:"مبلغ معتبر وارد کن",noMoney:"موجودی کافی نیست",withdrawDone:"درخواست آزمایشی ثبت شد",bought:"ارتقا خریداری شد",claimed:"پاداش دریافت شد",already:"قبلاً دریافت شده",collected:"پاداش استخراج به موجودی اضافه شد",welcome:"۱۰۰ MFD پاداش خوش‌آمدگویی دریافت کردی",buy:"خرید",done:"دریافت‌شده",claim:"دریافت پاداش",pending:"در انتظار بررسی",empty:"هنوز تراکنشی ثبت نشده است"
+},
+en:{
+total:"TOTAL ASSETS",live:"SYSTEM ACTIVE",portfolio:"MIFADO PORTFOLIO",rate:"MINING RATE",level:"MINER LEVEL",coreTitle:"MINING CORE",offline:"24H OFFLINE CAP",collect:"COLLECT MINING REWARDS",miningNote:"Mining accrues automatically. Collect to update your local balance.",overview:"NETWORK OVERVIEW",energy:"ENERGY STATUS",offlineTime:"OFFLINE TIME",boostTitle:"MINING POWER / BOOST",boostDesc:"Enhance your mining capacity",boostNote:"Purchase upgrades using your available MFD balance.",refTitle:"REFERRAL NETWORK",inviteTitle:"EXPAND THE NETWORK",inviteNote:"Share your personal referral link.",copy:"COPY INVITATION LINK",refCount:"LOCAL REFERRAL COUNT",refWarning:"Referral count in this demo is not verified across users.",taskTitle:"MISSION CONTROL",walletTitle:"TON WALLET CENTER",walletAddress:"WALLET ADDRESS",save:"SAVE WALLET",walletNote:"Address is stored locally. This demo does not connect to TON blockchain.",withdrawTitle:"WITHDRAWAL REQUEST",submit:"SUBMIT REQUEST",withdrawNote:"Local demo request only. No on-chain transfer will occur.",historyTitle:"ASSET ACTIVITY",navHome:"HOME",navBoost:"BOOST",navFriends:"FRIENDS",navTasks:"MISSIONS",navWallet:"WALLET",navHistory:"ACTIVITY",active:"ACTIVE",copied:"Link copied",saved:"Saved",invalidWallet:"Enter a valid TON address",noWallet:"Save your wallet address first",invalidAmount:"Enter a valid amount",noMoney:"Insufficient balance",withdrawDone:"Demo request created",bought:"Upgrade purchased",claimed:"Reward claimed",already:"Already claimed",collected:"Mining rewards added to balance",welcome:"You received 100 MFD welcome bonus",buy:"BUY",done:"CLAIMED",claim:"CLAIM REWARD",pending:"PENDING",empty:"No transactions yet"
+}};
+let lang=localStorage.getItem("mfd_premium_lang")||"fa";
+const tr=k=>dict[lang][k]||k;
+const fresh=()=>({balance:100,rate:1,last:Date.now(),wallet:"",level:0,done:[],history:[{type:"Welcome bonus",amount:100,time:Date.now()}],withdrawals:[],refs:0});
+let state;
+try{state=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){state=fresh()}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function toast(msg){let x=document.getElementById("toast");x.textContent=msg;x.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>x.style.display="none",2600)}
+function fmt(n){return Number(n||0).toLocaleString("en-US",{maximumFractionDigits:6})}
+function accrue(){let now=Date.now(),seconds=Math.max(0,Math.min(86400,(now-state.last)/1000));state.balance+=seconds*state.rate/3600;state.last=now;save()}
+function log(type,amount){state.history.unshift({type,amount,time:Date.now()});state.history=state.history.slice(0,100)}
+function render(){
+document.getElementById("balance").textContent=fmt(state.balance);
+document.getElementById("rate").textContent=fmt(state.rate)+" MFD/H";
+document.getElementById("level").textContent="LVL "+String(state.level+1).padStart(2,"0");
+let elapsed=Math.min(24,Math.max(0,(Date.now()-state.last)/3600000));
+document.getElementById("elapsed").textContent=fmt(elapsed)+" / 24 H";
+document.getElementById("bar").style.width=(elapsed/24*100)+"%";
+document.getElementById("energy").textContent="100% · "+tr("active");
+document.getElementById("offlineTime").textContent=fmt(24-elapsed)+" HOURS";
+document.getElementById("accountLabel").textContent=tg?.initDataUnsafe?.user?.id?"TELEGRAM USER":"LOCAL ACCOUNT";
+document.getElementById("inviteLink").value=location.href.split("?")[0]+"?ref=MFD"+(tg?.initDataUnsafe?.user?.id||"LOCAL");
+document.getElementById("refs").textContent=state.refs;
+document.getElementById("walletInput").value=state.wallet;
+renderHistory();renderWithdrawals();
+}
+const upgrades=[
+{name:"Bronze Core",cost:25,rate:1,desc:"+1 MFD / HOUR"},
+{name:"Silver Core",cost:100,rate:3,desc:"+3 MFD / HOUR"},
+{name:"Gold Core",cost:300,rate:8,desc:"+8 MFD / HOUR"},
+{name:"Platinum Core",cost:900,rate:20,desc:"+20 MFD / HOUR"},
+{name:"Quantum Core",cost:2500,rate:50,desc:"+50 MFD / HOUR"},
+{name:"MIFADO TITAN",cost:7000,rate:120,desc:"+120 MFD / HOUR"}
+];
+function renderUpgrades(){
+document.getElementById("upgradeList").innerHTML=upgrades.map((u,i)=>`<div class="item"><div class="symbol gold">✧</div><h3>${u.name}</h3><p>${u.desc}</p><p class="gold">${fmt(u.cost)} MFD</p><button class="secondary" onclick="buy(${i})">${tr("buy")}</button></div>`).join("");
+}
+function buy(i){
+let u=upgrades[i];if(state.level>i){toast(tr("already"));return}
+if(state.balance<u.cost){toast(tr("noMoney"));return}
+state.balance-=u.cost;state.rate+=u.rate;state.level=i+1;log("Upgrade "+u.name,-u.cost);save();render();toast(tr("bought"));
+}
+const tasks=[
+{code:"daily",name:"DAILY SIGNAL",desc:"Claim your daily demo reward",reward:5},
+{code:"share",name:"NETWORK SHARE",desc:"Copy your invitation link",reward:10},
+{code:"wallet",name:"WALLET SETUP",desc:"Save your TON wallet address",reward:5}
+];
+function renderTasks(){
+document.getElementById("taskList").innerHTML=tasks.map(t=>`<div class="glass"><div class="row"><b>${t.name}</b><b class="gold">+${t.reward} MFD</b></div><p class="notice">${t.desc}</p><button class="secondary" onclick="claim('${t.code}')">${state.done.includes
