@@ -613,3 +613,295 @@ const missions=[
 missions.forEach(function(m){
 const done=data.missions.indexOf(m.id)!==-1;
 const div=document.createElement
+
+("div");
+div.className="item";
+
+const row=document.createElement("div");
+row.className="row";
+
+const info=document.createElement("div");
+const title=document.createElement("b");
+title.textContent=m.title;
+
+const reward=document.createElement("div");
+reward.className="muted";
+reward.textContent="+"+m.reward+" MFD";
+
+info.append(title,reward);
+
+const button=document.createElement("button");
+button.textContent=done?t("done"):t("receive");
+button.disabled=done;
+
+button.onclick=function(){
+claimMission(m.id,m.reward);
+};
+
+row.append(info,button);
+div.appendChild(row);
+box.appendChild(div);
+});
+}
+
+function claimMission(id,reward){
+if(data.missions.includes(id))return;
+
+if(id==="wallet"&&!data.wallet){
+notify(t("enterWallet"));
+return;
+}
+
+data.missions.push(id);
+data.balance+=reward;
+
+addHistory("Mission reward: +"+reward+" MFD");
+save();
+render();
+notify(t("missionSuccess"));
+}
+
+function copyInvite(){
+const field=document.getElementById("inviteLink");
+
+if(!field.value){
+notify(t("copyFailed"));
+return;
+}
+
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(field.value)
+.then(function(){
+notify(t("inviteCopied"));
+})
+.catch(function(){
+fallbackCopy(field);
+});
+}else{
+fallbackCopy(field);
+}
+}
+
+function fallbackCopy(field){
+field.select();
+field.setSelectionRange(0,99999);
+
+try{
+const success=document.execCommand("copy");
+notify(success?t("inviteCopied"):t("copyFailed"));
+}catch(e){
+notify(t("copyFailed"));
+}
+}
+
+function setupInvite(){
+const field=document.getElementById("inviteLink");
+
+let userId="guest";
+
+try{
+const user=window.Telegram&&
+window.Telegram.WebApp&&
+window.Telegram.WebApp.initDataUnsafe.user;
+
+if(user&&user.id){
+userId=String(user.id);
+}
+}catch(e){}
+
+const url=new URL(window.location.href);
+url.searchParams.set("ref",userId);
+
+field.value=url.toString();
+}
+
+function renderMarket(){
+const price=Number(data.price)||0.06;
+
+document.getElementById("marketPrice").textContent=
+"$"+money(price,4);
+
+document.getElementById("homePrice").textContent=
+"$"+money(price,4);
+
+document.getElementById("change").textContent=
+money(data.change,2)+"%";
+
+document.getElementById("change").className=
+data.change>=0?"green":"red";
+
+const prices=data.prices.slice(-20);
+
+if(!prices.length)return;
+
+const min=Math.min.apply(null,prices);
+const max=Math.max.apply(null,prices);
+const range=max-min||0.001;
+
+const points=prices.map(function(p,i){
+const x=10+i*(320/Math.max(1,prices.length-1));
+const y=130-((p-min)/range)*110;
+return x+","+y;
+}).join(" ");
+
+document.getElementById("chart").setAttribute(
+"points",points
+);
+
+const first=points.split(" ")[0].split(",");
+const last=points.split(" ").pop().split(",");
+
+const area="M"+first[0]+","+first[1]+" L"+
+points.replace(/ /g," L")+" L"+
+last[0]+",150 L"+first[0]+",150 Z";
+
+document.getElementById("chartArea").setAttribute(
+"d",area
+);
+}
+
+function renderHistory(){
+const box=document.getElementById("activity");
+if(!box)return;
+
+box.innerHTML="";
+
+if(!data.history.length){
+box.textContent=t("noActivity");
+return;
+}
+
+data.history.forEach(function(item){
+const div=document.createElement("div");
+div.className="item";
+
+const message=document.createElement("div");
+message.textContent=item.message;
+
+const time=document.createElement("div");
+time.className="muted";
+time.textContent=new Date(item.time).toLocaleString(
+lang==="fa"?"fa-IR":"en-US"
+);
+
+div.append(message,time);
+box.appendChild(div);
+});
+}
+
+function renderWithdrawals(){
+const box=document.getElementById("withdrawHistory");
+if(!box)return;
+
+box.innerHTML="";
+
+if(!data.withdrawals.length){
+box.textContent=t("noWithdrawals");
+return;
+}
+
+data.withdrawals.forEach(function(w){
+const div=document.createElement("div");
+div.className="item";
+
+const row=document.createElement("div");
+row.className="row";
+
+const amount=document.createElement("b");
+amount.textContent=money(w.amount)+" MFD";
+
+const status=document.createElement("span");
+status.className="tag";
+status.textContent=t("underReview");
+
+const time=document.createElement("div");
+time.className="muted";
+time.textContent=new Date(w.time).toLocaleString();
+
+row.append(amount,status);
+div.append(row,time);
+box.appendChild(div);
+});
+}
+
+function updateTimer(){
+const now=Date.now();
+const cycle=86400000;
+
+const elapsed=Math.max(0,now-data.cycleStart);
+const remaining=Math.max(0,cycle-elapsed);
+
+const hours=Math.floor(remaining/3600000);
+const minutes=Math.floor((remaining%3600000)/60000);
+const seconds=Math.floor((remaining%60000)/1000);
+
+document.getElementById("timer").textContent=
+String(hours).padStart(2,"0")+":"+
+String(minutes).padStart(2,"0")+":"+
+String(seconds).padStart(2,"0");
+
+const progress=Math.min(100,(elapsed/cycle)*100);
+
+document.getElementById("progress").style.width=
+progress+"%";
+}
+
+function render(){
+mine();
+
+document.getElementById("balance").textContent=
+money(data.balance);
+
+document.getElementById("balanceValue").textContent=
+"$"+money(data.balance*data.price);
+
+document.getElementById("rate").textContent=
+money(data.rate,2)+" MFD/H";
+
+document.getElementById("level").textContent=
+data.level;
+
+document.getElementById("usdt").textContent=
+money(data.usdt);
+
+document.getElementById("homePrice").textContent=
+"$"+money(data.price,4);
+
+document.getElementById("swapBalance").textContent=
+money(data.balance)+" MFD";
+
+document.getElementById("swapUsdt").textContent=
+money(data.usdt);
+
+renderMarket();
+renderUpgrades();
+renderMissions();
+renderWithdrawals();
+renderHistory();
+updateTimer();
+updateEstimate();
+
+save();
+}
+
+function startApp(){
+try{
+if(window.Telegram&&window.Telegram.WebApp){
+window.Telegram.WebApp.ready();
+window.Telegram.WebApp.expand();
+}
+}catch(e){}
+
+applyLanguage();
+setupInvite();
+render();
+
+setInterval(function(){
+mine();
+updateTimer();
+render();
+},10000);
+}
+
+document.addEventListener("DOMContentLoaded",startApp);
+ 
