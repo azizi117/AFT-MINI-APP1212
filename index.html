@@ -1,363 +1,403 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#080d19">
 <title>MIFADO COIN | MFD NETWORK</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap');
 :root{
- --bg:#080d19;
- --gold:#f3cf82;
- --gold2:#ffe9b7;
- --cyan:#60e9f4;
- --green:#62e6ad;
- --muted:#9ba9bd;
- --glass:rgba(255,255,255,.075);
- --border:rgba(255,255,255,.16);
- --panel:rgba(17,27,44,.67);
+--bg:#080d19;--gold:#f3cf82;--cyan:#60e9f4;
+--green:#62e6ad;--muted:#9ba9bd;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{
- margin:0;min-height:100vh;color:#f7f9ff;
- font-family:'Vazirmatn',Tahoma,sans-serif;
- background:
- radial-gradient(ellipse at 10% 0%,#16465a55,transparent 40%),
- radial-gradient(ellipse at 100% 35%,#8d652d30,transparent 38%),
- linear-gradient(145deg,#080d19,#111b2e 55%,#070a12);
- overflow-x:hidden;
-}
-body:before{
- content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
- background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);
- background-size:36px 36px;
- mask-image:linear-gradient(to bottom,#000,transparent 85%);
+margin:0;background:radial-gradient(ellipse at top,#16465a,#080d19 65%);
+color:white;font-family:Vazirmatn,Tahoma,sans-serif;
+min-height:100vh;
 }
 button,input{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.45;cursor:not-allowed}
-.app{width:min(100%,520px);margin:auto;padding:17px 16px calc(112px + env(safe-area-inset-bottom))}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:23px}
-.brand{display:flex;align-items:center;gap:11px}
+.app{max-width:520px;margin:auto;padding:18px 15px 110px}
+header,.row,.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:12px}
 .logo{
- width:47px;height:47px;display:grid;place-items:center;border-radius:16px;
- color:#24190a;font-size:25px;font-weight:900;
- background:linear-gradient(145deg,#fff0bd,#e5ad4b 48%,#8d571b);
- box-shadow:0 9px 25px #d5a14b55,inset 0 2px 4px #fff;
- border:1px solid #fff8;position:relative;
+width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
+background:linear-gradient(145deg,#fff0bd,#e5ad4b,#8d571b);
+color:#24190a;font-size:27px;font-weight:900;
+box-shadow:0 0 25px #d5a14b66;
 }
-.logo:after{content:"";position:absolute;inset:4px;border:1px solid #ffffffa0;border-radius:12px}
-.brand h1{font-size:15px;letter-spacing:1.3px;margin:0;font-weight:900}
-.brand small{font-size:9px;letter-spacing:2.5px;color:var(--gold)}
-.lang{
- border:1px solid #ffffff38;color:var(--gold2);padding:9px 13px;border-radius:13px;
- background:linear-gradient(145deg,#ffffff20,#ffffff05);
- backdrop-filter:blur(18px);box-shadow:0 6px 15px #0005,inset 0 1px #fff6;
-}
+h1{font-size:15px;margin:0}
+.brand small{color:var(--gold);font-size:9px;letter-spacing:2px}
 .glass,.hero,.mining-card,.panel,.item{
- background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.025) 60%,rgba(50,100,130,.08));
- border:1px solid var(--border);
- backdrop-filter:blur(23px) saturate(155%);
- -webkit-backdrop-filter:blur(23px) saturate(155%);
- box-shadow:0 18px 42px #0005,inset 0 1px 1px #ffffff25,inset 0 -1px 1px #0005;
+background:linear-gradient(145deg,#ffffff1c,#ffffff05);
+border:1px solid #ffffff27;
+backdrop-filter:blur(22px);
+-webkit-backdrop-filter:blur(22px);
+box-shadow:0 15px 35px #0005,inset 0 1px #ffffff30;
 }
-.hero{position:relative;overflow:hidden;padding:22px 19px;border-radius:27px;border-color:#f3cf8250}
-.hero:before{content:"";position:absolute;width:240px;height:240px;left:-95px;top:-130px;border-radius:50%;background:#e8b95a25;filter:blur(25px)}
-.hero-top,.row,.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.eyebrow{font-size:11px;color:var(--muted);letter-spacing:1px}
-.live{font-size:9px;color:var(--green);border:1px solid #62e6ad55;background:#62e6ad12;padding:6px 10px;border-radius:30px}
-.balance{font-size:clamp(30px,8vw,40px);font-weight:900;color:var(--gold2);margin:14px 0 0;direction:ltr;text-align:right;text-shadow:0 0 24px #e9bd6155}
-.coin-label{font-size:11px;letter-spacing:4px;color:var(--gold)}
-.balance-foot{display:flex;justify-content:space-between;margin-top:8px;color:var(--muted);font-size:10px}
-.divider{height:1px;background:linear-gradient(90deg,transparent,#ffffff30,transparent);margin:17px 0}
-.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric{padding:12px;border:1px solid #ffffff16;border-radius:15px;background:#ffffff08;box-shadow:inset 0 1px #fff2}
-.metric label{display:block;font-size:10px;color:var(--muted)}
-.metric strong{display:block;margin-top:5px;font-size:15px;color:var(--gold2);direction:ltr;text-align:right}
-.mining-card{margin-top:15px;border-radius:25px;padding:18px}
-.section-head b{font-size:13px}
-.section-head span{font-size:10px;color:var(--cyan)}
-.core-wrap{display:grid;place-items:center;padding:17px 0 12px}
-.core{width:178px;height:178px;position:relative;display:grid;place-items:center;filter:drop-shadow(0 15px 25px #0009)}
-.ring{position:absolute;inset:5px;border:1px solid #f3cf8290;border-radius:50%;box-shadow:0 0 24px #e9bd6122,inset 0 0 20px #e9bd6115}
-.ring.r2{inset:18px;border-color:#60e9f477;border-style:dashed;animation:spin 18s linear infinite}
-.ring.r3{inset:32px;border-color:#e9bd6177;animation:spin 13s linear infinite reverse}
-.core-orb{
- width:87px;height:87px;border-radius:50%;display:grid;place-items:center;font-size:35px;color:#fff2c9;
- background:radial-gradient(circle at 30% 20%,#fff7d4,#e7b34e 25%,#9c6828 48%,#27344b 78%);
- border:1px solid #ffffff80;
- box-shadow:0 0 35px #e9bd6177,0 0 75px #55e6ed25,inset 0 5px 12px #fff9,inset 0 -12px 18px #000a;
- animation:pulse 3s ease-in-out infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{50%{transform:scale(1.07);filter:brightness(1.15)}}
-.core-caption{text-align:center;color:var(--cyan);font-size:10px;letter-spacing:2px}
-.progress{height:8px;border-radius:20px;background:#ffffff14;overflow:hidden;margin:14px 0 8px}
-.progress div{height:100%;width:0;border-radius:20px;background:linear-gradient(90deg,#60e9f4,#f3cf82);box-shadow:0 0 13px #60e9f4aa;transition:width .4s}
-.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
-.action,.secondary,.small-btn{
- position:relative;isolation:isolate;overflow:hidden;
- border:1px solid #ffffff48;border-radius:15px;
- background:linear-gradient(135deg,#ffffff30,#ffffff08 48%,#60e9f425);
- color:#fff2d2;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
- box-shadow:0 7px 0 #080e19,0 12px 25px #0006,inset 0 1px 2px #fff8,inset 0 -2px 5px #0004;
- transition:transform .15s,box-shadow .15s;
-}
-.action{width:100%;padding:15px;margin-top:17px;font-weight:900;border-color:#f3cf8280;color:#fff0c5;
- background:linear-gradient(115deg,#9b692c99,#e9bd6155 50%,#60e9f433);
- text-shadow:0 1px 10px #e9bd6177;
-}
-.secondary{width:100%;padding:12px;margin-top:10px;color:#bffaff;border-color:#60e9f466}
-.small-btn{padding:9px 13px;color:var(--gold2)}
-.action:before,.secondary:before,.small-btn:before{
- content:"";position:absolute;z-index:-1;top:-80%;left:-65%;width:40%;height:260%;transform:rotate(28deg);
- background:linear-gradient(90deg,transparent,#ffffff70,transparent);transition:left .6s;
-}
-.action:hover:before,.secondary:hover:before,.small-btn:hover:before{left:130%}
-.action:active,.secondary:active,.small-btn:active{transform:translateY(6px) scale(.98);box-shadow:0 1px 0 #080e19,0 3px 9px #0007,inset 0 2px 8px #0005}
-.section-title{font-size:15px;margin:22px 2px 12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.panel{padding:14px;border-radius:18px}
-.panel .symbol,.symbol{font-size:22px;color:var(--gold)}
-.panel h3{font-size:12px;margin:7px 0 5px}
-.panel p{font-size:10px;color:var(--muted);line-height:1.8;margin:0}
-.page{display:none;animation:enter .3s ease}
-.page.active{display:block}
-@keyframes enter{from{opacity:0;transform:translateY(10px) rotateX(2deg)}to{opacity:1;transform:none}}
-.glass{padding:17px;border-radius:20px;margin-bottom:12px}
-.field{width:100%;border:1px solid #ffffff25;background:#07101eaa;color:white;border-radius:13px;padding:13px;margin-top:10px;outline:none;direction:ltr;text-align:left;box-shadow:inset 0 3px 10px #0006}
-.field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #60e9f41c,0 0 20px #60e9f422}
-.notice{font-size:10px;line-height:1.9;color:var(--muted)}
+.hero,.mining-card{border-radius:24px;padding:19px;margin-top:18px}
+.hero{border-color:#f3cf8255}
+.gold{color:var(--gold)}
 .muted{color:var(--muted)}
-.gold{color:var(--gold2)}
-.good{color:var(--green)}
-.item{border-radius:17px;padding:14px}
-.item h3{font-size:12px;margin:7px 0}
-.item p{font-size:10px;color:var(--muted);line-height:1.8;margin:4px 0}
-.item button{margin-top:10px}
-.list-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #ffffff15;font-size:11px}
-.list-row:last-child{border:0}
-.nav{
- position:fixed;z-index:8;bottom:0;left:0;right:0;margin:auto;width:min(100%,520px);
- display:flex;justify-content:space-around;gap:1px;
- padding:10px 2px calc(10px + env(safe-area-inset-bottom));
- border:1px solid #ffffff25;border-bottom:0;border-radius:20px 20px 0 0;
- background:rgba(8,15,29,.75);backdrop-filter:blur(28px) saturate(180%);
- box-shadow:0 -12px 40px #0008,inset 0 1px #ffffff22;
+.balance{font-size:38px;font-weight:900;color:#ffe9b7;margin-top:14px;direction:ltr}
+.coin-label{letter-spacing:4px;color:var(--gold)}
+.divider{height:1px;background:#ffffff25;margin:16px 0}
+.metrics,.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric,.panel{
+padding:13px;border-radius:15px;background:#ffffff0a;border:1px solid #ffffff18
 }
-.nav button{border:0;background:none;color:#8592a8;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;min-width:0;flex:1}
+.metric label{font-size:10px;color:var(--muted)}
+.metric strong{display:block;color:var(--gold);margin-top:5px}
+.core-wrap{display:grid;place-items:center;padding:25px}
+.core{
+width:160px;height:160px;border:2px solid #f3cf8277;
+border-radius:50%;display:grid;place-items:center;
+box-shadow:0 0 35px #e9bd6144,inset 0 0 30px #60e9f422;
+animation:pulse 3s infinite;
+}
+.core-orb{
+width:85px;height:85px;border-radius:50%;display:grid;place-items:center;
+font-size:36px;color:#fff0c5;
+background:radial-gradient(circle at 30% 20%,#fff7d4,#e7b34e,#27344b);
+box-shadow:0 0 35px #e9bd6177;
+}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.progress{height:8px;background:#ffffff18;border-radius:20px;overflow:hidden;margin:15px 0}
+.progress div{height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));width:0}
+.action,.secondary,.small-btn,.lang{
+border:1px solid #ffffff40;border-radius:14px;
+background:linear-gradient(135deg,#ffffff30,#ffffff08);
+color:#fff2d2;backdrop-filter:blur(20px);
+box-shadow:0 7px 18px #0005,inset 0 1px #ffffff50;
+padding:13px;cursor:pointer;
+transition:.2s;
+}
+.action{width:100%;margin-top:15px;border-color:#f3cf8280;
+background:linear-gradient(120deg,#9b692c99,#e9bd6155,#60e9f433);
+font-weight:900}
+.secondary{width:100%;margin-top:10px;color:#bffaff}
+button:active{transform:scale(.97)}
+.section-title{font-size:15px;margin:24px 2px 12px}
+.panel h3{font-size:12px}
+.panel p,.notice{font-size:10px;color:var(--muted);line-height:1.9}
+.page{display:none}
+.page.active{display:block;animation:enter .3s}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+.field{
+width:100%;padding:13px;margin-top:10px;
+border:1px solid #ffffff30;border-radius:13px;
+background:#07101e;color:white;outline:none;direction:ltr;text-align:left
+}
+.item{padding:14px;border-radius:16px;margin-bottom:10px}
+.nav{
+position:fixed;bottom:0;left:0;right:0;margin:auto;
+width:min(100%,520px);display:flex;justify-content:space-around;
+padding:12px 3px 20px;background:#080f1ddd;
+backdrop-filter:blur(25px);border:1px solid #ffffff22;
+border-radius:20px 20px 0 0;z-index:5
+}
+.nav button{border:0;background:none;color:#9ba9bd;font-size:9px;display:flex;flex-direction:column;align-items:center;gap:4px}
 .nav button span{font-size:20px}
-.nav button.active{color:var(--gold2);filter:drop-shadow(0 0 8px #e9bd6188)}
-#toast{position:fixed;z-index:30;bottom:calc(90px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:none;background:#17253aee;border:1px solid #e9bd6170;color:white;padding:12px 17px;border-radius:14px;font-size:11px;max-width:90%;text-align:center;box-shadow:0 10px 30px #0009;backdrop-filter:blur(15px)}
-.status{font-size:9px;padding:5px 9px;border-radius:20px;background:#ffffff0c;border:1px solid #ffffff20;color:var(--muted)}
-.status.demo{color:#ffd27e;border-color:#ffd27e55}
-.status.online{color:var(--green);border-color:#62e6ad55}
-.empty{text-align:center;color:var(--muted);font-size:11px;padding:20px 5px}
-@media(max-width:360px){.app{padding-left:11px;padding-right:11px}.nav button{font-size:8px}.nav button span{font-size:18px}}
+.nav button.active{color:var(--gold)}
+#toast{
+position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+background:#17253a;color:white;padding:12px 17px;border-radius:12px;
+display:none;z-index:20;font-size:11px
+}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
- <div class="brand">
-  <div class="logo">M</div>
-  <div><h1>MIFADO COIN</h1><small>MFD DIGITAL NETWORK</small></div>
- </div>
- <div style="display:flex;align-items:center;gap:7px">
-  <span id="modeBadge" class="status demo">DEMO</span>
-  <button class="lang" onclick="toggleLang()">FA / EN</button>
- </div>
+<div class="brand">
+<div class="logo">M</div>
+<div><h1>MIFADO COIN</h1><small>MFD DIGITAL NETWORK</small></div>
+</div>
+<button class="lang" onclick="toggleLang()">FA / EN</button>
 </header>
 
 <section class="page active" id="home">
- <div class="hero">
-  <div class="hero-top"><span class="eyebrow" data-t="total">موجودی کل</span><span class="live">● <span data-t="live">سیستم فعال</span></span></div>
-  <div class="balance" id="balance">100.000000</div>
-  <div class="coin-label">MFD</div>
-  <div class="balance-foot"><span data-t="portfolio">دارایی دیجیتال MIFADO</span><span id="accountLabel">DEMO ACCOUNT</span></div>
-  <div class="divider"></div>
-  <div class="metrics">
-   <div class="metric"><label data-t="rate">سرعت استخراج</label><strong id="rate">1 MFD/H</strong></div>
-   <div class="metric"><label data-t="level">سطح ماینر</label><strong id="level">LVL 01</strong></div>
-  </div>
- </div>
+<div class="hero">
+<div class="row"><span data-t="total">موجودی کل</span><span class="gold">● ACTIVE</span></div>
+<div class="balance" id="balance">100.000000</div>
+<div class="coin-label">MFD</div>
+<div class="divider"></div>
+<div class="metrics">
+<div class="metric"><label data-t="rate">سرعت استخراج</label><strong id="rate">1 MFD/H</strong></div>
+<div class="metric"><label data-t="level">سطح ماینر</label><strong id="level">LVL 01</strong></div>
+</div>
+</div>
 
- <div class="mining-card">
-  <div class="section-head"><b data-t="coreTitle">هسته استخراج</b><span>● AUTO MINING</span></div>
-  <div class="core-wrap"><div class="core"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core-orb">M</div></div></div>
-  <div class="core-caption">MFD · DIGITAL EXTRACTION</div>
-  <div class="progress"><div id="bar"></div></div>
-  <div class="progress-label"><span data-t="offline">سقف آفلاین ۲۴ ساعت</span><span id="elapsed">0 / 24 H</span></div>
-  <button class="action" onclick="collect()" data-t="collect">دریافت پاداش استخراج</button>
-  <p class="notice" data-t="miningNote">استخراج خودکار محاسبه می‌شود.</p>
- </div>
+<div class="mining-card">
+<div class="section-head"><b data-t="core">هسته استخراج</b><span class="gold">AUTO MINING</span></div>
+<div class="core-wrap"><div class="core"><div class="core-orb">M</div></div></div>
+<div class="progress"><div id="bar"></div></div>
+<div class="row notice"><span data-t="offline">سقف آفلاین ۲۴ ساعت</span><span id="elapsed">0 / 24 H</span></div>
+<button class="action" onclick="collect()" data-t="collect">دریافت پاداش استخراج</button>
+<p class="notice" data-t="miningNote">استخراج به‌صورت خودکار محاسبه می‌شود.</p>
+</div>
 
- <h2 class="section-title" data-t="overview">نمای کلی شبکه</h2>
- <div class="grid">
-  <div class="panel"><div class="symbol">◈</div><h3 data-t="energy">وضعیت انرژی</h3><p id="energy">100% · OPTIMAL</p></div>
-  <div class="panel"><div class="symbol">⌁</div><h3 data-t="offlineTime">زمان آفلاین</h3><p id="offlineTime">24 HOURS</p></div>
- </div>
+<h2 class="section-title" data-t="overview">نمای کلی شبکه</h2>
+<div class="grid">
+<div class="panel"><h3 data-t="energy">وضعیت انرژی</h3><p>100% · OPTIMAL</p></div>
+<div class="panel"><h3 data-t="offlineTime">زمان آفلاین</h3><p>24 HOURS</p></div>
+</div>
 </section>
 
 <section class="page" id="upgrades">
- <h2 class="section-title" data-t="boostTitle">ارتقای قدرت استخراج</h2>
- <div class="glass"><div class="row"><b data-t="boostDesc">ظرفیت استخراج خود را افزایش بده</b><span class="gold">MFD CORE</span></div><p class="notice" data-t="boostNote">ارتقاها با موجودی MFD خریداری می‌شوند.</p></div>
- <div class="grid" id="upgradeList"></div>
+<h2 class="section-title" data-t="boost">ارتقای قدرت استخراج</h2>
+<div id="upgradeList"></div>
 </section>
 
 <section class="page" id="friends">
- <h2 class="section-title" data-t="refTitle">شبکه دعوت دوستان</h2>
- <div class="glass">
-  <div class="symbol gold">⌘</div><h3 data-t="inviteTitle">شبکه را گسترش بده</h3>
-  <p class="notice" data-t="inviteNote">لینک دعوت اختصاصی خود را به اشتراک بگذار.</p>
-  <input class="field" id="inviteLink" readonly>
-  <button class="action" onclick="copyInvite()" data-t="copy">کپی لینک دعوت</button>
-  <div class="divider"></div>
-  <div class="row"><span class="muted" data-t="refCount">تعداد دعوت‌ها</span><b class="gold" id="refs">0</b></div>
-  <p class="notice" id="refReward"></p>
- </div>
+<h2 class="section-title" data-t="friends">دعوت دوستان</h2>
+<div class="glass">
+<p class="notice" data-t="inviteNote">لینک دعوت خود را به اشتراک بگذار.</p>
+<input class="field" id="inviteLink" readonly>
+<button class="action" onclick="copyInvite()" data-t="copy">کپی لینک دعوت</button>
+<div class="divider"></div>
+<div class="row"><span data-t="refCount">تعداد دعوت‌ها</span><b id="refs">0</b></div>
+</div>
 </section>
 
 <section class="page" id="tasks">
- <h2 class="section-title" data-t="taskTitle">مرکز مأموریت‌ها</h2>
- <div id="taskList"></div>
+<h2 class="section-title" data-t="tasks">مأموریت‌ها</h2>
+<div id="taskList"></div>
 </section>
 
 <section class="page" id="wallet">
- <h2 class="section-title" data-t="walletTitle">مرکز کیف پول TON</h2>
- <div class="glass">
-  <div class="row"><b data-t="walletAddress">آدرس کیف پول</b><span class="gold">TON</span></div>
-  <input class="field" id="walletInput" placeholder="EQ... / UQ...">
-  <button class="action" onclick="saveWallet()" data-t="save">ذخیره کیف پول</button>
-  <p class="notice" data-t="walletNote">آدرس کیف پول ذخیره می‌شود؛ اتصال واقعی به شبکه TON نیازمند پیاده‌سازی جداگانه است.</p>
- </div>
- <div class="glass">
-  <b data-t="withdrawTitle">درخواست برداشت</b>
-  <input class="field" id="withdrawInput" type="number" min="0" step="any" placeholder="Amount MFD">
-  <button class="secondary" onclick="withdraw()" data-t="submit">ثبت درخواست</button>
-  <p class="notice" data-t="withdrawNote">ثبت درخواست به معنی انتقال واقعی روی بلاک‌چین نیست.</p>
-  <div id="withdrawHistory"></div>
- </div>
+<h2 class="section-title" data-t="wallet">کیف پول TON</h2>
+<div class="glass">
+<input class="field" id="walletInput" placeholder="EQ... / UQ...">
+<button class="action" onclick="saveWallet()" data-t="save">ذخیره کیف پول</button>
+</div>
+<div class="glass">
+<input class="field" id="withdrawInput" type="number" placeholder="Amount MFD">
+<button class="secondary" onclick="withdraw()" data-t="withdraw">ثبت درخواست برداشت آزمایشی</button>
+<p class="notice" data-t="withdrawNote">این درخواست انتقال واقعی بلاک‌چینی نیست.</p>
+<div id="withdrawHistory"></div>
+</div>
 </section>
 
 <section class="page" id="history">
- <h2 class="section-title" data-t="historyTitle">تاریخچه فعالیت</h2>
- <div class="glass" id="historyList"></div>
+<h2 class="section-title" data-t="history">تاریخچه فعالیت</h2>
+<div class="glass" id="historyList"></div>
 </section>
 </div>
 
 <nav class="nav">
- <button class="active" onclick="go('home',this)"><span>⌂</span><b data-t="navHome">خانه</b></button>
- <button onclick="go('upgrades',this)"><span>✧</span><b data-t="navBoost">ارتقا</b></button>
- <button onclick="go('friends',this)"><span>⌘</span><b data-t="navFriends">دعوت</b></button>
- <button onclick="go('tasks',this)"><span>◉</span><b data-t="navTasks">وظایف</b></button>
- <button onclick="go('wallet',this)"><span>◈</span><b data-t="navWallet">کیف پول</b></button>
- <button onclick="go('history',this)"><span>▤</span><b data-t="navHistory">تاریخچه</b></button>
+<button class="active" onclick="go('home',this)"><span>⌂</span><b data-t="navHome">خانه</b></button>
+<button onclick="go('upgrades',this)"><span>✧</span><b data-t="navBoost">ارتقا</b></button>
+<button onclick="go('friends',this)"><span>⌘</span><b data-t="navFriends">دعوت</b></button>
+<button onclick="go('tasks',this)"><span>◉</span><b data-t="navTasks">وظایف</b></button>
+<button onclick="go('wallet',this)"><span>◈</span><b data-t="navWallet">کیف پول</b></button>
+<button onclick="go('history',this)"><span>▤</span><b data-t="navHistory">تاریخچه</b></button>
 </nav>
 <div id="toast"></div>
 
 <script>
 "use strict";
-
-/* Set this to your deployed backend URL if frontend and API use different domains.
-   Example: https://your-api.onrender.com
-   Leave empty when Vercel rewrites /api requests to your backend. */
-const API_BASE = "";
-
-const KEY = "mifado_coin_v3";
-const LANG_KEY = "mifado_lang_v3";
-const tg = window.Telegram?.WebApp;
+const KEY="mifado_coin_v4";
+const LANG_KEY="mifado_lang_v4";
+const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 
-const isTelegram = !!(tg?.initData && tg.initData.length > 0);
-let lang = localStorage.getItem(LANG_KEY) || "fa";
-let serverMode = isTelegram;
-let busy = false;
-
-const dict = {
+const translations={
 fa:{
- total:"موجودی کل",live:"سیستم فعال",portfolio:"دارایی دیجیتال MIFADO",
- rate:"سرعت استخراج",level:"سطح ماینر",coreTitle:"هسته استخراج",
- offline:"سقف آفلاین ۲۴ ساعت",collect:"به‌روزرسانی پاداش استخراج",
- miningNote:"استخراج به‌صورت خودکار محاسبه می‌شود. برای دریافت آخرین موجودی، پاداش را به‌روزرسانی کن.",
- overview:"نمای کلی شبکه",energy:"وضعیت انرژی",offlineTime:"زمان آفلاین",
- boostTitle:"قدرت استخراج و ارتقا",boostDesc:"ظرفیت استخراج خود را افزایش بده",
- boostNote:"ارتقاها با موجودی MFD خریداری می‌شوند.",
- refTitle:"شبکه دعوت دوستان",inviteTitle:"شبکه را گسترش بده",
- inviteNote:"لینک دعوت اختصاصی خود را به اشتراک بگذار.",
- copy:"کپی لینک دعوت",refCount:"تعداد دعوت‌شده‌ها",
- taskTitle:"مرکز مأموریت‌ها",walletTitle:"مرکز کیف پول TON",
- walletAddress:"آدرس کیف پول",save:"ذخیره کیف پول",
- walletNote:"آدرس کیف پول در حساب شما ذخیره می‌شود. اتصال واقعی و انتقال TON نیازمند پیاده‌سازی جداگانه است.",
- withdrawTitle:"درخواست برداشت",submit:"ثبت درخواست",
- withdrawNote:"ثبت درخواست به معنی انتقال واقعی روی بلاک‌چین نیست.",
- historyTitle:"فعالیت دارایی",navHome:"خانه",navBoost:"ارتقا",
- navFriends:"دعوت",navTasks:"وظایف",navWallet:"کیف پول",navHistory:"تاریخچه",
- active:"فعال",copied:"لینک کپی شد",saved:"ذخیره شد",
- invalidWallet:"آدرس TON معتبر وارد کن",noWallet:"اول آدرس کیف پول را ذخیره کن",
- invalidAmount:"مبلغ معتبر وارد کن",noMoney:"موجودی کافی نیست",
- withdrawDone:"درخواست برداشت ثبت شد",bought:"ارتقا خریداری شد",
- claimed:"پاداش دریافت شد",already:"این مورد قبلاً انجام شده",
- collected:"موجودی به‌روزرسانی شد",buy:"خرید ارتقا",
- done:"انجام شده",claim:"دریافت پاداش",pending:"در انتظار بررسی",
- empty:"هنوز تراکنشی ثبت نشده است",demo:"حالت آزمایشی",
- online:"اتصال سرور",serverError:"ارتباط با سرور برقرار نشد",
- levelText:"سطح",walletSaved:"آدرس کیف پول ذخیره شد",
- noTasks:"در حال حاضر مأموریتی وجود ندارد",
- referralReward:"پاداش دعوت ثبت‌شده",requestFailed:"عملیات انجام نشد",
- welcome:"پاداش خوش‌آمدگویی",notConnected:"حساب تلگرام باز نشده است",
- amount:"مقدار",status:"وضعیت",time:"زمان",type:"نوع",
- demoWarning:"حالت آزمایشی: اطلاعات این دستگاه واقعی و قابل برداشت نیست."
+total:"موجودی کل",rate:"سرعت استخراج",level:"سطح ماینر",
+core:"هسته استخراج",offline:"سقف آفلاین ۲۴ ساعت",
+collect:"دریافت پاداش استخراج",miningNote:"استخراج خودکار محاسبه می‌شود.",
+overview:"نمای کلی شبکه",energy:"وضعیت انرژی",offlineTime:"زمان آفلاین",
+boost:"ارتقای قدرت استخراج",friends:"دعوت دوستان",
+inviteNote:"لینک دعوت خود را به اشتراک بگذار.",
+copy:"کپی لینک دعوت",refCount:"تعداد دعوت‌ها",
+tasks:"مرکز مأموریت‌ها",wallet:"کیف پول TON",
+save:"ذخیره کیف پول",withdraw:"ثبت درخواست برداشت آزمایشی",
+withdrawNote:"این درخواست انتقال واقعی بلاک‌چینی نیست.",
+history:"تاریخچه فعالیت",navHome:"خانه",navBoost:"ارتقا",
+navFriends:"دعوت",navTasks:"وظایف",navWallet:"کیف پول",navHistory:"تاریخچه",
+saved:"ذخیره شد",copied:"کپی شد",claimed:"پاداش به‌روز شد",
+invalid:"اطلاعات معتبر وارد کن",noMoney:"موجودی کافی نیست",
+bought:"ارتقا خریداری شد",done:"انجام شده",buy:"خرید ارتقا",
+claim:"دریافت پاداش",empty:"موردی ثبت نشده",
+walletError:"آدرس کیف پول معتبر TON وارد کن",
+withdrawDone:"درخواست آزمایشی ثبت شد",wait:"در انتظار",
+welcome:"پاداش خوش‌آمدگویی",reward:"پاداش استخراج",
+demo:"حالت آزمایشی"
 },
 en:{
- total:"TOTAL ASSETS",live:"SYSTEM ACTIVE",portfolio:"MIFADO PORTFOLIO",
- rate:"MINING RATE",level:"MINER LEVEL",coreTitle:"MINING CORE",
- offline:"24H OFFLINE CAP",collect:"REFRESH MINING REWARDS",
- miningNote:"Mining is calculated automatically. Refresh to retrieve your latest balance.",
- overview:"NETWORK OVERVIEW",energy:"ENERGY STATUS",offlineTime:"OFFLINE TIME",
- boostTitle:"MINING POWER / BOOST",boostDesc:"Enhance your mining capacity",
- boostNote:"Purchase upgrades using your available MFD balance.",
- refTitle:"REFERRAL NETWORK",inviteTitle:"EXPAND THE NETWORK",
- inviteNote:"Share your personal referral link.",
- copy:"COPY INVITATION LINK",refCount:"INVITED USERS",
- taskTitle:"MISSION CONTROL",walletTitle:"TON WALLET CENTER",
- walletAddress:"WALLET ADDRESS",save:"SAVE WALLET",
- walletNote:"Your wallet address is saved to your account. Actual TON transfers require separate implementation.",
- withdrawTitle:"WITHDRAWAL REQUEST",submit:"SUBMIT REQUEST",
- withdrawNote:"Submitting a request does not transfer tokens on-chain.",
- historyTitle:"ASSET ACTIVITY",navHome:"HOME",navBoost:"BOOST",
- navFriends:"FRIENDS",navTasks:"MISSIONS",navWallet:"WALLET",navHistory:"HISTORY",
- active:"ACTIVE",copied:"Link copied",saved:"Saved",
- invalidWallet:"Enter a valid TON address",noWallet:"Save your wallet address first",
- invalidAmount:"Enter a valid amount",noMoney:"Insufficient balance",
- withdrawDone:"Withdrawal request submitted",bought:"Upgrade purchased",
- claimed:"Reward claimed",already:"This item was already completed",
- collected:"Balance refreshed",buy:"PURCHASE",
- done:"COMPLETED",claim:"CLAIM REWARD",pending:"PENDING",
- empty:"No transactions yet",demo:"DEMO MODE",online:"SERVER CONNECTED",
- serverError:"Could not connect to the server",levelText:"LEVEL",
- walletSaved:"Wallet address saved",noTasks:"No missions available",
- referralReward:"Referral rewards recorded",requestFailed:"Operation failed",
- welcome:"Welcome bonus",notConnected:"Telegram account is not open",
- amount:"Amount",status:"Status",time:"Time",type:"Type",
- demoWarning:"Demo mode: this device's balance is not real or withdrawable."
+total:"TOTAL BALANCE",rate:"MINING SPEED",level:"MINER LEVEL",
+core:"MINING CORE",offline:"24H OFFLINE CAP",
+collect:"COLLECT MINING REWARD",miningNote:"Mining is calculated automatically.",
+overview:"NETWORK OVERVIEW",energy:"ENERGY STATUS",offlineTime:"OFFLINE TIME",
+boost:"MINING UPGRADES",friends:"INVITE FRIENDS",
+inviteNote:"Share your personal invitation link.",
+copy:"COPY INVITE LINK",refCount:"INVITATIONS",
+tasks:"MISSIONS",wallet:"TON WALLET",
+save:"SAVE WALLET",withdraw:"SUBMIT DEMO WITHDRAWAL",
+withdrawNote:"This does not transfer tokens on-chain.",
+history:"ACTIVITY HISTORY",navHome:"HOME",navBoost:"BOOST",
+navFriends:"FRIENDS",navTasks:"TASKS",navWallet:"WALLET",navHistory:"HISTORY",
+saved:"Saved",copied:"Copied",claimed:"Rewards refreshed",
+invalid:"Enter valid information",noMoney:"Insufficient balance",
+bought:"Upgrade purchased",done:"Completed",buy:"BUY UPGRADE",
+claim:"CLAIM REWARD",empty:"No records yet",
+walletError:"Enter a valid TON wallet address",
+withdrawDone:"Demo request submitted",wait:"Pending",
+welcome:"Welcome bonus",reward:"Mining reward",demo:"DEMO MODE"
 }
 };
-const t = key => dict[lang][key] || key;
 
-const defaultState = () => ({
- balance:100,rate:1,last:Date.now(),wallet:"",level:0,
- done:[],history:[{type:"Welcome bonus",amount:100,time:Date.now()}],
- withdrawals:[],refs:0,referralLink:""
-});
+let lang=localStorage.getItem(LANG_KEY)||"fa";
 let state;
-try{state=JSON.parse(localStorage.getItem(KEY)) || defaultState();}
-catch(e){state=defaultState();}
+const fresh=()=>({
+balance:100,rate:1,level:0,last:Date.now(),
+wallet:"",done:[],refs:0,history:[],
+withdrawals:[]
+});
+try{state=JSON.parse(localStorage.getItem(KEY))||fresh();}
+catch(e){state=fresh();}
 
-function saveLocal(){localStorage.setItem(KEY,JSON.stringify(state));}
-function fmt(n){return Number(n||0).toLocaleString(lang==="fa"?"fa-IR":"en-US",{m
+function save(){
+localStorage.setItem(KEY,JSON.stringify(state));
+}
+function t(k){return translations[lang][k]||k;}
+function toast(msg){
+const el=document.getElementById("toast");
+el.textContent=msg;el.style.display="block";
+setTimeout(()=>el.style.display="none",2200);
+}
+function fmt(n){
+return Number(n||0).toFixed(6);
+}
+function addHistory(type,amount){
+state.history.unshift({type,amount,time:Date.now()});
+state.history=state.history.slice(0,100);
+}
+function mine(){
+const now=Date.now();
+const elapsed=Math.min(Math.max(0,(now-state.last)/3600000),24);
+state.balance+=elapsed*state.rate;
+state.last=now;
+save();
+}
+function render(){
+mine();
+document.documentElement.lang=lang;
+document.documentElement.dir=lang==="fa"?"rtl":"ltr";
+document.querySelectorAll("[data-t]").forEach(el=>{
+el.textContent=t(el.dataset.t);
+});
+document.getElementById("balance").textContent=fmt(state.balance);
+document.getElementById("rate").textContent=state.rate+" MFD/H";
+document.getElementById("level").textContent="LVL "+String(state.level+1).padStart(2,"0");
+document.getElementById("elapsed").textContent="24 / 24 H";
+document.getElementById("bar").style.width="100%";
+document.getElementById("walletInput").value=state.wallet;
+document.getElementById("refs").textContent=state.refs;
+document.getElementById("inviteLink").value=
+"https://t.me/YOUR_BOT?start="+(tg?.initDataUnsafe?.user?.id||"demo");
+renderUpgrades();renderTasks();renderHistory();
+}
+function toggleLang(){
+lang=lang==="fa"?"en":"fa";
+localStorage.setItem(LANG_KEY,lang);
+render();
+}
+function go(id,btn){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+}
+function collect(){
+mine();save();render();toast(t("claimed"));
+}
+const upgrades=[
+{cost:100,rate:1.5,fa:"هسته تقویتی",en:"BOOST CORE"},
+{cost:250,rate:2.5,fa:"پردازنده پیشرفته",en:"ADVANCED PROCESSOR"},
+{cost:500,rate:5,fa:"هسته طلایی",en:"GOLD CORE"},
+{cost:1000,rate:10,fa:"موتور دیجیتال",en:"DIGITAL ENGINE"}
+];
+function renderUpgrades(){
+const box=document.getElementById("upgradeList");
+box.innerHTML="";
+upgrades.forEach((u,i)=>{
+const el=document.createElement("div");
+el.className="item";
+el.innerHTML=`<h3 class="gold">${lang==="fa"?u.fa:u.en}</h3>
+<p>${u.cost} MFD · ${u.rate} MFD/H</p>
+<button class="action">${t("buy")}</button>`;
+el.querySelector("button").onclick=()=>buyUpgrade(i);
+box.appendChild(el);
+});
+}
+function buyUpgrade(i){
+mine();
+const u=upgrades[i];
+if(state.balance<u.cost){toast(t("noMoney"));return;}
+state.balance-=u.cost;state.rate=u.rate;state.level++;
+addHistory("Upgrade",-u.cost);
+save();render();toast(t("bought"));
+}
+const missions=[
+{ id:"welcome",fa:"بازدید از مرکز استخراج",en:"Visit mining center",reward:10},
+{ id:"profile",fa:"ثبت آدرس کیف پول",en:"Save wallet address",reward:20}
+];
+function renderTasks(){
+const box=document.getElementById("taskList");
+box.innerHTML="";
+missions.forEach(m=>{
+const done=state.done.includes(m.id);
+const el=document.createElement("div");
+el.className="item";
+el.innerHTML=`<h3>${lang==="fa"?m.fa:m.en}</h3>
+<p>+${m.reward} MFD</p>
+<button class="action" ${done?"disabled":""}>${done?t("done"):t("claim")}</button>`;
+el.querySelector("button").onclick=()=>{
+if(state.done.includes(m.id))return;
+if(m.id==="profile"&&!state.wallet){toast(t("invalid"));return;}
+state.done.push(m.id);state.balance+=m.reward;
+addHistory("Mission",m.reward);save();render();toast(t("claimed"));
+};
+box.appendChild(el);
+});
+}
+function saveWallet(){
+const w=document.getElementById("walletInput").value.trim();
+if(!/^(EQ|UQ)[A-Za-z0-9_-]{40,60}$/.test(w)){toast(t("walletError"));return;}
+state.wallet=w;save();render();toast(t("saved"));
+}
+function withdraw(){
+mine();
+const amount=Number(document.getElementById("withdrawInput").value);
+if(!state.wallet||!Number.isFinite(amount)||amount<=0){toast(t("invalid"));return;}
+if(amount>state.balance){toast(t("noMoney"));return;}
+state.balance-=amount;
+state.withdrawals.unshift({amount,time:Date.now(),status:"PENDING"});
+addHistory("Demo withdrawal",-amount);
+save();render();toast(t("withdrawDone"));
+}
+function renderHistory(){
+const box=document.getElementById("historyList");
+box.innerHTML="";
+if(!state.history.length){box.textContent=t("empty");return;}
+state.history.forEach(h=>{
+const el=document.createElement("div");el.className="row";
+el.style.padding="10px 0";
+el.innerHTML=`<span>${h.type}</span><b class="gold">${fmt(h.amount)} MFD</b>`;
+box.appendChild(el);
+});
+}
+async function copyInvite(){
+const text=document.getElementById("inviteLink").value;
+try{await navigator.clipboard.writeText(text);toast(t("copied"));}
+catch(e){toast(text);}
+}
+setInterval(()=>{render();},10000);
+render();
+</script>
+</body>
+ </html>
