@@ -116,9 +116,12 @@ input{width:100%;padding:12px;background:#090909;border:1px solid #555;border-ra
 <script>
 (() => {
 const tg=window.Telegram?.WebApp;
-tg?.ready();tg?.expand();
+tg?.ready();
+tg?.expand();
 
-const API="https://YOUR-RENDER-SERVICE.onrender.com/api";
+// آدرس واقعی سرور MIFADO COIN
+const API="https://mifado-coin-api.onrender.com/api";
+
 let lang="fa",busy=false;
 let state={balance:0,energy:1000,maxEnergy:1000,hourlyRate:0,referralLink:""};
 
@@ -147,8 +150,12 @@ return d;
 }
 
 async function load(){
-try{state={...state,...await api("/me")};render();}
-catch(e){$("tapstatus").textContent=e.message;}
+try{
+state={...state,...await api("/me")};
+render();
+}catch(e){
+$("tapstatus").textContent=e.message;
+}
 }
 
 $("tap").onclick=async()=>{
@@ -158,15 +165,20 @@ try{
 state={...state,...await api("/tap","POST")};
 render();
 $("tapstatus").textContent="+0.001 MFD";
-}catch(e){$("tapstatus").textContent=e.message;}
-finally{busy=false;}
+}catch(e){
+$("tapstatus").textContent=e.message;
+}
+finally{
+busy=false;
+}
 };
 
 document.querySelectorAll("[data-tab]").forEach(b=>{
 b.onclick=()=>{
 document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
 document.querySelectorAll(".nav button").forEach(n=>n.classList.remove("active"));
-$(b.dataset.tab).classList.add("active");b.classList.add("active");
+$(b.dataset.tab).classList.add("active");
+b.classList.add("active");
 };
 });
 
@@ -182,14 +194,18 @@ $("copy").onclick=async()=>{
 try{
 await navigator.clipboard.writeText(state.referralLink);
 $("refstatus").textContent=lang==="fa"?"لینک کپی شد":"Link copied";
-}catch{$("refstatus").textContent="Copy failed";}
+}catch{
+$("refstatus").textContent="Copy failed";
+}
 };
 
 $("walletbtn").onclick=()=>{
 $("walletstatus").textContent=lang==="fa"?"اتصال TON Connect هنوز راه‌اندازی نشده است.":"TON Connect is not configured yet.";
 };
 
-render();load();setInterval(load,30000);
+render();
+load();
+setInterval(load,30000);
 })();
 </script>
 </body>
