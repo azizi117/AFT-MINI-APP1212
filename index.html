@@ -8,6 +8,269 @@
 <title>MIFADO COIN | MFD NETWORK</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
+/* =====================================
+   MIFADO COIN — PREMIUM 3D GLASS THEME
+===================================== */
+
+:root {
+  --glass: rgba(255,255,255,.075);
+  --glass-border: rgba(255,255,255,.19);
+  --neon-gold: #f5d58d;
+  --neon-cyan: #54e9f5;
+  --deep: #080d19;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #19334b 0%, transparent 43%),
+    radial-gradient(ellipse at 100% 70%, #38281755, transparent 40%),
+    linear-gradient(145deg,#080d19,#10182a 55%,#070910);
+  perspective: 1200px;
+}
+
+/* Glass cards */
+.hero,
+.mining-card,
+.glass,
+.panel,
+.item {
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.13),
+      rgba(255,255,255,.025) 48%,
+      rgba(40,70,95,.13));
+  border: 1px solid rgba(255,255,255,.17);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.38),
+    inset 0 1px 1px rgba(255,255,255,.22),
+    inset 0 -1px 1px rgba(0,0,0,.3);
+  transform-style: preserve-3d;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.hero {
+  border-color: rgba(245,213,141,.38);
+  box-shadow:
+    0 25px 65px #0009,
+    0 0 35px #e9bd6112,
+    inset 0 1px 2px #fff4;
+}
+
+.panel:active,
+.item:active {
+  transform: translateY(2px) scale(.985);
+}
+
+/* Real glass buttons */
+.action,
+.secondary,
+.lang {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 16px;
+  color: #fff5d9;
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,.22),
+      rgba(255,255,255,.045) 48%,
+      rgba(84,233,245,.10));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 9px 0 rgba(3,8,18,.55),
+    0 13px 28px rgba(0,0,0,.38),
+    inset 0 1px 2px rgba(255,255,255,.4),
+    inset 0 -2px 5px rgba(0,0,0,.2);
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    border-color .2s ease;
+}
+
+.action {
+  background:
+    linear-gradient(120deg,
+      rgba(232,183,87,.42),
+      rgba(255,255,255,.15) 48%,
+      rgba(84,233,245,.22));
+  border-color: rgba(255,226,164,.65);
+  color: #fff1c8;
+  text-shadow: 0 1px 10px #e9bd6170;
+  box-shadow:
+    0 8px 0 #60451f,
+    0 13px 32px #d9a84928,
+    inset 0 1px 2px #fff9,
+    inset 0 -3px 8px #0003;
+}
+
+.secondary {
+  color: #bffaff;
+  border-color: rgba(84,233,245,.42);
+  box-shadow:
+    0 6px 0 #102b39,
+    0 10px 24px #0005,
+    inset 0 1px 2px #fff5;
+}
+
+.lang {
+  padding: 9px 15px;
+  color: #ffe6a6;
+  border-color: #e9bd6166;
+}
+
+.action::before,
+.secondary::before,
+.lang::before {
+  content: "";
+  position: absolute;
+  top: -80%;
+  left: -65%;
+  width: 45%;
+  height: 260%;
+  transform: rotate(28deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.34),
+    transparent
+  );
+  transition: left .65s ease;
+  z-index: -1;
+}
+
+.action:hover::before,
+.secondary:hover::before,
+.lang:hover::before {
+  left: 130%;
+}
+
+.action:active,
+.secondary:active,
+.lang:active {
+  transform: translateY(6px) scale(.975);
+  box-shadow:
+    0 2px 0 rgba(0,0,0,.4),
+    0 5px 12px #0005,
+    inset 0 2px 8px #0004;
+}
+
+/* Floating navigation glass */
+.nav {
+  background: rgba(12,19,34,.68);
+  border: 1px solid rgba(255,255,255,.17);
+  border-bottom: 0;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow:
+    0 -12px 40px #0007,
+    inset 0 1px #ffffff20;
+}
+
+.nav button {
+  transition: transform .2s ease, color .2s ease;
+}
+
+.nav button:active {
+  transform: translateY(-4px) scale(1.12);
+}
+
+.nav button.active {
+  color: #ffe6a6;
+  text-shadow: 0 0 15px #e9bd6199;
+}
+
+/* 3D mining core */
+.core {
+  filter: drop-shadow(0 15px 24px #0008);
+  transform: translateZ(20px);
+}
+
+.core-orb {
+  border: 1px solid #fff8;
+  background:
+    radial-gradient(circle at 30% 22%,#fff9d5 0%,#f4cf76 18%,#bd812d 43%,#303447 76%,#101a2b);
+  box-shadow:
+    0 0 25px #e9bd6188,
+    0 0 65px #e9bd6133,
+    inset 0 5px 12px #fff8,
+    inset 0 -12px 18px #0009;
+}
+
+/* Glowing rings */
+.ring {
+  box-shadow:
+    0 0 18px #e9bd6144,
+    inset 0 0 22px #e9bd6122;
+}
+
+.ring.r2 {
+  box-shadow: 0 0 20px #55e6ed33;
+}
+
+/* Premium inputs */
+.field {
+  background: rgba(5,12,25,.62);
+  border: 1px solid rgba(255,255,255,.17);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 3px 12px #0006,
+    0 1px 0 #ffffff12;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.field:focus {
+  border-color: #55e6edaa;
+  box-shadow:
+    0 0 0 3px #55e6ed18,
+    0 0 22px #55e6ed20,
+    inset 0 2px 8px #0006;
+}
+
+/* Premium metric tiles */
+.metric {
+  background: linear-gradient(145deg,#ffffff12,#ffffff04);
+  border: 1px solid #ffffff18;
+  box-shadow:
+    0 8px 20px #0003,
+    inset 0 1px #ffffff18;
+}
+
+/* Balance glow */
+.balance {
+  color: #ffe6a6;
+  text-shadow:
+    0 0 10px #e9bd6177,
+    0 0 30px #e9bd6144,
+    0 4px 18px #0009;
+}
+
+/* Smooth page transitions */
+.page.active {
+  animation: premiumEnter .38s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes premiumEnter {
+  from {
+    opacity: 0;
+    transform: perspective(800px) rotateX(3deg) translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(800px) rotateX(0) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+     
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
 :root{--bg:#070910;--panel:rgba(20,25,39,.78);--line:rgba(255,255,255,.09);--gold:#e9bd61;--gold2:#ffe6a6;--cyan:#55e6ed;--muted:#8992a8;--green:#54e2a5}
 *{box-sizing:border-box}
@@ -181,6 +444,37 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 <div id="toast"></div>
 
 <script>
+function applyLanguage() {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
+
+  document.querySelectorAll("[data-t]").forEach(el => {
+    const key = el.dataset.t;
+    if (dict[lang][key]) {
+      el.textContent = dict[lang][key];
+    }
+  });
+
+  document.getElementById("walletInput").placeholder =
+    lang === "fa" ? "آدرس کیف پول TON" : "TON wallet address";
+
+  document.getElementById("withdrawInput").placeholder =
+    lang === "fa" ? "مقدار MFD" : "Amount MFD";
+
+  renderUpgrades();
+  renderTasks();
+  render();
+}
+
+function toggleLang() {
+  lang = lang === "fa" ? "en" : "fa";
+  localStorage.setItem("mfd_premium_lang", lang);
+  applyLanguage();
+  toast(lang === "fa" ? "زبان فارسی فعال شد" : "English enabled");
+}
+
+applyLanguage();
+ 
 const KEY="mifado_premium_v1";
 const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
