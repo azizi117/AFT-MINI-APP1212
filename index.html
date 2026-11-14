@@ -609,4 +609,204 @@ const missions=[
 
 missions.forEach(function(m){
 const done=data.missions.indexOf(m.id)!==-1;
-const div=document.createElement("d
+iv");
+div.className="item";
+
+const row=document.createElement("div");
+row.className="row";
+
+const info=document.createElement("div");
+const title=document.createElement("b");
+title.textContent=m.title;
+
+const desc=document.createElement("div");
+desc.className="muted";
+desc.textContent="+"+m.reward+" MFD";
+
+info.append(title,desc);
+
+const button=document.createElement("button");
+button.textContent=done?t("done"):t("receive");
+button.disabled=done;
+
+button.onclick=function(){
+if(data.missions.indexOf(m.id)!==-1)return;
+
+data.missions.push(m.id);
+data.balance+=m.reward;
+
+addHistory("Mission completed: "+m.id);
+save();
+render();
+notify(t("missionSuccess"));
+};
+
+row.append(info,button);
+div.appendChild(row);
+box.appendChild(div);
+});
+}
+
+function renderHistory(){
+const box=document.getElementById("activity");
+if(!box)return;
+
+box.innerHTML="";
+
+if(!data.history.length){
+box.textContent=t("noActivity");
+return;
+}
+
+data.history.forEach(function(item){
+const div=document.createElement("div");
+div.className="item";
+
+const message=document.createElement("div");
+message.textContent=item.message;
+
+const time=document.createElement("div");
+time.className="muted";
+time.textContent=new Date(item.time).toLocaleString();
+
+div.append(message,time);
+box.appendChild(div);
+});
+}
+
+function renderMarket(){
+const price=Number(data.price)||0.06;
+
+document.getElementById("marketPrice").textContent="$"+money(price,4);
+document.getElementById("homePrice").textContent="$"+money(price,4);
+
+const change=Number(data.change)||0;
+const changeElement=document.getElementById("change");
+
+changeElement.textContent=(change>=0?"+":"")+money(change,2)+"%";
+changeElement.className=change>=0?"green":"red";
+
+const points=data.prices.map(function(p,i){
+const min=Math.min.apply(null,data.prices);
+const max=Math.max.apply(null,data.prices);
+const range=max-min||0.001;
+const x=i*(340/(data.prices.length-1));
+const y=135-((p-min)/range)*120;
+return x+","+y;
+});
+
+document.getElementById("chart").setAttribute("points",points.join(" "));
+
+const area="M "+points.join(" L ")+" L 340,150 L 0,150 Z";
+document.getElementById("chartArea").setAttribute("d",area);
+}
+
+function updatePrice(){
+const oldPrice=Number(data.price)||0.06;
+const movement=(Math.random()-0.48)*0.002;
+const newPrice=Math.max(0.001,oldPrice+movement);
+
+data.change=((newPrice-oldPrice)/oldPrice)*100;
+data.price=newPrice;
+
+data.prices.push(newPrice);
+if(data.prices.length>20)data.prices.shift();
+
+save();
+renderMarket();
+}
+
+function render(){
+mine();
+
+document.getElementById("balance").textContent=money(data.balance);
+document.getElementById("balanceValue").textContent="$"+money(data.balance*data.price);
+document.getElementById("rate").textContent=money(data.rate,2)+" MFD/H";
+document.getElementById("level").textContent=data.level;
+document.getElementById("usdt").textContent=money(data.usdt);
+document.getElementById("swapBalance").textContent=money(data.balance)+" MFD";
+document.getElementById("swapUsdt").textContent=money(data.usdt);
+
+document.getElementById("inviteLink").value=
+"https://t.me/YOUR_BOT?start="+
+(getTelegramUserId());
+
+const elapsed=Math.max(0,Date.now()-data.cycleStart);
+const remaining=Math.max(0,86400000-elapsed);
+
+const hours=Math.floor(remaining/3600000);
+const minutes=Math.floor((remaining%3600000)/60000);
+const seconds=Math.floor((remaining%60000)/1000);
+
+document.getElementById("timer").textContent=
+String(hours).padStart(2,"0")+":"+
+String(minutes).padStart(2,"0")+":"+
+String(seconds).padStart(2,"0");
+
+document.getElementById("progress").style.width=
+Math.min(100,(elapsed/86400000)*100)+"%";
+
+renderUpgrades();
+renderMissions();
+renderWithdrawals();
+renderHistory();
+renderMarket();
+updateEstimate();
+save();
+}
+
+function getTelegramUserId(){
+try{
+if(window.Telegram&&window.Telegram.WebApp){
+const user=window.Telegram.WebApp.initDataUnsafe.user;
+if(user&&user.id)return user.id;
+}
+}catch(e){}
+return "guest";
+}
+
+function copyInvite(){
+const field=document.getElementById("inviteLink");
+field.select();
+field.setSelectionRange(0,99999);
+
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(field.value).then(function(){
+notify(t("inviteCopied"));
+}).catch(function(){
+notify(t("copyFailed"));
+});
+}else{
+try{
+document.execCommand("copy");
+notify(t("inviteCopied"));
+}catch(e){
+notify(t("copyFailed"));
+}
+}
+}
+
+function startApp(){
+try{
+if(window.Telegram&&window.Telegram.WebApp){
+window.Telegram.WebApp.ready();
+window.Telegram.WebApp.expand();
+}
+}catch(e){}
+
+applyLanguage();
+render();
+
+setInterval(function(){
+mine();
+render();
+},1000);
+
+setInterval(updatePrice,15000);
+}
+
+startApp();
+
+</script>
+</body>
+</html>
