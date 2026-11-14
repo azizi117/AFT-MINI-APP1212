@@ -3,407 +3,223 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#06140f">
-<title>EMERALD COIN</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b16">
+<title>AI Studio</title>
+
 <style>
-:root{--bg:#06140f;--panel:#0d2119;--green:#19d58b;--gold:#d7b76a;--text:#f1fff8;--muted:#8ba99a;--line:#1d3b2d}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 50% -10%,#174c35,#06140f 45%);color:var(--text);font-family:Arial,Tahoma,sans-serif;padding-bottom:95px}
-.app{max-width:520px;margin:auto;padding:15px}
-header{display:flex;align-items:center;justify-content:space-between;margin:8px 0 20px}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;font-size:25px;background:linear-gradient(145deg,#30e7a0,#087447)}
-.brand h2{font-size:16px;margin:0}.brand small{font-size:9px;color:var(--muted)}
-.card{background:linear-gradient(145deg,#102a20,#0b1d16);border:1px solid var(--line);border-radius:19px;padding:16px;margin-bottom:14px}
-.label,.small{font-size:12px;color:var(--muted)}
-.small{font-size:11px;line-height:1.8}
-.big{font-size:30px;font-weight:bold;margin:9px 0}
-.green{color:var(--green)}.gold{color:var(--gold)}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#0b1d16;border:1px solid var(--line);border-radius:14px;padding:13px}
-.stat strong{display:block;font-size:18px;margin-top:8px}
-.btn{width:100%;border:0;border-radius:12px;padding:13px;color:#04150d;font-weight:bold;background:linear-gradient(120deg,#39e8a3,#0dbb77);cursor:pointer}
-.btn.secondary{background:#173c2b;color:#d9ffeb;border:1px solid #286044}
-.btn.goldbtn,.btn.withdraw{background:linear-gradient(120deg,#e8d18a,#b38b39);color:#211a08}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.page{display:none}.page.active{display:block}
-h3.section-title{font-size:16px;margin:20px 2px 12px}
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#081810f5;border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 2px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(15px)}
-.nav button{flex:1;max-width:75px;border:0;background:none;color:#789888;font-size:10px;padding:6px 1px;cursor:pointer}
-.nav button span{display:block;font-size:19px;margin-bottom:3px}
-.nav button.active{color:var(--green);background:#123424;border-radius:10px}
-.coin{display:flex;align-items:center;gap:10px}
-.coinicon{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#153d2b;color:var(--green);font-weight:bold}
-.asset{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-.asset:last-child{border:0}
-.chartbox{height:190px;position:relative}
-.language-select{background:#10291f;color:#d9ffeb;border:1px solid #286044;border-radius:9px;padding:7px;font-size:11px}
-.demo{font-size:9px;color:#b9d8c7;border:1px solid #315542;padding:5px 8px;border-radius:20px}
-.mining-circle{width:250px;height:250px;border-radius:50%;margin:22px auto;border:5px solid #d4b66c;outline:3px solid #16794b;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#16442e,#06140f);box-shadow:0 0 35px #00d17a35;overflow:hidden;position:relative}
-.mining-circle img{width:88%;height:88%;object-fit:contain;border-radius:50%}
-.reward-overlay{position:absolute;bottom:10px;background:#06140fee;border:1px solid #d7b76a;border-radius:20px;padding:6px 14px;font-size:15px;font-weight:bold;color:#45efa8}
-.progress{height:8px;background:#1a3829;border-radius:20px;overflow:hidden;margin:12px 0}
-.progress div{height:100%;background:linear-gradient(90deg,#00a96b,#48edaa);width:0%}
-.field{margin:12px 0}
-.field input{width:100%;background:#07170f;color:white;border:1px solid #28513b;border-radius:11px;padding:13px}
-.swapbox{background:#081a12;border:1px solid var(--line);border-radius:14px;padding:13px;margin:12px 0}
-.swapcoin{display:flex;align-items:center;gap:8px}
-.swapcoin input{min-width:0;flex:1;background:transparent;border:0;color:white;font-size:19px;outline:none}
-.swapcoin select{background:#153324;color:white;border:1px solid #315c43;padding:10px;border-radius:9px}
-.info-line{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:10px 0}
-.task{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
-.task button{width:auto;padding:9px 13px}
-.slogan{background:linear-gradient(135deg,#092b1c,#075c3b);border:1px solid #168b5b;border-radius:15px;padding:16px;text-align:center;color:#b9ffda;font-weight:bold;margin-top:15px}
-.toast{position:fixed;bottom:105px;left:50%;transform:translateX(-50%);background:#173b2a;border:1px solid #34704c;color:white;padding:12px 18px;border-radius:12px;display:none;z-index:20;max-width:90%;font-size:13px}
-.withdraw-card{border:1px solid #b99b4d!important;background:linear-gradient(135deg,#153b29,#091b12)!important;text-align:center}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Tahoma, sans-serif;
+  background: #090b16;
+  color: white;
+}
+
+header {
+  padding: 22px;
+  background: #111529;
+  border-bottom: 1px solid #292e48;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+  color: #a78bfa;
+}
+
+.subtitle {
+  color: #9ca3af;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.container {
+  padding: 18px;
+  max-width: 650px;
+  margin: auto;
+}
+
+.hero {
+  background: linear-gradient(135deg,#30206c,#111c39);
+  padding: 22px;
+  border-radius: 18px;
+  margin-bottom: 22px;
+}
+
+.hero h2 {
+  margin-top: 0;
+}
+
+.card {
+  background: #151a2c;
+  border: 1px solid #292e48;
+  border-radius: 17px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin: 16px 0 9px;
+  font-size: 14px;
+}
+
+textarea, select, input {
+  width: 100%;
+  background: #090e20;
+  border: 1px solid #343b5b;
+  color: white;
+  border-radius: 11px;
+  padding: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg,#7c3aed,#4f46e5);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 18px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+}
+
+.result {
+  display: none;
+  margin-top: 20px;
+  background: #101a30;
+  padding: 16px;
+  border-radius: 13px;
+}
+
+small {
+  color: #9ca3af;
+  line-height: 2;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #777f99;
+  font-size: 12px;
+}
 </style>
 </head>
+
 <body>
-<div class="app">
+
 <header>
-<div class="brand"><div class="logo">💎</div><div><h2>EMERALD COIN</h2><small>THE EMERALD ECOSYSTEM</small></div></div>
-<div style="display:flex;gap:7px;align-items:center">
-<select class="language-select" id="languageSelect" onchange="setLanguage(this.value)">
-<option value="fa">فارسی</option><option value="en">English</option><option value="ar">العربية</option><option value="zh">中文</option>
-</select><span class="demo">DEMO</span>
-</div>
+  <div class="logo">✦ AI STUDIO</div>
+  <div class="subtitle">استودیوی هوش مصنوعی شخصی من</div>
 </header>
 
-<section class="page active" id="home">
-<div class="card">
-<div class="row"><span class="label" data-i="portfolio">ارزش کل دارایی‌ها</span><span class="gold">◆ EMC</span></div>
-<div class="big" id="portfolioValue">$0.00</div>
-<div class="row"><span class="label" data-i="balance">موجودی EMC</span><strong class="green" id="homeBalance">0 EMC</strong></div>
-</div>
-<div class="card withdraw-card">
-<div style="font-size:34px">💸</div><h3 class="gold">WITHDRAW</h3>
-<p class="small" data-i="withdrawInfo">برداشت در آینده فعال می‌شود.</p>
-<button class="btn withdraw" onclick="withdrawSoon()">WITHDRAW — COMING SOON</button>
-</div>
-<div class="grid2">
-<div class="stat"><span class="label" data-i="totalMining">کل استخراج</span><strong id="homeEarned">0 EMC</strong></div>
-<div class="stat"><span class="label" data-i="level">سطح حساب</span><strong class="gold" id="homeLevel">Level 1</strong></div>
-</div>
-<h3 class="section-title" data-i="market">قیمت و بازار EMC</h3>
-<div class="card">
-<div class="row"><div><span class="label">EMC / USDT</span><div class="big green" id="price">$0.007000</div></div><span class="label">DEMO PRICE</span></div>
-<div class="chartbox"><canvas id="homeChart"></canvas></div>
-<div class="slogan">💎 <span data-i="slogan">ماینینگ بات هرگز نمی‌خوابه!</span> 💚</div>
-</div>
-<h3 class="section-title" data-i="assets">دارایی‌های شما</h3>
-<div class="card" id="homeAssets"></div>
-<div class="card"><div class="row"><span class="label" data-i="daily">پاداش روزانه</span><strong class="green" id="dailyReward">200 EMC</strong></div><button class="btn" style="margin-top:13px" onclick="go('mining')" data-i="goMining">رفتن به استخراج</button></div>
-</section>
+<main class="container">
 
-<section class="page" id="market">
-<h3 class="section-title" data-i="marketTitle">بازار ارزها</h3>
-<div class="card"><div class="row"><strong>EMERALD COIN</strong><strong class="green" id="marketPrice">$0.007000</strong></div><div class="chartbox"><canvas id="marketChart"></canvas></div><div class="slogan">💎 EMERALD COIN 💚</div></div>
-<div class="card" id="marketAssets"></div>
-</section>
+  <section class="hero">
+    <h2>🎬 خلاقیتت رو زنده کن!</h2>
+    <p>ایده‌ات رو بنویس و برای ساخت ویدیوی هوش مصنوعی آماده شو.</p>
+  </section>
 
-<section class="page" id="swap">
-<h3 class="section-title" data-i="swapTitle">تبدیل ارزها</h3>
-<div class="card">
-<div class="swapbox"><div class="label" data-i="pay">پرداخت می‌کنید</div><div class="swapcoin"><input id="fromAmount" type="number" value="10000" oninput="calculateSwap()"><select id="fromCoin" onchange="calculateSwap()"><option>EMC</option><option>USDT</option><option>ETH</option><option>BTC</option></select></div><div class="info-line"><span>Balance</span><span id="fromBalance">0 EMC</span></div></div>
-<div style="text-align:center;color:#19d58b;font-size:23px">⇅</div>
-<div class="swapbox"><div class="label" data-i="receive">دریافت می‌کنید</div><div class="swapcoin"><input id="toAmount" readonly><select id="toCoin" onchange="calculateSwap()"><option>USDT</option><option>EMC</option><option>ETH</option><option>BTC</option></select></div><div class="info-line"><span>Balance</span><span id="toBalance">0 USDT</span></div></div>
-<div class="info-line"><span data-i="fee">کارمزد</span><span>0.3%</span></div>
-<div class="info-line"><span data-i="minimum">حداقل تبدیل EMC</span><strong>10,000 EMC</strong></div>
-<div class="info-line"><span data-i="final">دریافتی نهایی</span><strong class="green" id="swapFinal">0 USDT</strong></div>
-<button class="btn" onclick="confirmSwap()" data-i="confirm">تأیید تبدیل</button>
-<p class="small" data-i="swapNotice">این تبدیل انتقال واقعی رمزارز نیست.</p>
-<div id="swapSuccess" class="slogan" style="display:none"></div>
-</div>
-<h3 class="section-title" data-i="history">تاریخچه تبدیل</h3><div class="card" id="swapHistory"></div>
-</section>
+  <section class="card">
+    <h3>ساخت ویدیو با هوش مصنوعی</h3>
 
-<section class="page" id="assets">
-<h3 class="section-title" data-i="assets">دارایی‌های من</h3>
-<div class="card"><span class="label" data-i="totalValue">ارزش مجموع دارایی‌ها</span><div class="big green" id="assetTotal">$0.00</div></div>
-<div class="card" id="assetList"></div><button class="btn" onclick="go('swap')" data-i="convert">تبدیل دارایی‌ها</button>
-</section>
+    <label>توضیحات ویدیوی موردنظر</label>
+    <textarea id="prompt"
+      placeholder="مثلاً: یک شهر آینده‌نگر در شب، با نورهای نئونی و حرکت دوربین سینمایی..."></textarea>
 
-<section class="page" id="mining">
-<h3 class="section-title" data-i="mining">استخراج EMERALD</h3>
-<div class="card" style="text-align:center">
-<div class="mining-circle"><img src="./emerald-coin.png" alt="EMC"><div class="reward-overlay" id="miningReward">+200 EMC</div></div>
-<div class="label" id="miningStatus">آماده استخراج</div>
-<div class="progress"><div id="mineProgress"></div></div>
-<div class="row"><span class="label" data-i="remaining">زمان باقی‌مانده</span><strong id="countdown">آماده</strong></div>
-<br><button class="btn" id="mineButton" onclick="mine()" data-i="start">شروع استخراج</button>
-</div>
-<div class="grid2"><div class="stat"><span class="label" data-i="totalMining">کل استخراج</span><strong id="mineEarned">0 EMC</strong></div><div class="stat"><span class="label" data-i="level">سطح فعلی</span><strong id="mineLevel">1</strong></div></div>
-<div class="card" style="margin-top:13px">
-<div class="row"><span data-i="upgrade">ارتقای سطح</span><strong class="gold" id="upgradeLevel">LEVEL 1</strong></div>
-<div class="info-line"><span data-i="cost">هزینه ارتقا</span><strong>500 EMC</strong></div>
-<div class="info-line"><span data-i="nextReward">پاداش روزانه بعد از ارتقا</span><strong class="green" id="upgradeReward">400 EMC</strong></div>
-<button class="btn goldbtn" onclick="upgrade()" data-i="upgradeButton">ارتقای سطح</button>
-</div>
-</section>
+    <label>سبک ویدیو</label>
+    <select id="style">
+      <option>واقع‌گرایانه</option>
+      <option>سینمایی</option>
+      <option>انیمه</option>
+      <option>فانتزی</option>
+      <option>سه‌بعدی</option>
+    </select>
 
-<section class="page" id="tasks">
-<h3 class="section-title" data-i="tasks">وظایف و پاداش‌ها</h3>
-<div class="card">
-<div class="task"><div><strong data-i="channel">عضویت در کانال</strong><div class="small">100 EMC</div></div><button class="btn secondary" onclick="taskReward('channel',100)" data-i="claim">دریافت</button></div>
-<div class="task"><div><strong data-i="visit">بازدید از پروژه</strong><div class="small">50 EMC</div></div><button class="btn secondary" onclick="taskReward('visit',50)" data-i="claim">دریافت</button></div>
-</div>
-</section>
+    <label>نسبت تصویر</label>
+    <select id="ratio">
+      <option value="9:16">عمودی - 9:16</option>
+      <option value="16:9">افقی - 16:9</option>
+      <option value="1:1">مربعی - 1:1</option>
+    </select>
 
-<section class="page" id="friends">
-<h3 class="section-title" data-i="friends">دعوت از دوستان</h3>
-<div class="card">
-<div style="font-size:40px;text-align:center">👥</div>
-<div class="big green" style="text-align:center" id="refCount">0</div>
-<p class="small" data-i="share">لینک دعوت خود را به اشتراک بگذار.</p>
-<div class="field"><input id="refLink" readonly style="width:100%;background:#07170f;color:white;border:1px solid #28513b;border-radius:11px;padding:13px"></div>
-<button class="btn" onclick="copyReferral()" data-i="copy">کپی لینک دعوت</button>
-<p class="small" id="refStatus"></p>
-</div>
-</section>
+    <label>مدت ویدیو</label>
+    <select id="duration">
+      <option value="5">۵ ثانیه</option>
+      <option value="10">۱۰ ثانیه</option>
+    </select>
 
-<section class="page" id="wallet">
-<h3 class="section-title" data-i="wallet">کیف پول</h3>
-<div class="card" style="text-align:center"><div style="font-size:40px">👛</div><h3>EMERALD WALLET</h3><p class="small" data-i="walletNotice">انتقال واقعی نیاز به قرارداد توکن و TON Connect دارد.</p><button class="btn secondary" onclick="toast('TON Connect integration required')" data-i="connect">اتصال کیف پول TON</button></div>
-</section>
-</div>
+    <button id="generate" onclick="generateVideo()">
+      ✨ آماده‌سازی درخواست ویدیو
+    </button>
 
-<nav class="nav">
-<button class="active" onclick="go('home',this)"><span>⌂</span><span data-i="navHome">خانه</span></button>
-<button onclick="go('market',this)"><span>▥</span><span data-i="navMarket">بازار</span></button>
-<button onclick="go('swap',this)"><span>⇄</span><span data-i="navSwap">سوآپ</span></button>
-<button onclick="go('assets',this)"><span>◈</span><span data-i="navAssets">دارایی</span></button>
-<button onclick="go('mining',this)"><span>⛏</span><span data-i="navMining">استخراج</span></button>
-<button onclick="go('tasks',this)"><span>☷</span><span data-i="navTasks">وظایف</span></button>
-<button onclick="go('friends',this)"><span>♧</span><span data-i="navFriends">دعوت</span></button>
-<button onclick="go('wallet',this)"><span>◉</span><span data-i="navWallet">کیف پول</span></button>
-</nav>
-<div class="toast" id="toast"></div>
+    <div class="result" id="result">
+      <h3>درخواست شما آماده شد!</h3>
+      <p id="output"></p>
+      <small>
+        این نسخه رابط کاربری اولیه است؛ هنوز موتور تولید ویدیو به آن متصل نشده است.
+      </small>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>🚀 امکانات آینده</h3>
+    <p>🤖 دستیار هوشمند</p>
+    <p>🎨 تولید تصویر</p>
+    <p>🎬 تولید ویدیو از متن</p>
+    <p>📁 گالری و ذخیره ویدیوها</p>
+  </section>
+
+</main>
+
+<footer>
+  AI STUDIO © 2026
+  <br>
+  ساخته‌شده برای استفاده شخصی
+</footer>
 
 <script>
-const DAY=86400000,FEE=.003,MIN=10000,START_PRICE=.007;
-const BOT_USERNAME='EMC_COIN_bot';
-let rates={EMC:START_PRICE,USDT:1,ETH:3000,BTC:90000};
+function generateVideo() {
+  const prompt = document.getElementById("prompt").value.trim();
+  const style = document.getElementById("style").value;
+  const ratio = document.getElementById("ratio").value;
+  const duration = document.getElementById("duration").value;
 
-const words={
-fa:{portfolio:"ارزش کل دارایی‌ها",balance:"موجودی EMC",totalMining:"کل استخراج",level:"سطح حساب",market:"قیمت و بازار EMC",slogan:"ماینینگ بات هرگز نمی‌خوابه!",assets:"دارایی‌های شما",daily:"پاداش روزانه",goMining:"رفتن به استخراج",marketTitle:"بازار ارزها",swapTitle:"تبدیل ارزها",pay:"پرداخت می‌کنید",receive:"دریافت می‌کنید",fee:"کارمزد",minimum:"حداقل تبدیل EMC",final:"دریافتی نهایی",confirm:"تأیید تبدیل",swapNotice:"این تبدیل فقط داخل برنامه ثبت می‌شود و انتقال واقعی رمزارز نیست.",history:"تاریخچه تبدیل",totalValue:"ارزش مجموع دارایی‌ها",convert:"تبدیل دارایی‌ها",mining:"استخراج EMERALD",remaining:"زمان باقی‌مانده",start:"شروع استخراج",tasks:"وظایف و پاداش‌ها",channel:"عضویت در کانال",visit:"بازدید از پروژه",claim:"دریافت",friends:"دعوت از دوستان",share:"لینک دعوت اختصاصی خود را به اشتراک بگذار.",copy:"کپی لینک دعوت",upgrade:"ارتقای سطح",cost:"هزینه ارتقا",upgradeButton:"ارتقای سطح",nextReward:"پاداش روزانه بعد از ارتقا",wallet:"کیف پول",walletNotice:"برای انتقال واقعی باید قرارداد توکن و TON Connect متصل شود.",connect:"اتصال کیف پول TON",withdrawInfo:"قابلیت برداشت در آینده فعال خواهد شد.",navHome:"خانه",navMarket:"بازار",navSwap:"سوآپ",navAssets:"دارایی",navMining:"استخراج",navTasks:"وظایف",navFriends:"دعوت",navWallet:"کیف پول"},
-en:{portfolio:"Total Portfolio Value",balance:"EMC Balance",totalMining:"Total Mined",level:"Account Level",market:"EMC Price & Market",slogan:"Mining never sleeps!",assets:"Your Assets",daily:"Daily Reward",goMining:"Go to Mining",marketTitle:"Crypto Market",swapTitle:"Currency Swap",pay:"You Pay",receive:"You Receive",fee:"Fee",minimum:"Minimum EMC Swap",final:"Final Amount",confirm:"Confirm Swap",swapNotice:"This is only an in-app record, not a real crypto transfer.",history:"Swap History",totalValue:"Total Asset Value",convert:"Convert Assets",mining:"EMERALD MINING",remaining:"Time Remaining",start:"Start Mining",tasks:"Tasks & Rewards",channel:"Join Channel",visit:"Visit Project",claim:"Claim",friends:"Invite Friends",share:"Share your personal referral link.",copy:"Copy Referral Link",upgrade:"Level Upgrade",cost:"Upgrade Cost",upgradeButton:"Upgrade Level",nextReward:"Daily reward after upgrade",wallet:"Wallet",walletNotice:"Real transfers require a token contract and TON Connect.",connect:"Connect TON Wallet",withdrawInfo:"Withdrawals will be available soon.",navHome:"Home",navMarket:"Market",navSwap:"Swap",navAssets:"Assets",navMining:"Mining",navTasks:"Tasks",navFriends:"Invite",navWallet:"Wallet"},
-ar:{portfolio:"إجمالي قيمة الأصول",balance:"رصيد EMC",totalMining:"إجمالي التعدين",level:"مستوى الحساب",market:"سعر وسوق EMC",slogan:"التعدين لا يتوقف أبداً!",assets:"أصولك",daily:"المكافأة اليومية",goMining:"الذهاب للتعدين",marketTitle:"سوق العملات",swapTitle:"تحويل العملات",pay:"أنت تدفع",receive:"أنت تستلم",fee:"الرسوم",minimum:"الحد الأدنى EMC",final:"المبلغ النهائي",confirm:"تأكيد التحويل",swapNotice:"لا توجد عملية تحويل حقيقية.",history:"سجل التحويلات",totalValue:"إجمالي قيمة الأصول",convert:"تحويل الأصول",mining:"تعدين EMERALD",remaining:"الوقت المتبقي",start:"بدء التعدين",tasks:"المهام والمكافآت",channel:"الانضمام إلى القناة",visit:"زيارة المشروع",claim:"استلام",friends:"دعوة الأصدقاء",share:"شارك رابط الدعوة الخاص بك.",copy:"نسخ رابط الدعوة",upgrade:"ترقية المستوى",cost:"تكلفة الترقية",upgradeButton:"ترقية المستوى",nextReward:"المكافأة اليومية بعد الترقية",wallet:"المحفظة",walletNotice:"التحويل الحقيقي يتطلب عقد توكن وTON Connect.",connect:"ربط محفظة TON",withdrawInfo:"سيتم تفعيل السحب قريباً.",navHome:"الرئيسية",navMarket:"السوق",navSwap:"تبديل",navAssets:"الأصول",navMining:"التعدين",navTasks:"المهام",navFriends:"دعوة",navWallet:"المحفظة"},
-zh:{portfolio:"总资产价值",balance:"EMC余额",totalMining:"累计挖矿",level:"账户等级",market:"EMC价格与市场",slogan:"挖矿永不停止！",assets:"您的资产",daily:"每日奖励",goMining:"前往挖矿",marketTitle:"加密货币市场",swapTitle:"兑换货币",pay:"支付",receive:"收到",fee:"手续费",minimum:"最低EMC兑换",final:"最终金额",confirm:"确认兑换",swapNotice:"此兑换不会进行真实加密货币转账。",history:"兑换记录",totalValue:"资产总价值",convert:"兑换资产",mining:"EMERALD挖矿",remaining:"剩余时间",start:"开始挖矿",tasks:"任务与奖励",channel:"加入频道",visit:"访问项目",claim:"领取",friends:"邀请好友",share:"分享您的专属邀请链接。",copy:"复制邀请链接",upgrade:"等级升级",cost:"升级费用",upgradeButton:"升级等级",nextReward:"升级后的每日奖励",wallet:"钱包",walletNotice:"真实转账需要代币合约和TON Connect。",connect:"连接TON钱包",withdrawInfo:"提现功能即将开放。",navHome:"首页",navMarket:"市场",navSwap:"兑换",navAssets:"资产",navMining:"挖矿",navTasks:"任务",navFriends:"邀请",navWallet:"钱包"}
-};
+  if (!prompt) {
+    alert("لطفاً توضیحات ویدیو را وارد کن!");
+    return;
+  }
 
-let lang=localStorage.getItem('emerald_language')||'fa';
-if(!words[lang])lang='fa';
+  const result = document.getElementById("result");
+  const output = document.getElementById("output");
 
-const defaults={level:1,earned:0,lastMine:0,referrals:0,assets:{EMC:0,USDT:0,ETH:0,BTC:0},history:[],tasks:[]};
+  output.textContent =
+    "موضوع: " + prompt +
+    " | سبک: " + style +
+    " | نسبت تصویر: " + ratio +
+    " | مدت: " + duration + " ثانیه";
 
-function load(){
-try{
-const s=JSON.parse(localStorage.getItem('emerald_exchange_v2'))||{};
-return {...defaults,...s,level:Math.max(1,Number(s.level)||1),assets:{...defaults.assets,...(s.assets||{})},history:Array.isArray(s.history)?s.history:[],tasks:Array.isArray(s.tasks)?s.tasks:[]};
-}catch(e){return {...defaults,assets:{...defaults.assets}}}
+  result.style.display = "block";
 }
-let state=load();
-function save(){localStorage.setItem('emerald_exchange_v2',JSON.stringify(state))}
-function reward(){return state.level*200}
-function t(k){return words[lang][k]||words.fa[k]||k}
-function money(n){return Number(n||0).toLocaleString('en-US',{maximumFractionDigits:4})}
-function totalValue(){return Object.keys(rates).reduce((a,k)=>a+(Number(state.assets[k])||0)*rates[k],0)}
-function toast(msg){
-const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';
-clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display='none',2600);
-}
-function withdrawSoon(){toast(t('withdrawInfo'))}
-function setLanguage(v){
-lang=v;localStorage.setItem('emerald_language',v);
-document.documentElement.lang=v;document.documentElement.dir=['fa','ar'].includes(v)?'rtl':'ltr';
-document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
-render();calculateSwap();
-}
-function go(id,btn){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-if(btn)btn.classList.add('active');
-else{
-const ids=['home','market','swap','assets','mining','tasks','friends','wallet'];
-document.querySelectorAll('.nav button')[ids.indexOf(id)]?.classList.add('active');
-}
-render();
-}
-function renderAssets(){
-const names={EMC:'Emerald Coin',USDT:'Tether',ETH:'Ethereum',BTC:'Bitcoin'};
-const icons={EMC:'E',USDT:'₮',ETH:'Ξ',BTC:'₿'};
-let html='';
-for(const c of Object.keys(names)){
-html+=`<div class="asset"><div class="coin"><div class="coinicon">${icons[c]}</div><div><strong>${c}</strong><div class="small">${names[c]}</div></div></div><div style="text-align:left"><strong>${money(state.assets[c])}</strong><div class="small">$${money(state.assets[c]*rates[c])}</div></div></div>`;
-}
-document.getElementById('assetList').innerHTML=html;
-document.getElementById('homeAssets').innerHTML=html;
-document.getElementById('marketAssets').innerHTML=html;
-document.getElementById('portfolioValue').textContent='$'+money(totalValue());
-document.getElementById('assetTotal').textContent='$'+money(totalValue());
-}
-function render(){
-const b=money(state.assets.EMC);
-document.getElementById('homeBalance').textContent=b+' EMC';
-document.getElementById('homeEarned').textContent=money(state.earned)+' EMC';
-document.getElementById('homeLevel').textContent='Level '+state.level;
-document.getElementById('mineEarned').textContent=money(state.earned)+' EMC';
-document.getElementById('mineLevel').textContent=state.level;
-document.getElementById('upgradeLevel').textContent='LEVEL '+state.level;
-document.getElementById('upgradeReward').textContent=money(reward()+200)+' EMC';
-document.getElementById('refCount').textContent=state.referrals;
-document.getElementById('miningReward').textContent='+'+money(reward())+' EMC';
-document.getElementById('dailyReward').textContent=money(reward())+' EMC';
-renderAssets();renderHistory();updateMining();save();
-}
-function mine(){
-const now=Date.now();
-if(state.lastMine&&now-state.lastMine<DAY){toast('Mining is not ready yet');return}
-const amount=reward();
-state.assets.EMC+=amount;state.earned+=amount;state.lastMine=now;
-render();toast('+'+amount+' EMC');
-}
-function updateMining(){
-const elapsed=state.lastMine?Date.now()-state.lastMine:DAY;
-const left=Math.max(0,DAY-elapsed),ready=left===0;
-document.getElementById('mineButton').disabled=!ready;
-document.getElementById('miningStatus').textContent=ready?'● READY':'● MINING COOLDOWN';
-document.getElementById('mineProgress').style.width=Math.min(100,elapsed/DAY*100)+'%';
-if(ready)document.getElementById('countdown').textContent='Ready';
-else{
-const h=Math.floor(left/3600000),m=Math.floor(left%3600000/60000),s=Math.floor(left%60000/1000);
-document.getElementById('countdown').textContent=`${h}h ${m}m ${s}s`;
-}
-}
-function upgrade(){
-if(state.assets.EMC<500){toast('500 EMC required');return}
-state.assets.EMC-=500;state.level++;
-render();toast('Level upgraded! Level '+state.level);
-}
-function calculateSwap(){
-const f=document.getElementById('fromCoin').value,to=document.getElementById('toCoin').value;
-const amount=Number(document.getElementById('fromAmount').value)||0;
-const out=f===to?0:amount*rates[f]/rates[to]*(1-FEE);
-document.getElementById('toAmount').value=money(out);
-document.getElementById('fromBalance').textContent=money(state.assets[f])+' '+f;
-document.getElementById('toBalance').textContent=money(state.assets[to])+' '+to;
-document.getElementById('swapFinal').textContent=money(out)+' '+to;
-}
-function confirmSwap(){
-const amount=Number(document.getElementById('fromAmount').value);
-const f=document.getElementById('fromCoin').value,to=document.getElementById('toCoin').value;
-if(!amount||amount<=0){toast('Enter a valid amount');return}
-if(f===to){toast('Choose different currencies');return}
-if(f==='EMC'&&amount<MIN){toast('Minimum is 10,000 EMC');return}
-if(amount>state.assets[f]){toast('Insufficient balance');return}
-const out=amount*rates[f]/rates[to]*(1-FEE);
-state.assets[f]-=amount;state.assets[to]+=out;
-state.history.unshift({from:f,to,amount,out,date:new Date().toLocaleString()});
-state.history=state.history.slice(0,40);
-render();calculateSwap();
-document.getElementById('swapSuccess').style.display='block';
-document.getElementById('swapSuccess').textContent='✓ '+money(out)+' '+to;
-}
-function renderHistory(){
-const el=document.getElementById('swapHistory');
-el.innerHTML=state.history.length?state.history.map(x=>`<div class="asset"><span>${money(x.amount)} ${x.from} → ${money(x.out)} ${x.to}</span><span class="small">${x.date}</span></div>`).join(''):'<span class="small">—</span>';
-}
-function taskReward(id,n){
-if(state.tasks.includes(id)){toast('Already claimed');return}
-state.tasks.push(id);state.assets.EMC+=n;state.earned+=n;render();toast('+'+n+' EMC');
-}
-
-/* TELEGRAM REFERRAL SYSTEM */
-function getTelegramUser(){
-return window.Telegram?.WebApp?.initDataUnsafe?.user||null;
-}
-
-function setupReferral(){
-const tg=window.Telegram?.WebApp;
-const user=getTelegramUser();
-const linkInput=document.getElementById('refLink');
-const status=document.getElementById('refStatus');
-
-if(!user?.id){
-linkInput.value='https://t.me/'+BOT_USERNAME;
-status.textContent='Open EMERALD COIN inside Telegram to get your personal referral link.';
-return;
-}
-
-const telegramId=String(user.id);
-
-// Deep link for opening the mini app with a referral parameter.
-// The bot must have a Main Mini App configured in BotFather.
-linkInput.value=`https://t.me/${BOT_USERNAME}?startapp=ref_${telegramId}`;
-
-const startParam=tg.initDataUnsafe?.start_param||'';
-if(startParam.startsWith('ref_')){
-const inviterId=startParam.substring(4);
-if(inviterId!==telegramId&&/^\d+$/.test(inviterId)){
-window.pendingReferral=inviterId;
-status.textContent='Referral detected. Server registration required.';
-}else{
-status.textContent='Your personal invitation link is ready.';
-}
-}else{
-status.textContent='Your personal invitation link is ready.';
-}
-}
-
-async function copyReferral(){
-const link=document.getElementById('refLink').value;
-try{
-if(navigator.clipboard&&window.isSecureContext){
-await navigator.clipboard.writeText(link);
-}else{
-const input=document.getElementById('refLink');
-input.select();
-input.setSelectionRange(0,99999);
-document.execCommand('copy');
-}
-toast('Referral link copied! 💎');
-}catch(e){
-toast('Please select and copy the link');
-}
-}
-
-let chartData=Array.from({length:25},()=>START_PRICE),charts=[];
-function makeChart(id){
-if(!window.Chart)return;
-const c=new Chart(document.getElementById(id),{
-type:'line',
-data:{labels:chartData.map((_,i)=>i),datasets:[{data:chartData,borderColor:'#19d58b',backgroundColor:'rgba(25,213,139,.1)',fill:true,tension:.35,pointRadius:0,borderWidth:2}]},
-options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:false},y:{ticks:{color:'#8ba99a'},grid:{color:'rgba(120,160,130,.12)'}}}}
-});
-charts.push(c);
-}
-function updatePrice(){
-rates.EMC=Math.max(.0001,rates.EMC*(1+(Math.random()-.49)*.01));
-chartData.push(rates.EMC);if(chartData.length>25)chartData.shift();
-charts.forEach(c=>{c.data.datasets[0].data=chartData;c.update('none')});
-const p='$'+rates.EMC.toFixed(6);
-document.getElementById('price').textContent=p;
-document.getElementById('marketPrice').textContent=p;
-renderAssets();calculateSwap();
-}
-function init(){
-const tg=window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand()}
-document.getElementById('languageSelect').value=lang;
-document.documentElement.lang=lang;
-document.documentElement.dir=['fa','ar'].includes(lang)?'rtl':'ltr';
-document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
-makeChart('homeChart');makeChart('marketChart');
-setupReferral();render();calculateSwap();
-setInterval(updateMining,1000);
-setInterval(updatePrice,5000);
-}
-init();
 </script>
+
 </body>
-</html>
+  </html>
+  
