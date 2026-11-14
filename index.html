@@ -3,412 +3,384 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#06130d">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07131c">
 <title>MIFADO COIN</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:#06130d;--panel:#10251a;--panel2:#163322;--green:#35e58a;--muted:#91a99a;--white:#f3fff7;--red:#ff6262}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at top,#163b28,#06130d 55%);color:var(--white);font-family:Arial,sans-serif;min-height:100vh}
-button,input,select{font:inherit}
-button{cursor:pointer;border:0}
-header{padding:22px 16px 12px;text-align:center}
-.logo{font-size:27px;font-weight:900;color:var(--green);letter-spacing:2px}
-.subtitle{color:var(--muted);font-size:12px;margin-top:5px}
-.container{max-width:650px;margin:auto;padding:12px 14px 100px}
-.card{background:linear-gradient(145deg,#143323,#0c1e14);border:1px solid #28533a;border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 8px 25px #0004}
-.balance{text-align:center;padding:25px 15px}
-.small{font-size:12px;color:var(--muted)}
-.amount{font-size:37px;font-weight:900;color:var(--green);margin:10px 0}
-.coin{font-size:12px;color:#b7d9c3}
+body{margin:0;padding:15px 14px 90px;background:linear-gradient(160deg,#102c3a,#061018 65%);color:#fff;font-family:Arial,sans-serif}
+header,.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+header{margin:8px 0 20px}
+.logo{font-size:22px;font-weight:bold;color:#3ce8a5}
+.card{background:#ffffff0d;border:1px solid #ffffff20;border-radius:18px;padding:17px;margin:13px 0;box-shadow:0 8px 25px #0003}
+h2{font-size:18px;margin:3px 0 14px}
+h3{font-size:15px}
+.muted{color:#9eb4c0;font-size:13px}
+.big{font-size:34px;color:#3ce8a5;font-weight:bold;margin:12px 0}
+.green{color:#3ce8a5}.red{color:#ff697c}
+button{border:1px solid #ffffff25;background:#ffffff12;color:white;padding:13px;border-radius:12px;font-weight:bold;cursor:pointer}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:linear-gradient(120deg,#16b77b,#48e9a8);color:#062016;border:0;width:100%}
+.secondary{width:100%;background:#50baff18;border-color:#50baff55}
+input{width:100%;padding:14px;margin:8px 0 13px;border-radius:11px;border:1px solid #ffffff25;background:#071923;color:white;font-size:15px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#0a1b11;border-radius:13px;padding:13px;text-align:center}
-.stat b{display:block;font-size:18px;color:var(--green);margin-top:7px}
-.btn{background:var(--green);color:#052012;padding:13px 16px;border-radius:12px;font-weight:bold;width:100%;margin-top:10px}
-.btn.secondary{background:#234a32;color:white}
-.btn.danger{background:#6b2929;color:white}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-input,select{width:100%;padding:13px;background:#07170e;border:1px solid #31563e;border-radius:10px;color:white;margin-top:8px;outline:none}
-.section-title{font-size:17px;font-weight:bold;margin:8px 0 14px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#08170f;border-top:1px solid #24452f;display:flex;justify-content:space-around;padding:9px 3px calc(9px + env(safe-area-inset-bottom));z-index:10}
-.nav button{background:none;color:#a6b9ac;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:5px;padding:5px}
-.nav button.active{color:var(--green)}
-.nav span{font-size:19px}
+.stat{background:#ffffff0b;padding:13px;border-radius:13px}
+.stat strong{display:block;font-size:18px;margin-top:8px}
 .page{display:none}.page.active{display:block}
-.progress{height:9px;background:#07170e;border-radius:20px;overflow:hidden;margin:12px 0}
-.progress div{height:100%;background:var(--green);width:0;transition:.3s}
-.item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #24432e}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#07131cf5;border-top:1px solid #ffffff20;padding:8px 2px calc(8px + env(safe-area-inset-bottom));z-index:10}
+.nav button{background:none;border:0;color:#a9bbc5;font-size:11px;padding:8px 3px}
+.nav button.active{color:#3ce8a5}
+.nav span{display:block;margin-top:4px}
+.progress{height:8px;background:#ffffff20;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;width:0;background:#3ce8a5;transition:width .3s}
+.item{padding:12px 0;border-bottom:1px solid #ffffff18}
 .item:last-child{border:0}
-.item button{width:auto;margin:0;padding:9px 14px}
-.tag{font-size:11px;color:var(--green);background:#193d29;padding:5px 9px;border-radius:20px}
-.history{font-size:12px;color:#c5d8cb;line-height:1.8;overflow-wrap:anywhere}
-.market-price{font-size:29px;color:var(--green);font-weight:bold;margin:12px 0}
-.positive{color:var(--green)}.negative{color:var(--red)}
-.hidden{display:none!important}
-.footer{text-align:center;color:#607b69;font-size:10px;padding:15px}
+.tag{font-size:11px;color:#3ce8a5;background:#3ce8a522;padding:6px 9px;border-radius:20px}
+#toast{display:none;position:fixed;top:12px;left:5%;width:90%;padding:13px;background:#164b39;border-radius:12px;text-align:center;z-index:30}
+.chart{width:100%;height:150px}
+hr{border:0;border-top:1px solid #ffffff20;margin:17px 0}
+.lang-btn{padding:8px 12px;color:#3ce8a5;background:#ffffff10;border:1px solid #3ce8a555}
+label{display:block;font-size:13px;margin-top:12px}
 </style>
 </head>
 <body>
 
+<div id="toast"></div>
+
 <header>
- <div class="logo">✦ MIFADO COIN</div>
- <div class="subtitle">DIGITAL MINING ECOSYSTEM</div>
+ <div>
+  <div class="logo">◆ MIFADO COIN</div>
+  <div class="muted">MFD DIGITAL COIN</div>
+ </div>
+ <div class="row">
+  <span class="tag">MFD</span>
+  <button class="lang-btn" id="langButton" onclick="toggleLanguage()">EN</button>
+ </div>
 </header>
 
-<div class="container">
-
-<!-- HOME -->
-<section class="page active" id="home">
- <div class="card balance">
-  <div class="small" data-i18n="balance">موجودی کل شما</div>
-  <div class="amount" id="balance">0</div>
-  <div class="coin">MFD</div>
-  <button class="btn" onclick="claimMining()" data-i18n="claim">دریافت پاداش استخراج</button>
-  <div class="small" id="miningTimer">در حال محاسبه...</div>
+<section id="home" class="page active">
+ <div class="card" style="text-align:center">
+  <div class="muted" data-key="balanceTitle">موجودی کل شما</div>
+  <div class="big"><span id="balance">100.00</span> MFD</div>
+  <div class="muted" data-key="balanceValueTitle">ارزش بر اساس قیمت داخلی بازی</div>
+  <h3 id="balanceValue" class="green">$6.00</h3>
+  <div class="progress"><div id="progress"></div></div>
+  <div class="row muted"><span data-key="miningTime">زمان استخراج</span><b id="timer">24:00:00</b></div>
+  <button class="primary" onclick="collect()" data-key="collect">دریافت پاداش استخراج</button>
  </div>
-
  <div class="grid">
-  <div class="stat"><span class="small" data-i18n="rate">سرعت استخراج</span><b id="rate">10 MFD/h</b></div>
-  <div class="stat"><span class="small" data-i18n="earned">استخراج‌شده</span><b id="earned">0</b></div>
-  <div class="stat"><span class="small" data-i18n="price">قیمت مرجع</span><b id="homePrice">$0.006</b></div>
-  <div class="stat"><span class="small" data-i18n="level">سطح حساب</span><b id="level">1</b></div>
- </div>
-
- <div class="card">
-  <div class="section-title" data-i18n="mining">استخراج MFD</div>
-  <div class="small" data-i18n="miningDesc">پاداش استخراج بر اساس سرعت شما محاسبه می‌شود.</div>
-  <div class="progress"><div id="miningProgress"></div></div>
-  <div class="small" id="progressText">0%</div>
+  <div class="stat"><span class="muted" data-key="miningSpeed">سرعت استخراج</span><strong id="rate">1 MFD/H</strong></div>
+  <div class="stat"><span class="muted" data-key="miningLevel">سطح استخراج</span><strong id="level">0</strong></div>
+  <div class="stat"><span class="muted" data-key="usdtBalance">موجودی USDT</span><strong id="usdt">0.00</strong></div>
+  <div class="stat"><span class="muted" data-key="mfdPrice">قیمت MFD</span><strong id="homePrice">$0.0600</strong></div>
  </div>
 </section>
 
-<!-- MARKET -->
-<section class="page" id="market">
+<section id="market" class="page">
  <div class="card">
-  <div class="section-title" data-i18n="market">بازار MIFADO</div>
-  <div class="small" data-i18n="referencePrice">قیمت نمایشی هر MFD</div>
-  <div class="market-price" id="marketPrice">$0.006000</div>
-  <div id="marketChange" class="positive">+0.00%</div>
-  <div class="small" data-i18n="marketNote">قیمت این بخش شبیه‌سازی نمایشی است و قیمت واقعی بازار نیست.</div>
- </div>
- <div class="card">
-  <div class="section-title" data-i18n="yourAssets">دارایی شما</div>
-  <div class="amount" id="marketBalance">0 MFD</div>
-  <div class="small" data-i18n="estimatedValue">ارزش تخمینی بر اساس قیمت نمایشی</div>
-  <b id="assetValue">$0.00</b>
+  <h2>📈 MFD MARKET</h2>
+  <div class="muted" data-key="currentPrice">قیمت فعلی داخلی MFD</div>
+  <div class="big" id="marketPrice">$0.0600</div>
+  <div class="row">
+   <span class="muted" data-key="lastChange">تغییر آخرین حرکت</span>
+   <b id="change" class="green">0.00%</b>
+  </div>
+  <svg class="chart" viewBox="0 0 340 150" preserveAspectRatio="none">
+   <defs>
+    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+     <stop offset="0%" stop-color="#3ce8a5" stop-opacity=".3"/>
+     <stop offset="100%" stop-color="#3ce8a5" stop-opacity="0"/>
+    </linearGradient>
+   </defs>
+   <path id="chartArea" fill="url(#chartGradient)" d=""></path>
+   <polyline id="chart" points="" fill="none" stroke="#3ce8a5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="row muted"><span data-key="startPrice">قیمت شروع: $0.06</span><span data-key="internalChart">نمودار قیمت داخلی</span></div>
  </div>
 </section>
 
-<!-- SWAP -->
-<section class="page" id="swap">
+<section id="swap" class="page">
  <div class="card">
-  <div class="section-title" data-i18n="swap">تبدیل ارز داخلی</div>
-  <div class="small" data-i18n="swapBalance">موجودی MFD شما</div>
-  <b id="swapBalance">0 MFD</b>
-  <label class="small" data-i18n="amountLabel">مقدار تبدیل</label>
-  <input type="number" id="swapAmount" min="1" placeholder="مثلاً 1000">
-  <div class="small" data-i18n="swapRate">نرخ نمایشی: 1 MFD = 0.006 USDT</div>
-  <button class="btn" onclick="swapCoins()" data-i18n="convert">تبدیل</button>
-  <div class="item"><span>USDT</span><b id="usdtBalance">0.0000</b></div>
+  <h2>⇄ SWAP MFD TO USDT</h2>
+  <div class="row"><span class="muted" data-key="mfdBalance">موجودی MFD</span><b id="swapBalance">100 MFD</b></div>
+  <label data-key="swapAmountLabel">مقدار MFD برای تبدیل</label>
+  <input id="swapAmount" type="number" min="0" step="any" placeholder="مقدار MFD">
+  <div class="row">
+   <span class="muted" data-key="estimatedReceived">دریافتی تقریبی</span>
+   <b class="green" id="estimate">0.00 USDT</b>
+  </div>
+  <button class="primary" onclick="doSwap()" data-key="confirmSwap">تأیید تبدیل MFD به USDT</button>
+ </div>
+ <div class="card">
+  <h2 data-key="yourUsdt">موجودی USDT شما</h2>
+  <div class="big"><span id="swapUsdt">0.00</span> USDT</div>
  </div>
 </section>
 
-<!-- UPGRADES -->
-<section class="page" id="upgrade">
+<section id="upgrade" class="page">
  <div class="card">
-  <div class="section-title" data-i18n="upgrades">ارتقای استخراج</div>
-  <div class="small" data-i18n="upgradeDesc">با ارتقا، سرعت استخراج شما افزایش پیدا می‌کند.</div>
-  <div class="item">
-   <div><b data-i18n="upgrade1">ارتقای سطح ۲</b><div class="small">+5 MFD/h · 500 MFD</div></div>
-   <button class="btn" onclick="upgrade(500,5,2)" data-i18n="buy">خرید</button>
-  </div>
-  <div class="item">
-   <div><b data-i18n="upgrade2">ارتقای سطح ۳</b><div class="small">+10 MFD/h · 1500 MFD</div></div>
-   <button class="btn" onclick="upgrade(1500,10,3)" data-i18n="buy">خرید</button>
-  </div>
-  <div class="item">
-   <div><b data-i18n="upgrade3">ارتقای سطح ۴</b><div class="small">+20 MFD/h · 4000 MFD</div></div>
-   <button class="btn" onclick="upgrade(4000,20,4)" data-i18n="buy">خرید</button>
-  </div>
+  <h2 data-key="upgradeTitle">⚡ ارتقای استخراج</h2>
+  <div id="upgrades"></div>
  </div>
 </section>
 
-<!-- WITHDRAW -->
-<section class="page" id="withdraw">
+<section id="withdraw" class="page">
  <div class="card">
-  <div class="section-title" data-i18n="withdraw">درخواست برداشت</div>
-  <div class="small" data-i18n="withdrawDesc">حداقل درخواست: 10,000 MFD</div>
-  <input id="wallet" placeholder="TON Wallet Address">
-  <input id="withdrawAmount" type="number" min="10000" placeholder="Amount MFD">
-  <button class="btn" onclick="requestWithdraw()" data-i18n="submit">ثبت درخواست</button>
-  <div class="small" id="withdrawMessage"></div>
+  <h2>💳 WITHDRAWAL</h2>
+  <div class="row">
+   <span class="muted" data-key="minimumWithdraw">حداقل برداشت</span>
+   <b class="green">10,000 MFD</b>
+  </div>
+  <label data-key="walletLabel">آدرس کیف پول TON</label>
+  <input id="wallet" placeholder="EQ... یا UQ...">
+  <button class="secondary" onclick="saveWallet()" data-key="saveWallet">ذخیره آدرس کیف پول</button>
+  <hr>
+  <label data-key="withdrawAmountLabel">مقدار برداشت MFD</label>
+  <input id="withdrawAmount" type="number" min="10000" placeholder="حداقل 10000">
+  <button class="primary" onclick="requestWithdraw()" data-key="submitWithdraw">ثبت درخواست برداشت</button>
  </div>
  <div class="card">
-  <div class="section-title" data-i18n="withdrawHistory">درخواست‌های برداشت</div>
-  <div id="withdrawList" class="history"></div>
- </div>
-</section>
-
-<!-- MISSIONS -->
-<section class="page" id="missions">
- <div class="card">
-  <div class="section-title" data-i18n="missions">مأموریت‌ها</div>
-  <div class="item">
-   <div><b data-i18n="mission1">ورود به برنامه</b><div class="small">+50 MFD</div></div>
-   <button class="btn" id="mission1btn" onclick="completeMission('daily',50)" data-i18n="claim">دریافت</button>
-  </div>
-  <div class="item">
-   <div><b data-i18n="mission2">دعوت از دوستان</b><div class="small">+100 MFD</div></div>
-   <button class="btn" onclick="copyReferral()" data-i18n="invite">دعوت</button>
-  </div>
-  <div class="item">
-   <div><b data-i18n="mission3">بازدید از بازار</b><div class="small">+25 MFD</div></div>
-   <button class="btn" id="mission3btn" onclick="completeMission('market',25)" data-i18n="claim">دریافت</button>
-  </div>
+  <h2 data-key="withdrawHistoryTitle">تاریخچه برداشت</h2>
+  <div id="withdrawHistory" class="muted">هنوز درخواستی ثبت نشده است.</div>
  </div>
 </section>
 
-<!-- HISTORY -->
-<section class="page" id="history">
+<section id="tasks" class="page">
  <div class="card">
-  <div class="section-title" data-i18n="history">تاریخچه فعالیت‌ها</div>
-  <div id="historyList" class="history">No activity</div>
-  <button class="btn secondary" onclick="clearHistory()" data-i18n="clearHistory">پاک کردن تاریخچه</button>
+  <h2>🎯 <span data-key="missionsTitle">ماموریت‌ها</span></h2>
+  <div id="missions"></div>
+ </div>
+ <div class="card">
+  <h2 data-key="inviteFriends">دعوت دوستان</h2>
+  <div class="muted" data-key="inviteLinkTitle">لینک دعوت شما</div>
+  <input id="inviteLink" readonly>
+  <button class="secondary" onclick="copyInvite()" data-key="copyInvite">کپی لینک دعوت</button>
  </div>
 </section>
 
-<!-- SETTINGS -->
-<section class="page" id="settings">
+<section id="history" class="page">
  <div class="card">
-  <div class="section-title" data-i18n="settings">تنظیمات</div>
-  <div class="item">
-   <span data-i18n="language">زبان برنامه</span>
-   <select id="language" onchange="changeLanguage(this.value)">
-    <option value="fa">فارسی</option>
-    <option value="en">English</option>
-   </select>
-  </div>
-  <div class="item">
-   <span data-i18n="account">شناسه حساب</span>
-   <b id="accountId">LOCAL</b>
-  </div>
-  <button class="btn secondary" onclick="resetData()" data-i18n="reset">بازنشانی اطلاعات</button>
+  <h2 data-key="activityTitle">تاریخچه فعالیت‌ها</h2>
+  <div id="activity">هنوز فعالیتی ثبت نشده است.</div>
  </div>
 </section>
-
-<div class="footer">MIFADO COIN · DIGITAL MINING</div>
-</div>
 
 <nav class="nav">
- <button class="active" onclick="showPage('home',this)"><span>⌂</span><i data-i18n="navHome">خانه</i></button>
- <button onclick="showPage('market',this)"><span>▥</span><i data-i18n="navMarket">بازار</i></button>
- <button onclick="showPage('swap',this)"><span>⇄</span><i data-i18n="navSwap">تبدیل</i></button>
- <button onclick="showPage('upgrade',this)"><span>⚡</span><i data-i18n="navUpgrade">ارتقا</i></button>
- <button onclick="showPage('withdraw',this)"><span>↗</span><i data-i18n="navWithdraw">برداشت</i></button>
- <button onclick="showPage('missions',this)"><span>★</span><i data-i18n="navMissions">مأموریت</i></button>
- <button onclick="showPage('settings',this)"><span>⚙</span><i data-i18n="navSettings">تنظیمات</i></button>
+ <button class="active" onclick="showPage('home',this)">⌂<span data-key="navHome">خانه</span></button>
+ <button onclick="showPage('market',this)">📈<span data-key="navMarket">بازار</span></button>
+ <button onclick="showPage('swap',this)">⇄<span data-key="navSwap">سوآپ</span></button>
+ <button onclick="showPage('upgrade',this)">⚡<span data-key="navUpgrade">ارتقا</span></button>
+ <button onclick="showPage('withdraw',this)">💳<span data-key="navWithdraw">برداشت</span></button>
+ <button onclick="showPage('tasks',this)">★<span data-key="navTasks">ماموریت</span></button>
+ <button onclick="showPage('history',this)">☷<span data-key="navHistory">تاریخچه</span></button>
 </nav>
 
 <script>
 "use strict";
 
-const STORAGE_KEY = "MIFADO_FINAL_DATA_2026";
-const LANG_KEY = "MIFADO_LANGUAGE";
+const STORAGE_KEY="MIFADO_FINAL_DATA_2026";
+const LANG_KEY="MIFADO_LANGUAGE";
 
-const defaults = {
- balance:0,
- rate:10,
- level:1,
- earned:0,
- usdt:0,
- price:0.006,
- last:Date.now(),
- cycleStart:Date.now(),
- history:[],
- withdrawals:[],
- missions:{},
- marketPrevious:0.006
-};
-
-let data;
-try {
- const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
- data = {...defaults,...saved};
- data.history = Array.isArray(data.history) ? data.history : [];
- data.withdrawals = Array.isArray(data.withdrawals) ? data.withdrawals : [];
- data.missions = data.missions || {};
-} catch(e) {
- data = {...defaults};
-}
-
-let lang = localStorage.getItem(LANG_KEY) === "en" ? "en" : "fa";
-
-const translations = {
+const translations={
  fa:{
-  balance:"موجودی کل شما",claim:"دریافت پاداش استخراج",rate:"سرعت استخراج",earned:"استخراج‌شده",price:"قیمت مرجع",level:"سطح حساب",mining:"استخراج MFD",miningDesc:"پاداش استخراج بر اساس سرعت شما محاسبه می‌شود.",market:"بازار MIFADO",referencePrice:"قیمت نمایشی هر MFD",marketNote:"قیمت این بخش شبیه‌سازی نمایشی است و قیمت واقعی بازار نیست.",yourAssets:"دارایی شما",estimatedValue:"ارزش تخمینی بر اساس قیمت نمایشی",swap:"تبدیل ارز داخلی",swapBalance:"موجودی MFD شما",amountLabel:"مقدار تبدیل",swapRate:"نرخ نمایشی: 1 MFD = 0.006 USDT",convert:"تبدیل",upgrades:"ارتقای استخراج",upgradeDesc:"با ارتقا، سرعت استخراج شما افزایش پیدا می‌کند.",upgrade1:"ارتقای سطح ۲",upgrade2:"ارتقای سطح ۳",upgrade3:"ارتقای سطح ۴",buy:"خرید",withdraw:"درخواست برداشت",withdrawDesc:"حداقل درخواست: 10,000 MFD",submit:"ثبت درخواست",withdrawHistory:"درخواست‌های برداشت",missions:"مأموریت‌ها",mission1:"ورود به برنامه",mission2:"دعوت از دوستان",mission3:"بازدید از بازار",invite:"دعوت",history:"تاریخچه فعالیت‌ها",clearHistory:"پاک کردن تاریخچه",settings:"تنظیمات",language:"زبان برنامه",account:"شناسه حساب",reset:"بازنشانی اطلاعات",navHome:"خانه",navMarket:"بازار",navSwap:"تبدیل",navUpgrade:"ارتقا",navWithdraw:"برداشت",navMissions:"مأموریت",navSettings:"تنظیمات"
+  balanceTitle:"موجودی کل شما",
+  balanceValueTitle:"ارزش بر اساس قیمت داخلی بازی",
+  miningTime:"زمان استخراج",
+  collect:"دریافت پاداش استخراج",
+  miningSpeed:"سرعت استخراج",
+  miningLevel:"سطح استخراج",
+  usdtBalance:"موجودی USDT",
+  mfdPrice:"قیمت MFD",
+  currentPrice:"قیمت فعلی داخلی MFD",
+  lastChange:"تغییر آخرین حرکت",
+  startPrice:"قیمت شروع: $0.06",
+  internalChart:"نمودار قیمت داخلی",
+  mfdBalance:"موجودی MFD",
+  swapAmountLabel:"مقدار MFD برای تبدیل",
+  estimatedReceived:"دریافتی تقریبی",
+  confirmSwap:"تأیید تبدیل MFD به USDT",
+  yourUsdt:"موجودی USDT شما",
+  upgradeTitle:"⚡ ارتقای استخراج",
+  minimumWithdraw:"حداقل برداشت",
+  walletLabel:"آدرس کیف پول TON",
+  saveWallet:"ذخیره آدرس کیف پول",
+  withdrawAmountLabel:"مقدار برداشت MFD",
+  submitWithdraw:"ثبت درخواست برداشت",
+  withdrawHistoryTitle:"تاریخچه برداشت",
+  missionsTitle:"ماموریت‌ها",
+  inviteFriends:"دعوت دوستان",
+  inviteLinkTitle:"لینک دعوت شما",
+  copyInvite:"کپی لینک دعوت",
+  activityTitle:"تاریخچه فعالیت‌ها",
+  navHome:"خانه",
+  navMarket:"بازار",
+  navSwap:"سوآپ",
+  navUpgrade:"ارتقا",
+  navWithdraw:"برداشت",
+  navTasks:"ماموریت",
+  navHistory:"تاریخچه",
+  noWithdrawals:"هنوز درخواستی ثبت نشده است.",
+  noActivity:"هنوز فعالیتی ثبت نشده است.",
+  purchased:"خریداری شده",
+  buy:"خرید",
+  level:"سطح",
+  perHour:"MFD / ساعت",
+  missionVisit:"بازدید از مرکز استخراج",
+  missionWallet:"ذخیره آدرس کیف پول",
+  done:"انجام شد",
+  receive:"دریافت",
+  enterWallet:"ابتدا آدرس کیف پول را ذخیره کنید.",
+  invalidWallet:"آدرس TON معتبر وارد کنید.",
+  minimumError:"حداقل برداشت 10,000 MFD است.",
+  insufficient:"موجودی MFD کافی نیست.",
+  withdrawSuccess:"درخواست برداشت ثبت شد: UNDER REVIEW",
+  walletSaved:"آدرس کیف پول ذخیره شد.",
+  rewardReceived:"پاداش استخراج به موجودی اضافه شد.",
+  amountInvalid:"مقدار معتبر وارد کنید.",
+  swapSuccess:"تبدیل داخلی با موفقیت انجام شد.",
+  upgradeSuccess:"ارتقا با موفقیت انجام شد.",
+  previousLevel:"ابتدا سطح قبلی را خریداری کنید.",
+  missionSuccess:"پاداش ماموریت دریافت شد.",
+  inviteCopied:"لینک دعوت کپی شد.",
+  copyFailed:"کپی لینک انجام نشد.",
+  dailyTime:"زمان باقی‌مانده",
+  underReview:"در حال بررسی",
+  marketTitle:"قیمت فعلی داخلی MFD"
  },
  en:{
-  balance:"Your Total Balance",claim:"Claim Mining Reward",rate:"Mining Speed",earned:"Total Mined",price:"Reference Price",level:"Account Level",mining:"MFD Mining",miningDesc:"Mining rewards are calculated based on your speed.",market:"MIFADO Market",referencePrice:"Displayed price per MFD",marketNote:"This is a simulated display price, not a live market price.",yourAssets:"Your Assets",estimatedValue:"Estimated value based on display price",swap:"Internal Currency Conversion",swapBalance:"Your MFD Balance",amountLabel:"Amount to convert",swapRate:"Display rate: 1 MFD = 0.006 USDT",convert:"Convert",upgrades:"Mining Upgrades",upgradeDesc:"Upgrade to increase your mining speed.",upgrade1:"Level 2 Upgrade",upgrade2:"Level 3 Upgrade",upgrade3:"Level 4 Upgrade",buy:"Buy",withdraw:"Withdrawal Request",withdrawDesc:"Minimum request: 10,000 MFD",submit:"Submit Request",withdrawHistory:"Withdrawal Requests",missions:"Missions",mission1:"Daily Login",mission2:"Invite Friends",mission3:"Visit Market",invite:"Invite",history:"Activity History",clearHistory:"Clear History",settings:"Settings",language:"App Language",account:"Account ID",reset:"Reset Data",navHome:"Home",navMarket:"Market",navSwap:"Swap",navUpgrade:"Upgrade",navWithdraw:"Withdraw",navMissions:"Missions",navSettings:"Settings"
+  balanceTitle:"Your Total Balance",
+  balanceValueTitle:"Value based on in-app price",
+  miningTime:"Mining Time",
+  collect:"Collect Mining Reward",
+  miningSpeed:"Mining Speed",
+  miningLevel:"Mining Level",
+  usdtBalance:"USDT Balance",
+  mfdPrice:"MFD Price",
+  currentPrice:"Current Internal MFD Price",
+  lastChange:"Last Price Change",
+  startPrice:"Starting Price: $0.06",
+  internalChart:"Internal Price Chart",
+  mfdBalance:"MFD Balance",
+  swapAmountLabel:"MFD Amount to Convert",
+  estimatedReceived:"Estimated Received",
+  confirmSwap:"Confirm MFD to USDT Conversion",
+  yourUsdt:"Your USDT Balance",
+  upgradeTitle:"⚡ Mining Upgrade",
+  minimumWithdraw:"Minimum Withdrawal",
+  walletLabel:"TON Wallet Address",
+  saveWallet:"Save Wallet Address",
+  withdrawAmountLabel:"Withdrawal Amount (MFD)",
+  submitWithdraw:"Submit Withdrawal Request",
+  withdrawHistoryTitle:"Withdrawal History",
+  missionsTitle:"Missions",
+  inviteFriends:"Invite Friends",
+  inviteLinkTitle:"Your Referral Link",
+  copyInvite:"Copy Referral Link",
+  activityTitle:"Activity History",
+  navHome:"Home",
+  navMarket:"Market",
+  navSwap:"Swap",
+  navUpgrade:"Upgrade",
+  navWithdraw:"Withdraw",
+  navTasks:"Missions",
+  navHistory:"History",
+  noWithdrawals:"No withdrawal requests yet.",
+  noActivity:"No activity yet.",
+  purchased:"Purchased",
+  buy:"Buy",
+  level:"Level",
+  perHour:"MFD / hour",
+  missionVisit:"Visit Mining Center",
+  missionWallet:"Save Wallet Address",
+  done:"Completed",
+  receive:"Claim",
+  enterWallet:"Please save your wallet address first.",
+  invalidWallet:"Enter a valid TON address.",
+  minimumError:"Minimum withdrawal is 10,000 MFD.",
+  insufficient:"Insufficient MFD balance.",
+  withdrawSuccess:"Withdrawal request submitted: UNDER REVIEW",
+  walletSaved:"Wallet address saved.",
+  rewardReceived:"Mining reward added to your balance.",
+  amountInvalid:"Enter a valid amount.",
+  swapSuccess:"Internal conversion completed.",
+  upgradeSuccess:"Upgrade successful.",
+  previousLevel:"Purchase the previous level first.",
+  missionSuccess:"Mission reward claimed.",
+  inviteCopied:"Referral link copied.",
+  copyFailed:"Unable to copy the referral link.",
+  dailyTime:"Time remaining",
+  underReview:"Under Review",
+  marketTitle:"Current Internal MFD Price"
  }
 };
 
+let lang=localStorage.getItem(LANG_KEY)==="en"?"en":"fa";
+const t=(key)=>translations[lang][key]||key;
+
+function initialData(){
+ return {
+  balance:100,
+  rate:1,
+  level:0,
+  last:Date.now(),
+  cycleStart:Date.now(),
+  wallet:"",
+  usdt:0,
+  price:0.06,
+  prices:Array(20).fill(0.06),
+  change:0,
+  withdrawals:[],
+  history:[],
+  missions:[]
+ };
+}
+
+let saved={};
+try{
+ saved=JSON.parse(localStorage.getItem(STORAGE_KEY))||{};
+}catch(e){saved={};}
+
+let data={...initialData(),...saved};
+
+if(!Array.isArray(data.prices)||!data.prices.length)data.prices=Array(20).fill(Number(data.price)||0.06);
+if(!Array.isArray(data.withdrawals))data.withdrawals=[];
+if(!Array.isArray(data.history))data.history=[];
+if(!Array.isArray(data.missions))data.missions=[];
+if(!Number.isFinite(Number(data.balance)))data.balance=100;
+if(!Number.isFinite(Number(data.rate)))data.rate=1;
+if(!Number.isFinite(Number(data.level)))data.level=0;
+if(!Number.isFinite(Number(data.usdt)))data.usdt=0;
+if(!Number.isFinite(Number(data.price))||data.price<=0)data.price=0.06;
+if(!Number.isFinite(Number(data.last)))data.last=Date.now();
+if(!Number.isFinite(Number(data.cycleStart)))data.cycleStart=data.last;
+
 function save(){
- localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
-}
-
-function fmt(n){
- return Number(n || 0).toLocaleString("en-US",{maximumFractionDigits:4});
-}
-
-function addHistory(message){
- data.history.unshift(new Date().toLocaleString()+" — "+message);
- data.history = data.history.slice(0,100);
-}
-
-function showPage(id,button){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
- if(button) button.classList.add("active");
- if(id==="market") completeMarketVisit();
- render();
-}
-
-function claimMining(){
- const now = Date.now();
- const elapsed = Math.max(0,now-data.last);
- const hours = Math.min(elapsed/3600000,24);
- const reward = Math.floor(hours*data.rate*100)/100;
- if(reward < 0.01){
-  alert(lang==="fa"?"هنوز پاداش کافی جمع نشده است.":"Not enough rewards accumulated yet.");
-  return;
- }
- data.balance += reward;
- data.earned += reward;
- data.last = now;
- data.cycleStart = now;
- addHistory("Mining reward: "+fmt(reward)+" MFD");
- save();
- render();
- alert((lang==="fa"?"پاداش دریافت شد: ":"Reward claimed: ")+fmt(reward)+" MFD");
-}
-
-function upgrade(cost,extra,newLevel){
- if(data.level >= newLevel){
-  alert(lang==="fa"?"این سطح را قبلاً خریده‌اید.":"You already own this level.");
-  return;
- }
- if(data.level !== newLevel-1){
-  alert(lang==="fa"?"ابتدا سطح قبلی را ارتقا دهید.":"Upgrade the previous level first.");
-  return;
- }
- if(data.balance < cost){
-  alert(lang==="fa"?"موجودی کافی نیست.":"Insufficient balance.");
-  return;
- }
- data.balance -= cost;
- data.rate += extra;
- data.level = newLevel;
- addHistory("Upgrade to level "+newLevel);
- save();
- render();
- alert(lang==="fa"?"ارتقا با موفقیت انجام شد.":"Upgrade successful.");
-}
-
-function swapCoins(){
- const input = document.getElementById("swapAmount");
- const amount = Number(input.value);
- if(!Number.isFinite(amount)||amount<=0){
-  alert(lang==="fa"?"مقدار معتبر وارد کنید.":"Enter a valid amount.");
-  return;
- }
- if(amount>data.balance){
-  alert(lang==="fa"?"موجودی کافی نیست.":"Insufficient balance.");
-  return;
- }
- const received = amount*data.price;
- data.balance -= amount;
- data.usdt += received;
- addHistory("Internal conversion: "+fmt(amount)+" MFD → "+fmt(received)+" USDT");
- save();
- input.value="";
- render();
- alert(lang==="fa"?"تبدیل داخلی انجام شد.":"Internal conversion completed.");
-}
-
-function requestWithdraw(){
- const wallet = document.getElementById("wallet").value.trim();
- const amount = Number(document.getElementById("withdrawAmount").value);
- const msg = document.getElementById("withdrawMessage");
- if(wallet.length<10){
-  msg.textContent=lang==="fa"?"آدرس کیف پول معتبر وارد کنید.":"Enter a valid wallet address.";
-  return;
- }
- if(!Number.isFinite(amount)||amount<10000){
-  msg.textContent=lang==="fa"?"حداقل برداشت ۱۰٬۰۰۰ MFD است.":"Minimum withdrawal is 10,000 MFD.";
-  return;
- }
- if(amount>data.balance){
-  msg.textContent=lang==="fa"?"موجودی کافی نیست.":"Insufficient balance.";
-  return;
- }
- data.balance-=amount;
- const request={wallet,amount,date:new Date().toLocaleString(),status:"UNDER REVIEW"};
- data.withdrawals.unshift(request);
- addHistory("Withdrawal request: "+fmt(amount)+" MFD");
- save();
- document.getElementById("withdrawAmount").value="";
- msg.textContent=lang==="fa"?"درخواست ثبت شد. وضعیت: در حال بررسی":"Request submitted. Status: UNDER REVIEW";
- render();
-}
-
-function completeMission(key,reward){
- if(data.missions[key]){
-  alert(lang==="fa"?"این مأموریت قبلاً تکمیل شده است.":"Mission already completed.");
-  return;
- }
- data.missions[key]=true;
- data.balance+=reward;
- addHistory("Mission reward: "+reward+" MFD");
- save();
- render();
- alert(lang==="fa"?"پاداش مأموریت دریافت شد.":"Mission reward claimed.");
-}
-
-function completeMarketVisit(){
- if(!data.missions.market){
-  // Mission is claimed manually from the missions page.
+ try{
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+ }catch(e){
+  notify("Storage error");
  }
 }
 
-function copyReferral(){
- const link = "https://t.me/YOUR_BOT?start=YOUR_USER_ID";
- if(navigator.clipboard && navigator.clipboard.writeText){
-  navigator.clipboard.writeText(link).then(()=>{
-   alert(lang==="fa"?"لینک نمونه کپی شد. لینک ربات خودت را جایگزین کن.":"Sample link copied. Replace it with your bot link.");
-  }).catch(()=>prompt("Copy referral link:",link));
- }else{
-  prompt("Copy referral link:",link);
- }
+function money(n,d=2){
+ return Number(n||0).toLocaleString("en-US",{
+  minimumFractionDigits:d,
+  maximumFractionDigits:d
+ });
 }
 
-function clearHistory(){
- if(!confirm(lang==="fa"?"تاریخچه پاک شود؟":"Clear activity history?"))return;
- data.history=[];
- save();
- render();
+function notify(message){
+ const toast=document.getElementById("toast");
+ toast.textContent=message;
+ toast.style.display="block";
+ clearTimeout(window.toastTimeout);
+ window.toastTimeout=setTimeout(()=>toast.style.display="none",2800);
 }
 
-function resetData(){
- if(!confirm(lang==="fa"?"تمام اطلاعات محلی پاک شود؟":"Reset all local data?"))return;
- localStorage.removeItem(STORAGE_KEY);
- data={...defaults,history:[],withdrawals:[],missions:{}};
- save();
- render();
-}
-
-function changeLanguage(value){
- lang=value==="en"?"en":"fa";
+function toggleLanguage(){
+ lang=lang==="fa"?"en":"fa";
  localStorage.setItem(LANG_KEY,lang);
  applyLanguage();
  render();
@@ -417,41 +389,240 @@ function changeLanguage(value){
 function applyLanguage(){
  document.documentElement.lang=lang;
  document.documentElement.dir=lang==="fa"?"rtl":"ltr";
- document.querySelectorAll("[data-i18n]").forEach(el=>{
-  const key=el.getAttribute("data-i18n");
+
+ document.querySelectorAll("[data-key]").forEach(el=>{
+  const key=el.getAttribute("data-key");
   if(translations[lang][key])el.textContent=translations[lang][key];
  });
- document.getElementById("language").value=lang;
+
+ document.getElementById("langButton").textContent=lang==="fa"?"EN":"FA";
+
+ document.getElementById("swapAmount").placeholder=lang==="fa"?"مقدار MFD":"MFD amount";
+ document.getElementById("wallet").placeholder=lang==="fa"?"EQ... یا UQ...":"EQ... or UQ...";
+ document.getElementById("withdrawAmount").placeholder=lang==="fa"?"حداقل 10000":"Minimum 10000";
 }
 
-function updateMarket(){
- const old=data.price;
- const movement=(Math.random()-0.48)*0.00006;
- data.price=Math.max(0.0001,Math.min(0.05,data.price+movement));
- data.marketPrevious=old;
+function addHistory(message){
+ data.history.unshift({message,time:Date.now()});
+ data.history=data.history.slice(0,50);
  save();
- renderMarket();
+ renderHistory();
 }
 
-function renderMarket(){
- const change=((data.price-data.marketPrevious)/Math.max(data.marketPrevious,0.000001))*100;
- document.getElementById("marketPrice").textContent="$"+data.price.toFixed(6);
- const changeEl=document.getElementById("marketChange");
- changeEl.textContent=(change>=0?"+":"")+change.toFixed(2)+"%";
- changeEl.className=change>=0?"positive":"negative";
- document.getElementById("homePrice").textContent="$"+data.price.toFixed(4);
- document.getElementById("marketBalance").textContent=fmt(data.balance)+" MFD";
- document.getElementById("assetValue").textContent="$"+(data.balance*data.price).toFixed(4);
+function mine(){
+ const now=Date.now();
+ const elapsed=Math.max(0,Math.min(now-data.last,86400000));
+
+ if(elapsed>0){
+  data.balance+=(elapsed/3600000)*data.rate;
+  data.last=now;
+  save();
+ }
 }
 
-function render(){
- document.getElementById("balance").textContent=fmt(data.balance);
- document.getElementById("rate").textContent=fmt(data.rate)+" MFD/h";
- document.getElementById("earned").textContent=fmt(data.earned);
- document.getElementById("level").textContent=data.level;
- document.getElementById("swapBalance").textContent=fmt(data.balance)+" MFD";
- document.getElementById("usdtBalance").textContent=fmt(data.usdt);
- document.getElementById("accountId").textContent="MFD-"+String(Math.abs(hashCode(STORAGE_KEY))).slice(0,7);
- document.getElementById("mission1btn").disabled=!!data.missions.daily;
- document.getElementById("mission3btn").disabled=!!data.missions.market;
- document.getElementById("historyList").innerHTML=data.history.length?data.history.map(
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const page=document.getElementById(id);
+ if(!page)return;
+ page.classList.add("active");
+
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+
+ if(id==="withdraw")renderWithdrawals();
+ if(id==="history")renderHistory();
+ if(id==="market")renderMarket();
+ if(id==="swap")updateEstimate();
+}
+
+function collect(){
+ mine();
+ data.cycleStart=Date.now();
+ data.last=Date.now();
+ addHistory("Mining reward collected");
+ save();
+ render();
+ notify(t("rewardReceived"));
+}
+
+function saveWallet(){
+ const input=document.getElementById("wallet");
+ const value=input.value.trim();
+
+ if(!/^(EQ|UQ)[A-Za-z0-9_-]{40,60}$/.test(value)){
+  notify(t("invalidWallet"));
+  return;
+ }
+
+ data.wallet=value;
+ save();
+ notify(t("walletSaved"));
+}
+
+function requestWithdraw(){
+ mine();
+
+ const amount=Number(document.getElementById("withdrawAmount").value);
+
+ if(!data.wallet){
+  notify(t("enterWallet"));
+  return;
+ }
+
+ if(!Number.isFinite(amount)||amount<10000){
+  notify(t("minimumError"));
+  return;
+ }
+
+ if(amount>data.balance){
+  notify(t("insufficient"));
+  return;
+ }
+
+ data.balance-=amount;
+
+ data.withdrawals.unshift({
+  amount:amount,
+  wallet:data.wallet,
+  status:"UNDER REVIEW",
+  time:Date.now()
+ });
+
+ document.getElementById("withdrawAmount").value="";
+ addHistory("Withdrawal request: "+money(amount)+" MFD — UNDER REVIEW");
+
+ save();
+ render();
+ renderWithdrawals();
+
+ notify(t("withdrawSuccess"));
+}
+
+function renderWithdrawals(){
+ const box=document.getElementById("withdrawHistory");
+ if(!box)return;
+
+ box.innerHTML="";
+
+ if(!data.withdrawals.length){
+  box.textContent=t("noWithdrawals");
+  return;
+ }
+
+ data.withdrawals.forEach(w=>{
+  const div=document.createElement("div");
+  div.className="item";
+
+  const row=document.createElement("div");
+  row.className="row";
+
+  const amount=document.createElement("b");
+  amount.textContent=money(w.amount)+" MFD";
+
+  const status=document.createElement("span");
+  status.className="tag";
+  status.textContent=t("underReview");
+
+  const time=document.createElement("div");
+  time.className="muted";
+  time.textContent=new Date(w.time).toLocaleString();
+
+  row.append(amount,status);
+  div.append(row,time);
+  box.appendChild(div);
+ });
+}
+
+function updateEstimate(){
+ const field=document.getElementById("swapAmount");
+ if(!field)return;
+
+ const amount=Number(field.value)||0;
+ document.getElementById("estimate").textContent=money(amount*data.price)+" USDT";
+}
+
+function doSwap(){
+ mine();
+
+ const field=document.getElementById("swapAmount");
+ const amount=Number(field.value);
+
+ if(!Number.isFinite(amount)||amount<=0){
+  notify(t("amountInvalid"));
+  return;
+ }
+
+ if(amount>data.balance){
+  notify(t("insufficient"));
+  return;
+ }
+
+ const received=amount*data.price;
+ data.balance-=amount;
+ data.usdt+=received;
+ field.value="";
+
+ addHistory("In-app swap: "+money(amount)+" MFD → "+money(received)+" USDT");
+
+ save();
+ render();
+ updateEstimate();
+ notify(t("swapSuccess"));
+}
+
+document.getElementById("swapAmount").addEventListener("input",updateEstimate);
+
+const upgradeData=[
+ {cost:100,rate:1.5},
+ {cost:250,rate:2.5},
+ {cost:500,rate:5},
+ {cost:1000,rate:10}
+];
+
+function renderUpgrades(){
+ const box=document.getElementById("upgrades");
+ box.innerHTML="";
+
+ upgradeData.forEach((u,i)=>{
+  const div=document.createElement("div");
+  div.className="item";
+
+  const bought=data.level>i;
+
+  const row=document.createElement("div");
+  row.className="row";
+
+  const info=document.createElement("div");
+
+  const title=document.createElement("b");
+  title.textContent=t("level")+" "+(i+1);
+
+  const desc=document.createElement("div");
+  desc.className="muted";
+  desc.textContent=u.rate+" "+t("perHour");
+
+  info.append(title,desc);
+
+  const button=document.createElement("button");
+  button.disabled=bought;
+  button.textContent=bought?t("purchased"):t("buy")+" · "+u.cost+" MFD";
+  button.onclick=()=>buyUpgrade(i);
+
+  row.append(info,button);
+  div.appendChild(row);
+  box.appendChild(div);
+ });
+}
+
+function buyUpgrade(i){
+ mine();
+
+ if(i!==data.level){
+  notify(t("previousLevel"));
+  return;
+ }
+
+ const u=upgradeData[i];
+
+ if(!u||data.balance<u.cost){
+  notify(
