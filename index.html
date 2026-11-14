@@ -3,356 +3,318 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MIFADO COIN</title>
 
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;
- background:#030609;
- color:white;
- font-family:Tahoma,Arial;
+ margin:0;background:#02070d;color:white;
+ font-family:Tahoma,Arial,sans-serif
 }
 .app{
- max-width:520px;
- min-height:100vh;
- margin:auto;
- background:radial-gradient(ellipse at center,#092333,#020509 70%);
- padding-bottom:100px;
+ max-width:520px;min-height:100vh;margin:auto;
+ background:radial-gradient(ellipse,#092637,#020609 75%);
+ padding-bottom:100px
 }
 header{
- background:#101014;
- padding:20px;
- text-align:center;
- font-size:24px;
- font-weight:bold;
+ background:#101014;padding:18px;
+ display:flex;justify-content:space-between;
+ align-items:center;font-size:22px;font-weight:bold
+}
+select{
+ background:#202436;color:white;
+ border:1px solid #2589b9;border-radius:12px;
+ padding:9px;width:105px;font-size:14px
 }
 .page{display:none;padding:20px}
 .page.active{display:block}
 .logo{
- width:280px;
- max-width:85%;
- aspect-ratio:1;
- object-fit:cover;
- display:block;
- margin:30px auto;
- border-radius:50%;
- border:5px solid #dca82b;
+ width:290px;height:290px;max-width:85vw;
+ object-fit:cover;display:block;
+ margin:30px auto;border-radius:50%;
+ border:6px solid #e6ad27;
  box-shadow:0 0 35px #087dff;
-}
-.balance{
- text-align:center;
- font-size:38px;
- font-weight:bold;
- margin:25px 0;
-}
-.blue{color:#22b9ff}
-.usd{color:#42d98b;font-size:20px}
-button{
  cursor:pointer;
- border:0;
- font-family:inherit;
+ transition:.2s
+}
+.logo:active{transform:scale(.96)}
+.balance{text-align:center;font-size:40px;font-weight:bold}
+.blue{color:#22baff}
+.usd{color:#42d98b;font-size:20px;margin:12px}
+.mine{
+ display:block;margin:25px auto;
+ background:#292638;color:white;
+ border-radius:28px;padding:22px;
+ width:90%;font-size:20px;
+ cursor:pointer
+}
+.stats{display:flex;gap:12px}
+.stat{
+ flex:1;text-align:center;padding:20px 5px;
+ border:1px solid #16485e;border-radius:18px
 }
 .primary{
- width:100%;
- padding:20px;
- background:#25b9f2;
- color:#00121c;
- border-radius:18px;
- font-size:21px;
- font-weight:bold;
- margin:12px 0;
+ width:100%;padding:18px;background:#25b9f2;
+ color:#00121c;border-radius:16px;
+ font-size:19px;font-weight:bold;margin:12px 0
 }
-.mine{
- background:#292638;
- color:white;
- padding:18px;
- border-radius:25px;
- display:block;
- margin:20px auto;
- font-size:19px;
-}
-.stats{
- display:flex;
- gap:12px;
-}
-.stat{
- flex:1;
- border:1px solid #16485e;
- border-radius:16px;
- padding:20px 5px;
- text-align:center;
-}
-h1{text-align:center;font-size:32px}
 .panel{
- border:2px solid #17617c;
- border-radius:22px;
- padding:22px;
- margin:18px 0;
- box-shadow:0 0 20px #087ca422;
+ border:2px solid #17617c;border-radius:20px;
+ padding:22px;margin:18px 0
 }
-.reward{
- font-size:32px;
- font-weight:bold;
- margin-top:15px;
-}
-.link{
- background:#111;
- padding:17px;
- border-radius:14px;
- direction:ltr;
- overflow:hidden;
- font-size:13px;
-}
+.reward{font-size:30px;margin-top:15px}
 .task{
- background:#07140e;
- border:1px solid #16452c;
+ background:#07140e;border:1px solid #16452c;
  border-right:5px solid #20c56b;
- border-radius:18px;
- padding:18px 12px;
- margin:15px 0;
- display:flex;
- align-items:center;
- gap:10px;
+ border-radius:16px;padding:15px;
+ margin:15px 0;display:flex;align-items:center;gap:10px
 }
 .task-info{flex:1}
-.task a{color:#27b9f2;display:block;margin:8px 0}
+.task a{display:block;color:#25b9f2;margin:8px 0}
 .task button{
- background:#20c56b;
- color:white;
- padding:12px;
- border-radius:25px;
+ background:#20c56b;color:white;
+ padding:12px;border-radius:20px
 }
 .wallet{
- border:2px solid #16485e;
- padding:22px;
- border-radius:18px;
- margin:15px 0;
- display:flex;
- justify-content:space-between;
+ border:2px solid #16485e;padding:20px;
+ border-radius:18px;margin:15px 0;
+ display:flex;justify-content:space-between
 }
-.wallet button{
- background:transparent;
- color:#25b9f2;
-}
+.wallet button{background:none;color:#25b9f2}
 nav{
- position:fixed;
- bottom:0;
- left:50%;
+ position:fixed;bottom:0;left:50%;
  transform:translateX(-50%);
  width:min(520px,100%);
- background:#050609;
- border-top:1px solid #222;
- display:grid;
- grid-template-columns:repeat(4,1fr);
- padding:10px 5px;
+ background:#050609;border-top:1px solid #25252b;
+ display:grid;grid-template-columns:repeat(4,1fr);
+ padding:8px 5px
 }
 nav button{
- background:transparent;
- color:#999;
- padding:10px 0;
- font-size:14px;
+ background:none;color:#999;
+ padding:12px 2px;font-size:14px
 }
 nav button.active{
- color:#25b9f2;
- background:#071d29;
- border-radius:15px;
+ color:#25b9f2;background:#071d29;
+ border-radius:18px
 }
-nav span{
- display:block;
- font-size:24px;
- margin-bottom:5px;
-}
+nav span{display:block;font-size:25px;margin-bottom:5px}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<header> MIFADO COIN 🚀 </header>
+<header>
+ <span>MIFADO COIN</span>
+ <select id="language" onchange="changeLanguage(this.value)">
+  <option value="fa">فارسی</option>
+  <option value="en">English</option>
+  <option value="ar">العربية</option>
+  <option value="zh">中文</option>
+ </select>
+</header>
 
-<!-- صفحه استخراج -->
 <section id="mine" class="page active">
 
-<img class="logo" src="data:image/png;base64,LOGO_BASE64"
-alt="MIFADO COIN">
+<!-- لوگوی واقعی خودت -->
+<img class="logo"
+ src="./mifado-logo.jpg"
+ alt="MIFADO COIN"
+ onclick="mine()">
 
 <div class="balance">
-<span id="balance">69.892</span>
-<span class="blue">MFD</span>
-<div class="usd">≈ $27.79 USD</div>
+ <span class="blue">MFD</span>
+ <span id="balance">69.892</span>
+ <div class="usd">≈ $27.79 USD</div>
 </div>
 
-<button class="mine" onclick="mine()">
-⛏ برای استخراج ضربه بزنید
+<button class="mine" onclick="mine()" data-t="mine">
+ ⛏ برای استخراج ضربه بزنید
 </button>
 
 <div class="stats">
-<div class="stat">⚡ <span id="energy">1000</span>/1000</div>
-<div class="stat">⌛ آماده</div>
+ <div class="stat">⚡ <span id="energy">1000</span>/1000</div>
+ <div class="stat" data-t="ready">⌛ آماده</div>
 </div>
-
 </section>
 
-<!-- دعوت -->
 <section id="invite" class="page">
-<h1>دعوت کن و درآمد کسب کن</h1>
-
+<h1 data-t="invite">دعوت دوستان</h1>
 <div class="panel">
-به ازای هر دعوت
-<div class="reward">
-20 <span class="blue">MFD</span>
+ <span data-t="reward">پاداش هر دعوت</span>
+ <div class="reward">20 <span class="blue">MFD</span></div>
 </div>
-</div>
-
 <div class="panel">
-<p>لینک دعوت شما</p>
-
-<div class="link" id="inviteLink">
-https://t.me/MifadoCoinBot
-</div>
-
-<button class="primary" onclick="copyLink()">
-کپی لینک دعوت
-</button>
-
+ <p data-t="yourlink">لینک دعوت شما</p>
+ <div id="inviteLink">https://t.me/MifadoCoinBot</div>
+ <button class="primary" onclick="copyLink()" data-t="copy">کپی لینک</button>
 </div>
 </section>
 
-<!-- وظایف -->
 <section id="tasks" class="page">
-<h1>وظایف</h1>
+<h1 data-t="tasks">وظایف</h1>
 
 <div class="task">
-<div class="task-info">
-<b>عضویت در کانال تلگرام</b>
-<a href="https://t.me/Mantle_Mining" target="_blank">@Mantle_Mining</a>
-<span class="blue">+100 MFD</span>
-</div>
-<button onclick="done(this)">شروع</button>
-</div>
-
-<div class="task">
-<div class="task-info">
-<b>عضویت در کانال اسپانسر</b>
-<a href="https://t.me/Crypto365team" target="_blank">@Crypto365team</a>
-<span class="blue">+50 MFD</span>
-</div>
-<button onclick="done(this)">شروع</button>
+ <div class="task-info">
+  <b data-t="task1">عضویت در کانال تلگرام</b>
+  <a href="https://t.me/MifadoCoinBot" target="_blank">@MifadoCoinBot</a>
+  <span class="blue">+100 MFD</span>
+ </div>
+ <button onclick="done(this)" data-t="start">شروع</button>
 </div>
 
 <div class="task">
-<div class="task-info">
-<b>دنبال کردن توییتر</b>
-<a href="https://x.com/Mantle_Official" target="_blank">@Mantle_Official</a>
-<span class="blue">+20 MFD</span>
+ <div class="task-info">
+  <b data-t="task2">دنبال کردن توییتر</b>
+  <a href="https://x.com/" target="_blank">X / Twitter</a>
+  <span class="blue">+50 MFD</span>
+ </div>
+ <button onclick="done(this)" data-t="start">شروع</button>
 </div>
-<button onclick="done(this)">شروع</button>
-</div>
-
 </section>
 
-<!-- کیف پول -->
 <section id="wallet" class="page">
-<h1>کیف پول</h1>
+<h1 data-t="wallet">کیف پول</h1>
 
 <div class="panel" style="text-align:center">
-موجودی کل
-<div class="balance">
-<span id="walletBalance">69.892</span>
-<span class="blue">MFD</span>
-</div>
+ <p data-t="total">موجودی کل</p>
+ <div class="balance">
+  <span id="walletBalance">69.892</span>
+  <span class="blue">MFD</span>
+ </div>
 </div>
 
-<button class="primary" onclick="alert('برداشت واقعی هنوز فعال نیست')">
-برداشت MFD ↑
+<button class="primary" onclick="alert('Withdrawal is not activated yet')" data-t="withdraw">
+ برداشت MFD
 </button>
 
 <div class="wallet">
-<b>🛡 Trust Wallet</b>
-<button onclick="alert('اتصال در نسخه نمایشی فعال نیست')">اتصال ←</button>
+ <b>🛡 Trust Wallet</b>
+ <button onclick="alert('Wallet connection is not activated yet')" data-t="connect">اتصال</button>
 </div>
 
 <div class="wallet">
-<b>🔵 Coinbase</b>
-<button onclick="alert('اتصال در نسخه نمایشی فعال نیست')">اتصال ←</button>
+ <b>🔵 Coinbase</b>
+ <button onclick="alert('Wallet connection is not activated yet')" data-t="connect">اتصال</button>
 </div>
 
 <div class="wallet">
-<b>♦ TON Wallet</b>
-<button onclick="alert('اتصال در نسخه نمایشی فعال نیست')">اتصال ←</button>
+ <b>💎 TON Wallet</b>
+ <button onclick="alert('Wallet connection is not activated yet')" data-t="connect">اتصال</button>
 </div>
-
 </section>
 
 <nav>
-<button onclick="showPage('invite',this)">
-<span>👥</span>دعوت
-</button>
-
-<button onclick="showPage('tasks',this)">
-<span>☑</span>وظایف
-</button>
-
-<button class="active" onclick="showPage('mine',this)">
-<span>◉</span>استخراج
-</button>
-
-<button onclick="showPage('wallet',this)">
-<span>▣</span>کیف پول
-</button>
+ <button onclick="showPage('invite',this)">
+  <span>👥</span><label data-t="navInvite">دعوت</label>
+ </button>
+ <button onclick="showPage('tasks',this)">
+  <span>☑</span><label data-t="navTasks">وظایف</label>
+ </button>
+ <button class="active" onclick="showPage('mine',this)">
+  <span>◉</span><label data-t="navMine">استخراج</label>
+ </button>
+ <button onclick="showPage('wallet',this)">
+  <span>▣</span><label data-t="navWallet">کیف پول</label>
+ </button>
 </nav>
-
 </div>
 
 <script>
 let balance=69.892;
 let energy=1000;
 
-function showPage(id,btn){
- document.querySelectorAll('.page')
- .forEach(p=>p.classList.remove('active'));
-
- document.getElementById(id)
- .classList.add('active');
-
- document.querySelectorAll('nav button')
- .forEach(b=>b.classList.remove('active'));
-
- btn.classList.add('active');
-}
-
 function mine(){
  if(energy<=0){
-  alert('انرژی تمام شده است');
+  alert('Energy is finished');
   return;
  }
-
  balance+=0.001;
  energy--;
 
- document.getElementById('balance').innerText=
- balance.toFixed(3);
-
- document.getElementById('walletBalance').innerText=
- balance.toFixed(3);
-
+ document.getElementById('balance').innerText=balance.toFixed(3);
+ document.getElementById('walletBalance').innerText=balance.toFixed(3);
  document.getElementById('energy').innerText=energy;
 }
 
-function copyLink(){
- const link=document.getElementById('inviteLink').innerText;
- navigator.clipboard.writeText(link)
- .then(()=>alert('لینک کپی شد'))
- .catch(()=>alert(link));
+function showPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
 }
 
 function done(btn){
- btn.innerText='✓ انجام شد';
+ btn.innerText='✓';
  btn.disabled=true;
 }
-</script>
 
+function copyLink(){
+ navigator.clipboard.writeText(
+ document.getElementById('inviteLink').innerText
+ ).then(()=>alert('Copied!'))
+ .catch(()=>alert('Copy the link manually'));
+}
+
+const translations={
+ fa:{
+ mine:'⛏ برای استخراج ضربه بزنید',ready:'⌛ آماده',
+ invite:'دعوت دوستان',reward:'پاداش هر دعوت',
+ yourlink:'لینک دعوت شما',copy:'کپی لینک',
+ tasks:'وظایف',task1:'عضویت در کانال تلگرام',
+ task2:'دنبال کردن توییتر',start:'شروع',
+ wallet:'کیف پول',total:'موجودی کل',
+ withdraw:'برداشت MFD',connect:'اتصال',
+ navInvite:'دعوت',navTasks:'وظایف',
+ navMine:'استخراج',navWallet:'کیف پول'
+ },
+ en:{
+ mine:'⛏ Tap to Mine',ready:'⌛ Ready',
+ invite:'Invite Friends',reward:'Reward per Invite',
+ yourlink:'Your Invitation Link',copy:'Copy Link',
+ tasks:'Tasks',task1:'Join Telegram Channel',
+ task2:'Follow on Twitter',start:'Start',
+ wallet:'Wallet',total:'Total Balance',
+ withdraw:'Withdraw MFD',connect:'Connect',
+ navInvite:'Invite',navTasks:'Tasks',
+ navMine:'Mining',navWallet:'Wallet'
+ },
+ ar:{
+ mine:'⛏ اضغط للتعدين',ready:'⌛ جاهز',
+ invite:'ادعُ أصدقاءك',reward:'مكافأة كل دعوة',
+ yourlink:'رابط الدعوة الخاص بك',copy:'نسخ الرابط',
+ tasks:'المهام',task1:'اشترك في قناة تيليجرام',
+ task2:'تابع على تويتر',start:'ابدأ',
+ wallet:'المحفظة',total:'الرصيد الإجمالي',
+ withdraw:'سحب MFD',connect:'اتصال',
+ navInvite:'دعوة',navTasks:'المهام',
+ navMine:'التعدين',navWallet:'المحفظة'
+ },
+ zh:{
+ mine:'⛏ 点击开始挖矿',ready:'⌛ 已准备好',
+ invite:'邀请朋友',reward:'每次邀请奖励',
+ yourlink:'你的邀请链接',copy:'复制链接',
+ tasks:'任务',task1:'加入 Telegram 频道',
+ task2:'关注 Twitter',start:'开始',
+ wallet:'钱包',total:'总余额',
+ withdraw:'提取 MFD',connect:'连接',
+ navInvite:'邀请',navTasks:'任务',
+ navMine:'挖矿',navWallet:'钱包'
+ }
+};
+
+function changeLanguage(lang){
+ document.documentElement.lang=lang;
+ document.documentElement.dir=lang==='fa'||lang==='ar'?'rtl':'ltr';
+
+ document.querySelectorAll('[data-t]').forEach(el=>{
+  const key=el.getAttribute('data-t');
+  if(translations[lang][key]){
+   el.textContent=translations[lang][key];
+  }
+ });
+}
+</script>
 </body>
 </html>
