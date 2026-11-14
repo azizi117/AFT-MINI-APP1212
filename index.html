@@ -3,318 +3,194 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090909">
 <title>MIFADO COIN</title>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
+:root{--g:#edc66d;--bg:#090909;--p:#181818}
 *{box-sizing:border-box}
-body{
- margin:0;background:#02070d;color:white;
- font-family:Tahoma,Arial,sans-serif
-}
-.app{
- max-width:520px;min-height:100vh;margin:auto;
- background:radial-gradient(ellipse,#092637,#020609 75%);
- padding-bottom:100px
-}
-header{
- background:#101014;padding:18px;
- display:flex;justify-content:space-between;
- align-items:center;font-size:22px;font-weight:bold
-}
-select{
- background:#202436;color:white;
- border:1px solid #2589b9;border-radius:12px;
- padding:9px;width:105px;font-size:14px
-}
-.page{display:none;padding:20px}
-.page.active{display:block}
-.logo{
- width:290px;height:290px;max-width:85vw;
- object-fit:cover;display:block;
- margin:30px auto;border-radius:50%;
- border:6px solid #e6ad27;
- box-shadow:0 0 35px #087dff;
- cursor:pointer;
- transition:.2s
-}
-.logo:active{transform:scale(.96)}
-.balance{text-align:center;font-size:40px;font-weight:bold}
-.blue{color:#22baff}
-.usd{color:#42d98b;font-size:20px;margin:12px}
-.mine{
- display:block;margin:25px auto;
- background:#292638;color:white;
- border-radius:28px;padding:22px;
- width:90%;font-size:20px;
- cursor:pointer
-}
-.stats{display:flex;gap:12px}
-.stat{
- flex:1;text-align:center;padding:20px 5px;
- border:1px solid #16485e;border-radius:18px
-}
-.primary{
- width:100%;padding:18px;background:#25b9f2;
- color:#00121c;border-radius:16px;
- font-size:19px;font-weight:bold;margin:12px 0
-}
-.panel{
- border:2px solid #17617c;border-radius:20px;
- padding:22px;margin:18px 0
-}
-.reward{font-size:30px;margin-top:15px}
-.task{
- background:#07140e;border:1px solid #16452c;
- border-right:5px solid #20c56b;
- border-radius:16px;padding:15px;
- margin:15px 0;display:flex;align-items:center;gap:10px
-}
-.task-info{flex:1}
-.task a{display:block;color:#25b9f2;margin:8px 0}
-.task button{
- background:#20c56b;color:white;
- padding:12px;border-radius:20px
-}
-.wallet{
- border:2px solid #16485e;padding:20px;
- border-radius:18px;margin:15px 0;
- display:flex;justify-content:space-between
-}
-.wallet button{background:none;color:#25b9f2}
-nav{
- position:fixed;bottom:0;left:50%;
- transform:translateX(-50%);
- width:min(520px,100%);
- background:#050609;border-top:1px solid #25252b;
- display:grid;grid-template-columns:repeat(4,1fr);
- padding:8px 5px
-}
-nav button{
- background:none;color:#999;
- padding:12px 2px;font-size:14px
-}
-nav button.active{
- color:#25b9f2;background:#071d29;
- border-radius:18px
-}
-nav span{display:block;font-size:25px;margin-bottom:5px}
+body{margin:0;background:radial-gradient(circle at top,#30230e,#090909 55%);color:#fff;font-family:Arial,Tahoma,sans-serif;padding-bottom:85px}
+.app{max-width:480px;margin:auto;padding:18px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.logo{width:48px;height:48px;border:2px solid var(--g);border-radius:50%;display:grid;place-items:center;color:var(--g);font-weight:900;font-size:24px}
+.brand{display:flex;align-items:center;gap:12px}
+h1{font-size:18px;color:var(--g);margin:0}
+.brand small{font-size:10px;color:#aaa}
+button{cursor:pointer;font:inherit}
+.lang{background:#211b10;color:var(--g);border:1px solid #76551f;border-radius:10px;padding:8px}
+.card{background:linear-gradient(140deg,#251d10,#151515);border:1px solid #60471e;border-radius:20px;padding:22px;margin:12px 0}
+.center{text-align:center}
+.muted{color:#aaa;font-size:13px}
+.balance{font-size:36px;color:var(--g);font-weight:bold;margin:12px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--p);padding:15px;border-radius:14px}
+.stat b{display:block;color:var(--g);font-size:18px;margin-top:8px}
+.coin{width:185px;height:185px;border-radius:50%;border:5px solid #ffe39c;background:radial-gradient(circle at 35% 25%,#fff1b8,#d8a43d 38%,#6b460f);color:#291c05;font-size:48px;font-weight:900;box-shadow:0 0 35px #e8b94b50;margin:24px 0}
+.coin:active{transform:scale(.94)}
+.bar{height:9px;background:#333;border-radius:20px;overflow:hidden;margin-top:9px}
+.bar div{height:100%;background:linear-gradient(90deg,#986519,#ffe19a);width:100%}
+.section{display:none}.section.active{display:block}
+.primary{background:linear-gradient(90deg,#a97826,#f2d27c);border:0;border-radius:12px;padding:14px;width:100%;font-weight:bold;color:#211606;margin-top:14px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#111f;border-top:1px solid #44331b;display:grid;grid-template-columns:repeat(5,1fr);max-width:480px;margin:auto;padding:10px 0}
+.nav button{background:none;border:0;color:#999;font-size:11px}
+.nav button span{display:block;font-size:21px;margin-bottom:4px}
+.nav button.active{color:var(--g)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #333}
+input{width:100%;padding:12px;background:#090909;border:1px solid #555;border-radius:10px;color:white;margin-top:10px}
+.status{font-size:12px;color:var(--g);margin-top:10px;line-height:1.8}
 </style>
 </head>
-
 <body>
 <div class="app">
-
 <header>
- <span>MIFADO COIN</span>
- <select id="language" onchange="changeLanguage(this.value)">
-  <option value="fa">فارسی</option>
-  <option value="en">English</option>
-  <option value="ar">العربية</option>
-  <option value="zh">中文</option>
- </select>
+<div class="brand"><div class="logo">M</div><div><h1>MIFADO COIN</h1><small>THE GOLDEN MINING · MFD</small></div></div>
+<button class="lang" id="lang">EN</button>
 </header>
 
-<section id="mine" class="page active">
-
-<!-- لوگوی واقعی خودت -->
-<img class="logo"
- src="./mifado-logo.jpg"
- alt="MIFADO COIN"
- onclick="mine()">
-
-<div class="balance">
- <span class="blue">MFD</span>
- <span id="balance">69.892</span>
- <div class="usd">≈ $27.79 USD</div>
+<section id="home" class="section active">
+<div class="card center">
+<div class="muted" data-fa="موجودی کل شما" data-en="YOUR TOTAL BALANCE">موجودی کل شما</div>
+<div class="balance" id="balance">0.000</div>
+<div style="color:#c9aa65">MFD</div>
 </div>
-
-<button class="mine" onclick="mine()" data-t="mine">
- ⛏ برای استخراج ضربه بزنید
-</button>
-
 <div class="stats">
- <div class="stat">⚡ <span id="energy">1000</span>/1000</div>
- <div class="stat" data-t="ready">⌛ آماده</div>
+<div class="stat"><span class="muted" data-fa="درآمد ساعتی" data-en="Hourly income">درآمد ساعتی</span><b id="rate">0 MFD</b></div>
+<div class="stat"><span class="muted" data-fa="انرژی" data-en="Energy">انرژی</span><b id="energy">1000 / 1000</b></div>
+</div>
+<div class="card center"><h3 style="color:var(--g)" data-fa="به میفادو خوش آمدی" data-en="Welcome to MIFADO">به میفادو خوش آمدی</h3><p class="muted" data-fa="استخراج کن، ارتقا بده و دوستانت را دعوت کن." data-en="Mine, upgrade and invite your friends.">استخراج کن، ارتقا بده و دوستانت را دعوت کن.</p></div>
+</section>
+
+<section id="mine" class="section">
+<div class="card center">
+<p class="muted" data-fa="برای استخراج ضربه بزن" data-en="Tap to mine">برای استخراج ضربه بزن</p>
+<button class="coin" id="tap">M</button>
+<div class="row"><span>ENERGY</span><b id="energy2">1000 / 1000</b></div>
+<div class="bar"><div id="energybar"></div></div>
+<p class="status" id="tapstatus"></p>
+</div>
+<div class="card center"><h3 style="color:var(--g)" data-fa="استخراج خودکار" data-en="Auto Mining">استخراج خودکار</h3><p class="muted" data-fa="درآمد ساعتی به‌صورت خودکار محاسبه می‌شود." data-en="Hourly earnings are calculated automatically.">درآمد ساعتی به‌صورت خودکار محاسبه می‌شود.</p></div>
+</section>
+
+<section id="friends" class="section">
+<div class="card">
+<h3 style="color:var(--g)" data-fa="دعوت از دوستان" data-en="Invite Friends">دعوت از دوستان</h3>
+<p class="muted" data-fa="دوستانت را دعوت کن و پاداش بگیر." data-en="Invite friends and earn rewards.">دوستانت را دعوت کن و پاداش بگیر.</p>
+<input id="ref" readonly placeholder="Referral link">
+<button class="primary" id="copy" data-fa="کپی لینک دعوت" data-en="Copy referral link">کپی لینک دعوت</button>
+<p class="status" id="refstatus"></p>
 </div>
 </section>
 
-<section id="invite" class="page">
-<h1 data-t="invite">دعوت دوستان</h1>
-<div class="panel">
- <span data-t="reward">پاداش هر دعوت</span>
- <div class="reward">20 <span class="blue">MFD</span></div>
-</div>
-<div class="panel">
- <p data-t="yourlink">لینک دعوت شما</p>
- <div id="inviteLink">https://t.me/MifadoCoinBot</div>
- <button class="primary" onclick="copyLink()" data-t="copy">کپی لینک</button>
+<section id="tasks" class="section">
+<div class="card">
+<h3 style="color:var(--g)" data-fa="ماموریت‌ها" data-en="Tasks">ماموریت‌ها</h3>
+<div class="row"><span data-fa="عضویت در کانال تلگرام" data-en="Join Telegram channel">عضویت در کانال تلگرام</span><b>MFD</b></div>
+<div class="row"><span data-fa="دعوت از دوستان" data-en="Invite friends">دعوت از دوستان</span><b>MFD</b></div>
+<p class="status" data-fa="پاداش ماموریت‌ها بعد از تأیید سمت سرور فعال می‌شود." data-en="Task rewards require server verification.">پاداش ماموریت‌ها بعد از تأیید سمت سرور فعال می‌شود.</p>
 </div>
 </section>
 
-<section id="tasks" class="page">
-<h1 data-t="tasks">وظایف</h1>
-
-<div class="task">
- <div class="task-info">
-  <b data-t="task1">عضویت در کانال تلگرام</b>
-  <a href="https://t.me/MifadoCoinBot" target="_blank">@MifadoCoinBot</a>
-  <span class="blue">+100 MFD</span>
- </div>
- <button onclick="done(this)" data-t="start">شروع</button>
+<section id="wallet" class="section">
+<div class="card">
+<h3 style="color:var(--g)" data-fa="کیف پول TON" data-en="TON Wallet">کیف پول TON</h3>
+<p class="muted" data-fa="اتصال کیف پول با TON Connect" data-en="Connect your wallet with TON Connect">اتصال کیف پول با TON Connect</p>
+<button class="primary" id="walletbtn" data-fa="اتصال کیف پول" data-en="Connect Wallet">اتصال کیف پول</button>
+<p class="status" id="walletstatus">TON Connect هنوز پیکربندی نشده است.</p>
 </div>
-
-<div class="task">
- <div class="task-info">
-  <b data-t="task2">دنبال کردن توییتر</b>
-  <a href="https://x.com/" target="_blank">X / Twitter</a>
-  <span class="blue">+50 MFD</span>
- </div>
- <button onclick="done(this)" data-t="start">شروع</button>
+<div class="card">
+<h3 style="color:var(--g)" data-fa="برداشت" data-en="Withdraw">برداشت</h3>
+<p class="muted" data-fa="برداشت پس از تأیید قرارداد توکن و موجودی خزانه فعال خواهد شد." data-en="Withdrawals require a verified token contract and funded treasury.">برداشت پس از تأیید قرارداد توکن و موجودی خزانه فعال خواهد شد.</p>
 </div>
 </section>
-
-<section id="wallet" class="page">
-<h1 data-t="wallet">کیف پول</h1>
-
-<div class="panel" style="text-align:center">
- <p data-t="total">موجودی کل</p>
- <div class="balance">
-  <span id="walletBalance">69.892</span>
-  <span class="blue">MFD</span>
- </div>
 </div>
 
-<button class="primary" onclick="alert('Withdrawal is not activated yet')" data-t="withdraw">
- برداشت MFD
-</button>
-
-<div class="wallet">
- <b>🛡 Trust Wallet</b>
- <button onclick="alert('Wallet connection is not activated yet')" data-t="connect">اتصال</button>
-</div>
-
-<div class="wallet">
- <b>🔵 Coinbase</b>
- <button onclick="alert('Wallet connection is not activated yet')" data-t="connect">اتصال</button>
-</div>
-
-<div class="wallet">
- <b>💎 TON Wallet</b>
- <button onclick="alert('Wallet connection is not activated yet')" data-t="connect">اتصال</button>
-</div>
-</section>
-
-<nav>
- <button onclick="showPage('invite',this)">
-  <span>👥</span><label data-t="navInvite">دعوت</label>
- </button>
- <button onclick="showPage('tasks',this)">
-  <span>☑</span><label data-t="navTasks">وظایف</label>
- </button>
- <button class="active" onclick="showPage('mine',this)">
-  <span>◉</span><label data-t="navMine">استخراج</label>
- </button>
- <button onclick="showPage('wallet',this)">
-  <span>▣</span><label data-t="navWallet">کیف پول</label>
- </button>
+<nav class="nav">
+<button class="active" data-tab="home"><span>⌂</span><i data-fa="خانه" data-en="Home">خانه</i></button>
+<button data-tab="mine"><span>◉</span><i data-fa="استخراج" data-en="Mine">استخراج</i></button>
+<button data-tab="friends"><span>♧</span><i data-fa="دعوت" data-en="Friends">دعوت</i></button>
+<button data-tab="tasks"><span>✓</span><i data-fa="ماموریت" data-en="Tasks">ماموریت</i></button>
+<button data-tab="wallet"><span>▣</span><i data-fa="کیف پول" data-en="Wallet">کیف پول</i></button>
 </nav>
-</div>
 
 <script>
-let balance=69.892;
-let energy=1000;
+(() => {
+const tg=window.Telegram?.WebApp;
+tg?.ready();tg?.expand();
 
-function mine(){
- if(energy<=0){
-  alert('Energy is finished');
-  return;
- }
- balance+=0.001;
- energy--;
+const API="https://YOUR-RENDER-SERVICE.onrender.com/api";
+let lang="fa",busy=false;
+let state={balance:0,energy:1000,maxEnergy:1000,hourlyRate:0,referralLink:""};
 
- document.getElementById('balance').innerText=balance.toFixed(3);
- document.getElementById('walletBalance').innerText=balance.toFixed(3);
- document.getElementById('energy').innerText=energy;
+const $=id=>document.getElementById(id);
+
+function render(){
+$("balance").textContent=Number(state.balance||0).toFixed(3);
+$("rate").textContent=Number(state.hourlyRate||0).toFixed(3)+" MFD";
+$("energy").textContent=Math.floor(state.energy)+" / "+state.maxEnergy;
+$("energy2").textContent=Math.floor(state.energy)+" / "+state.maxEnergy;
+$("energybar").style.width=Math.max(0,Math.min(100,state.energy/state.maxEnergy*100))+"%";
+$("ref").value=state.referralLink||"";
 }
 
-function showPage(id,btn){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
- btn.classList.add('active');
+async function api(path,method="GET"){
+const initData=tg?.initData||"";
+if(!initData)throw Error("بازی را از داخل تلگرام باز کن.");
+const r=await fetch(API+path,{
+method,
+headers:{"Content-Type":"application/json","X-Telegram-Init-Data":initData},
+body:method==="POST"?"{}":undefined
+});
+const d=await r.json();
+if(!r.ok)throw Error(d.error||"Server error");
+return d;
 }
 
-function done(btn){
- btn.innerText='✓';
- btn.disabled=true;
+async function load(){
+try{state={...state,...await api("/me")};render();}
+catch(e){$("tapstatus").textContent=e.message;}
 }
 
-function copyLink(){
- navigator.clipboard.writeText(
- document.getElementById('inviteLink').innerText
- ).then(()=>alert('Copied!'))
- .catch(()=>alert('Copy the link manually'));
-}
-
-const translations={
- fa:{
- mine:'⛏ برای استخراج ضربه بزنید',ready:'⌛ آماده',
- invite:'دعوت دوستان',reward:'پاداش هر دعوت',
- yourlink:'لینک دعوت شما',copy:'کپی لینک',
- tasks:'وظایف',task1:'عضویت در کانال تلگرام',
- task2:'دنبال کردن توییتر',start:'شروع',
- wallet:'کیف پول',total:'موجودی کل',
- withdraw:'برداشت MFD',connect:'اتصال',
- navInvite:'دعوت',navTasks:'وظایف',
- navMine:'استخراج',navWallet:'کیف پول'
- },
- en:{
- mine:'⛏ Tap to Mine',ready:'⌛ Ready',
- invite:'Invite Friends',reward:'Reward per Invite',
- yourlink:'Your Invitation Link',copy:'Copy Link',
- tasks:'Tasks',task1:'Join Telegram Channel',
- task2:'Follow on Twitter',start:'Start',
- wallet:'Wallet',total:'Total Balance',
- withdraw:'Withdraw MFD',connect:'Connect',
- navInvite:'Invite',navTasks:'Tasks',
- navMine:'Mining',navWallet:'Wallet'
- },
- ar:{
- mine:'⛏ اضغط للتعدين',ready:'⌛ جاهز',
- invite:'ادعُ أصدقاءك',reward:'مكافأة كل دعوة',
- yourlink:'رابط الدعوة الخاص بك',copy:'نسخ الرابط',
- tasks:'المهام',task1:'اشترك في قناة تيليجرام',
- task2:'تابع على تويتر',start:'ابدأ',
- wallet:'المحفظة',total:'الرصيد الإجمالي',
- withdraw:'سحب MFD',connect:'اتصال',
- navInvite:'دعوة',navTasks:'المهام',
- navMine:'التعدين',navWallet:'المحفظة'
- },
- zh:{
- mine:'⛏ 点击开始挖矿',ready:'⌛ 已准备好',
- invite:'邀请朋友',reward:'每次邀请奖励',
- yourlink:'你的邀请链接',copy:'复制链接',
- tasks:'任务',task1:'加入 Telegram 频道',
- task2:'关注 Twitter',start:'开始',
- wallet:'钱包',total:'总余额',
- withdraw:'提取 MFD',connect:'连接',
- navInvite:'邀请',navTasks:'任务',
- navMine:'挖矿',navWallet:'钱包'
- }
+$("tap").onclick=async()=>{
+if(busy)return;
+busy=true;
+try{
+state={...state,...await api("/tap","POST")};
+render();
+$("tapstatus").textContent="+0.001 MFD";
+}catch(e){$("tapstatus").textContent=e.message;}
+finally{busy=false;}
 };
 
-function changeLanguage(lang){
- document.documentElement.lang=lang;
- document.documentElement.dir=lang==='fa'||lang==='ar'?'rtl':'ltr';
+document.querySelectorAll("[data-tab]").forEach(b=>{
+b.onclick=()=>{
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.querySelectorAll(".nav button").forEach(n=>n.classList.remove("active"));
+$(b.dataset.tab).classList.add("active");b.classList.add("active");
+};
+});
 
- document.querySelectorAll('[data-t]').forEach(el=>{
-  const key=el.getAttribute('data-t');
-  if(translations[lang][key]){
-   el.textContent=translations[lang][key];
-  }
- });
-}
+$("lang").onclick=()=>{
+lang=lang==="fa"?"en":"fa";
+document.documentElement.lang=lang;
+document.documentElement.dir=lang==="fa"?"rtl":"ltr";
+$("lang").textContent=lang==="fa"?"EN":"FA";
+document.querySelectorAll("[data-fa]").forEach(el=>el.textContent=el.dataset[lang]);
+};
+
+$("copy").onclick=async()=>{
+try{
+await navigator.clipboard.writeText(state.referralLink);
+$("refstatus").textContent=lang==="fa"?"لینک کپی شد":"Link copied";
+}catch{$("refstatus").textContent="Copy failed";}
+};
+
+$("walletbtn").onclick=()=>{
+$("walletstatus").textContent=lang==="fa"?"اتصال TON Connect هنوز راه‌اندازی نشده است.":"TON Connect is not configured yet.";
+};
+
+render();load();setInterval(load,30000);
+})();
 </script>
 </body>
 </html>
